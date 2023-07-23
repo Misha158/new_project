@@ -1,7 +1,12 @@
 interface Props {
-  testProp: string;
+  testProp?: string;
 }
 
 export const Test = ({ testProp }: Props) => {
-  return <div>{testProp}</div>;
+  return (
+    <div>
+      {testProp}
+      <div>test</div>
+    </div>
+  );
 };
