@@ -12,7 +12,7 @@ const TodoList = ({ todos, setTodos }) => {
   const [inputIdForShow, setInputIdForShow] = useState(0);
   const [newText, setNewText] = useState("");
   const onDeleteHandler = async (id) => {
-    await axios.delete(`http://localhost:3000/deleteTodo/${id}`);
+    await axios.delete(`http://localhost:3000/todos/${id}`);
 
     setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
   };
@@ -23,7 +23,7 @@ const TodoList = ({ todos, setTodos }) => {
   };
 
   const onSaveHandler = async () => {
-    await axios.put(`http://localhost:3000/updateTodo/${inputIdForShow}`, {
+    await axios.put(`http://localhost:3000/todos/${inputIdForShow}`, {
       text: newText,
     });
 
@@ -65,7 +65,7 @@ export const App = () => {
 
   useEffect(() => {
     const fetchAllTodos = async () => {
-      const result = await axios.get("http://localhost:3000/getAllTodos");
+      const result = await axios.get("http://localhost:3000/todos");
 
       setTodos(result.data);
     };
@@ -79,7 +79,7 @@ export const App = () => {
 
   const onShowInputOrSaveNewTodo = async () => {
     if (isShowAddNewTodoInput) {
-      const newTodoItem = await axios.post("http://localhost:3000/addNewTodo", {
+      const newTodoItem = await axios.post("http://localhost:3000/todos", {
         text: newTodoText,
       });
 
