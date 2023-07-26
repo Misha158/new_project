@@ -19,6 +19,7 @@ const TodoList = ({ todos, setTodos }) => {
 
   const onEditHandler = (id) => {
     setInputIdForShow(id);
+    setNewText(todos.find((todo) => todo.id === id).text);
   };
 
   const onSaveHandler = async () => {
