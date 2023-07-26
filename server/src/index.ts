@@ -42,6 +42,38 @@ app.get("/", (req: Request, res: Response) => {
   // res.send("Привет, MISHA это простой сервер на Node.js с использованием Express и TypeScript!");
 });
 
+// Create table
+app.get("/createTable", (req: Request, res: Response) => {
+  // Пример запроса к базе данных
+  pool.query(
+    "CREATE TABLE todoTable (id INT AUTO_INCREMENT PRIMARY KEY, text VARCHAR(655))",
+    (err, results) => {
+      if (err) {
+        console.error("Ошибка при выполнении запроса:", err);
+        res.status(500).send("Ошибка сервера");
+      } else {
+        res.json(results);
+      }
+    }
+  );
+});
+
+// Add data to table
+app.get("/addDataToDB", (req: Request, res: Response) => {
+  // Пример запроса к базе данных
+  pool.query(
+    "INSERT INTO todoTable (text) VALUES ('Запись 4'), ('Запись 5'), ('Запись 6'), ('Запись 7')",
+    (err, results) => {
+      if (err) {
+        console.error("Ошибка при выполнении запроса:", err);
+        res.status(500).send("Ошибка сервера");
+      } else {
+        res.json(results);
+      }
+    }
+  );
+});
+
 // Используем маршрутизатор для постов
 app.use("/posts", postRouter);
 
