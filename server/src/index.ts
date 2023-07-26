@@ -29,7 +29,7 @@ app.use(cors());
 
 // Используем маршрутизатор для постов
 app.use("/posts", postRouter);
-app.use("/todos", todoRouter);
+app.use("/", todoRouter);
 
 app.listen(port, () => {
   console.log(`Сервер запущен на порту ${port}`);

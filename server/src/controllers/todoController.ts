@@ -1,21 +1,15 @@
 import { Request, Response } from "express";
-import axios from "axios";
 import { pool } from "../index";
+import { getAllTodosService } from "../services/todoService";
 
 export async function getTodos(req: Request, res: Response) {
-  // SQL-запрос для получения всех записей из todoTable
-  const sql = "SELECT * FROM todoTable";
+  try {
+    const todos = await getAllTodosService();
 
-  pool.query(sql, (err, result) => {
-    if (err) {
-      console.error("Ошибка выполнения запроса: ", err);
-      res.status(500).send("Произошла ошибка при получении записей.");
-      return;
-    }
-
-    console.log("Записи успешно получены!");
-    res.status(200).json(result);
-  });
+    res.status(200).json(todos);
+  } catch (err) {
+    res.status(500).send("Произошла ошибка при получении записей.");
+  }
 }
 
 export async function createTodo(req: Request, res: Response) {

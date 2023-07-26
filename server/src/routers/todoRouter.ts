@@ -8,9 +8,9 @@ import {
 
 const todoRouter = express.Router();
 
-todoRouter.get("/", getTodos);
-todoRouter.post("/", createTodo);
-todoRouter.put("/:id", updateTodo);
-todoRouter.delete("/:id", deleteTodo);
+todoRouter.get("/todos", getTodos);
+todoRouter.post("/todos", createTodo);
+todoRouter.put("/todos/:id", updateTodo);
+todoRouter.delete("/todos/:id", deleteTodo);
 
 export default todoRouter;
