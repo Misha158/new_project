@@ -23,11 +23,23 @@ const TodoList = ({ todos, setTodos }) => {
   };
 
   const onSaveHandler = async () => {
-    await axios.put(`http://localhost:3000/todos/${inputIdForShow}`, {
-      text: newText,
+    const newUpdatedTodo = await axios.put(
+      `http://localhost:3000/todos/${inputIdForShow}`,
+      {
+        text: newText,
+      }
+    );
+
+    const modifiedTodos = todos.map((todo) => {
+      if (todo.id === newUpdatedTodo.data.id) {
+        return newUpdatedTodo.data;
+      }
+
+      return todo;
     });
 
     setInputIdForShow(0);
+    setTodos(modifiedTodos);
   };
 
   return todos.map((todo) => (
