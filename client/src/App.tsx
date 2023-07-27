@@ -23,12 +23,9 @@ const TodoList = ({ todos, setTodos }) => {
   };
 
   const onSaveHandler = async () => {
-    const newUpdatedTodo = await axios.put(
-      `http://localhost:3000/todos/${inputIdForShow}`,
-      {
-        text: newText,
-      }
-    );
+    const newUpdatedTodo = await axios.put(`http://localhost:3000/todos/${inputIdForShow}`, {
+      text: newText,
+    });
 
     const modifiedTodos = todos.map((todo) => {
       if (todo.id === newUpdatedTodo.data.id) {
@@ -104,9 +101,7 @@ export const App = () => {
   return (
     <div>
       <TodoList todos={todos} setTodos={setTodos} />
-      {isShowAddNewTodoInput && (
-        <Input value={newTodoText} onChange={onChangeNewTodo} />
-      )}
+      {isShowAddNewTodoInput && <Input value={newTodoText} onChange={onChangeNewTodo} />}
       <Button type="primary" onClick={onShowInputOrSaveNewTodo}>
         {isShowAddNewTodoInput ? "Save new todo" : "Add new"}
       </Button>

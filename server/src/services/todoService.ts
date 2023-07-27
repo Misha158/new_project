@@ -32,8 +32,15 @@ class TodoService {
     const sqlSelect = `SELECT * FROM todoTable WHERE id = ${id}`;
 
     try {
-      await pool.promise().query(sqlUpdate, [text, id]);
+      const result = await pool.promise().query(sqlUpdate, [text, id]);
+
+      // @ts-ignore
+      if (result[0].affectedRows === 0) {
+        throw new Error("Запись с таким id не найдена.");
+      }
+
       const [rows, fields] = await pool.promise().query(sqlSelect);
+
       // @ts-ignore
       return rows[0];
     } catch (err) {

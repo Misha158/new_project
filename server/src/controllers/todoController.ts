@@ -31,7 +31,7 @@ class TodoController {
       const updatedTodo = await TodoService.updateTodo(text, id);
       res.status(200).json(updatedTodo);
     } catch (err) {
-      res.status(500).send("Произошла ошибка при обновлении записи.");
+      res.status(500).send(`Произошла ошибка при обновлении записи. ${(err as Error).message}`);
     }
   };
 
