@@ -22,8 +22,8 @@ export const campaignColumns = [
   ...generalColumns,
   {
     title: "Line item id",
-    dataIndex: "lineItemId",
-    key: "lineItemId",
+    dataIndex: "line_item_id",
+    key: "line_item_id",
   },
 ];
 
@@ -31,14 +31,14 @@ export const lineItemColumns = [
   ...generalColumns,
   {
     title: "Campaign id",
-    dataIndex: "campaignId",
-    key: "campaignId",
+    dataIndex: "campaign_id",
+    key: "campaign_id",
   },
 
   {
     title: "Ad id",
-    dataIndex: "adId",
-    key: "adId",
+    dataIndex: "ad_id",
+    key: "ad_id",
   },
 ];
 
@@ -46,13 +46,13 @@ export const adColumns = [
   ...generalColumns,
   {
     title: "Campaign id",
-    dataIndex: "campaignId",
-    key: "campaignId",
+    dataIndex: "campaign_id",
+    key: "campaign_id",
   },
 
   {
     title: "Line item id",
-    dataIndex: "lineItemId",
-    key: "lineItemId",
+    dataIndex: "line_item_id",
+    key: "line_item_id",
   },
 ];
