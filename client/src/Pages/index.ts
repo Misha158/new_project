@@ -1,2 +1,2 @@
-export * from "./AdvertisementPage/AdvertisementPage";
-export * from "./TodoPage/TodoPage";
+export { AdvertisementPage } from "./AdvertisementPage/AdvertisementPage";
+export { TodoPage } from "./TodoPage/TodoPage";
