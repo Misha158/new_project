@@ -4,6 +4,7 @@ import cors from "cors";
 
 import postRouter from "./routers/postRouter";
 import todoRouter from "./routers/todoRouter";
+import advertisementRouter from "./routers/advertisementRouter";
 import { dbConfig } from "./config";
 
 const app = express();
@@ -30,6 +31,7 @@ app.use(cors());
 // Используем маршрутизатор для постов
 app.use("/posts", postRouter);
 app.use("/", todoRouter);
+app.use("/advertisement", advertisementRouter);
 
 app.listen(port, () => {
   console.log(`Сервер запущен на порту ${port}`);
