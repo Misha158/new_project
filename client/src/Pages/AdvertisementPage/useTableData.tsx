@@ -1,26 +1,11 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Table } from "antd";
 import { adColumns, campaignColumns, lineItemColumns } from "./columns/campaign";
+import { useSelectedRows } from "./useSelectedRows";
+import { useFetchTableData } from "./useFetchTableData";
 
-export const useTableData = () => {
-  const [campaigns, setCampaigns] = useState([]);
-  const [lineItems, setLineItems] = useState([]);
-  const [ads, setAds] = useState([]);
-
-  useEffect(() => {
-    const fetchDada = async () => {
-      const campaigns = await axios.get("http://localhost:3000/advertisement/campaigns");
-      const lineItems = await axios.get("http://localhost:3000/advertisement/lineItems");
-      const ads = await axios.get("http://localhost:3000/advertisement/ads");
-
-      setCampaigns(campaigns.data);
-      setLineItems(lineItems.data);
-      setAds(ads.data);
-    };
-
-    fetchDada();
-  }, []);
+export const useTable = () => {
+  const { campaigns, lineItems, ads } = useFetchTableData();
+  const { onRow, rowSelection } = useSelectedRows();
 
   const tabItems = [
     {
@@ -36,9 +21,9 @@ export const useTableData = () => {
     {
       label: `Ads ${ads.length}`,
       key: "ads",
-      children: <Table dataSource={ads} columns={adColumns} rowKey="id" />,
+      children: <Table dataSource={ads} columns={adColumns} rowKey="id" rowSelection={rowSelection} onRow={onRow} />,
     },
   ];
 
-  return { campaigns, lineItems, ads, tabItems };
+  return { tabItems };
 };

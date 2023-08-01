@@ -1,14 +1,13 @@
-import React from "react";
 import { Tabs } from "antd";
 
-import { useTableData } from "./useTableData";
+import { useTable } from "./useTableData";
 
 const onChange = (key: string) => {
   console.log(key);
 };
 
 export const AdvertisementPage = () => {
-  const { tabItems } = useTableData();
+  const { tabItems } = useTable();
 
   return (
     <div>
