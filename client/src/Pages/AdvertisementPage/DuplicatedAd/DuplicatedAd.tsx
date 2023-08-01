@@ -4,14 +4,16 @@ import { lineItemColumns } from "../columns/campaign";
 import { useSelectedRows } from "../useSelectedRows";
 import { useModal } from "../useModal";
 import { Entity } from "../useFetchTableData";
+import { ReviewAdNames } from "./ReviewAdNames/ReviewAdNames";
 
 interface Props {
   lineItems: Entity[];
 }
 
 export const DuplicatedAd = ({ lineItems }: Props) => {
-  const { onRow: onRowLi, rowSelection: rowSelectionLi } = useSelectedRows();
-  const { showModal, isModalOpen, handleOk, handleCancel } = useModal();
+  const [step, setStep] = useState(1);
+  const { selectedRows, onRow, rowSelection } = useSelectedRows();
+  const { showModal, isModalOpen, handleOk, handleCancel } = useModal({ setStep });
   const [value, setValue] = useState("");
   const [filteredLi, setFilteredLi] = useState<Entity[]>([]);
 
@@ -19,6 +21,7 @@ export const DuplicatedAd = ({ lineItems }: Props) => {
     setValue(event.target.value);
     const newFilteredLis = lineItems.filter((li) => {
       if (!event.target.value) return true;
+
       return (
         String(li.id) === event.target.value ||
         li.title.toLowerCase().includes(event.target.value.toLowerCase()) ||
@@ -41,9 +44,15 @@ export const DuplicatedAd = ({ lineItems }: Props) => {
         Duplicate ad
       </Button>
 
-      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} width={1000} okText="Next">
-        <Input value={value} onChange={onSearchFilter} />
-        <Table dataSource={filteredLi} columns={lineItemColumns} rowKey="id" rowSelection={rowSelectionLi} onRow={onRowLi} />
+      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} width={1000} okText="Next" cancelText="Back">
+        {step === 1 && (
+          <>
+            <Input value={value} onChange={onSearchFilter} />
+            <Table dataSource={filteredLi} columns={lineItemColumns} rowKey="id" rowSelection={rowSelection} onRow={onRow} />
+          </>
+        )}
+        {step === 2 && <ReviewAdNames selectedRows={selectedRows} />}
+        {/*{step === 3 && <ReviewAdNames />}*/}
       </Modal>
     </>
   );

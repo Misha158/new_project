@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 
-export const useModal = () => {
+interface Props {
+  setStep: Dispatch<SetStateAction<number>>;
+}
+
+export const useModal = ({ setStep }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => {
@@ -8,11 +12,11 @@ export const useModal = () => {
   };
 
   const handleOk = () => {
-    setIsModalOpen(false);
+    setStep((prev) => prev + 1);
   };
 
   const handleCancel = () => {
-    setIsModalOpen(false);
+    setStep((prev) => prev - 1);
   };
 
   return {
