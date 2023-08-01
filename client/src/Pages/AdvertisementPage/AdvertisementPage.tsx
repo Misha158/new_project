@@ -1,6 +1,6 @@
 import { Tabs } from "antd";
 
-import { useTable } from "./useTableData";
+import { useTable } from "./useTable";
 import { useState } from "react";
 
 export const AdvertisementPage = () => {
@@ -10,8 +10,6 @@ export const AdvertisementPage = () => {
   const onChange = (key: string) => {
     setTabName(key);
   };
-
-  console.log("tabName", tabName);
 
   return (
     <div>

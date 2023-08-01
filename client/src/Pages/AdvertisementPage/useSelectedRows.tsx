@@ -2,17 +2,18 @@ import React, { useState } from "react";
 
 interface DataType {
   id: number;
-  name: string;
-  age: number;
-  address: string;
+  title: string;
+  status: string;
 }
 
 export const useSelectedRows = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<(number | string)[]>([]);
 
   const rowSelection = {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows);
+      // console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows);
       setSelectedRowKeys(selectedRowKeys);
     },
     selectedRowKeys,

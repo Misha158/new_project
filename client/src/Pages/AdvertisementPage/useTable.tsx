@@ -1,7 +1,8 @@
-import { Button, Table } from "antd";
+import { Table } from "antd";
 import { adColumns, campaignColumns, lineItemColumns } from "./columns/campaign";
 import { useSelectedRows } from "./useSelectedRows";
 import { useFetchTableData } from "./useFetchTableData";
+import { DuplicatedAd } from "./DuplicatedAd/DuplicatedAd";
 
 interface Props {
   tabName: string;
@@ -29,7 +30,7 @@ export const useTable = ({ tabName }: Props) => {
       key: "ads",
       children: (
         <>
-          {isShowDuplicateButton && <Button type="primary">Duplicate ad</Button>}
+          {isShowDuplicateButton && <DuplicatedAd lineItems={lineItems} />}
           <Table dataSource={ads} columns={adColumns} rowKey="id" rowSelection={rowSelection} onRow={onRow} />
         </>
       ),

@@ -1,10 +1,22 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export const useFetchTableData = () => {
-  const [campaigns, setCampaigns] = useState([]);
-  const [lineItems, setLineItems] = useState([]);
-  const [ads, setAds] = useState([]);
+export interface Entity {
+  title: string;
+  id: number;
+  status: string;
+}
+
+interface Result {
+  campaigns: Entity[];
+  lineItems: Entity[];
+  ads: Entity[];
+}
+
+export const useFetchTableData = (): Result => {
+  const [campaigns, setCampaigns] = useState<Entity[]>([]);
+  const [lineItems, setLineItems] = useState<Entity[]>([]);
+  const [ads, setAds] = useState<Entity[]>([]);
 
   useEffect(() => {
     const fetchDada = async () => {
