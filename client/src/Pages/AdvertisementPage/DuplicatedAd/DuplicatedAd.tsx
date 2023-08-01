@@ -38,6 +38,8 @@ export const DuplicatedAd = ({ lineItems }: Props) => {
     }
   }, [isModalOpen]);
 
+  const [adNameLineItems, setAdNameLineItems] = useState({})
+
   return (
     <>
       <Button type="primary" onClick={showModal}>
@@ -51,7 +53,7 @@ export const DuplicatedAd = ({ lineItems }: Props) => {
             <Table dataSource={filteredLi} columns={lineItemColumns} rowKey="id" rowSelection={rowSelection} onRow={onRow} />
           </>
         )}
-        {step === 2 && <ReviewAdNames selectedRows={selectedRows} />}
+        {step === 2 && <ReviewAdNames selectedRows={selectedRows} setAdNameLineItems={setAdNameLineItems}/>}
         {/*{step === 3 && <ReviewAdNames />}*/}
       </Modal>
     </>
