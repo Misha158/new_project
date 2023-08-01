@@ -1,11 +1,17 @@
-import { Table } from "antd";
+import { Button, Table } from "antd";
 import { adColumns, campaignColumns, lineItemColumns } from "./columns/campaign";
 import { useSelectedRows } from "./useSelectedRows";
 import { useFetchTableData } from "./useFetchTableData";
 
-export const useTable = () => {
+interface Props {
+  tabName: string;
+}
+
+export const useTable = ({ tabName }: Props) => {
   const { campaigns, lineItems, ads } = useFetchTableData();
-  const { onRow, rowSelection } = useSelectedRows();
+  const { selectedRowKeys, onRow, rowSelection } = useSelectedRows();
+
+  const isShowDuplicateButton = tabName === "ads" && !!selectedRowKeys.length;
 
   const tabItems = [
     {
@@ -21,7 +27,12 @@ export const useTable = () => {
     {
       label: `Ads ${ads.length}`,
       key: "ads",
-      children: <Table dataSource={ads} columns={adColumns} rowKey="id" rowSelection={rowSelection} onRow={onRow} />,
+      children: (
+        <>
+          {isShowDuplicateButton && <Button type="primary">Duplicate ad</Button>}
+          <Table dataSource={ads} columns={adColumns} rowKey="id" rowSelection={rowSelection} onRow={onRow} />
+        </>
+      ),
     },
   ];
 

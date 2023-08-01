@@ -37,5 +37,6 @@ export const useSelectedRows = () => {
   return {
     onRow,
     rowSelection,
+    selectedRowKeys,
   };
 };

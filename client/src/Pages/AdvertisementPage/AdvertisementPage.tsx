@@ -1,13 +1,17 @@
 import { Tabs } from "antd";
 
 import { useTable } from "./useTableData";
-
-const onChange = (key: string) => {
-  console.log(key);
-};
+import { useState } from "react";
 
 export const AdvertisementPage = () => {
-  const { tabItems } = useTable();
+  const [tabName, setTabName] = useState("campaigns");
+  const { tabItems } = useTable({ tabName });
+
+  const onChange = (key: string) => {
+    setTabName(key);
+  };
+
+  console.log("tabName", tabName);
 
   return (
     <div>
