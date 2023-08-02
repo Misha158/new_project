@@ -6,6 +6,7 @@ import { Entity } from "../../useFetchTableData";
 import { Dispatch, SetStateAction } from "react";
 import type { TableRowSelection } from "antd/es/table/interface";
 import type { GetComponentProps } from "rc-table/lib/interface";
+import { Confirm } from "../Confirm/Confirm";
 
 interface Props {
   lineItems: Entity[];
@@ -18,6 +19,7 @@ interface Props {
   setAdNameLineItems: Dispatch<SetStateAction<Record<string, Entity>>>;
   rowSelection: TableRowSelection<Entity>;
   onRow: GetComponentProps<Entity>;
+  adNameLineItems: Record<string, Entity>;
 }
 
 export const Modal = ({
@@ -31,6 +33,7 @@ export const Modal = ({
   onRow,
   setAdNameLineItems,
   selectedAdRows,
+  adNameLineItems,
 }: Props) => {
   const { filteredLineItems, onSearchFilter, value } = useFilter({ lineItems, isModalOpen });
 
@@ -59,7 +62,7 @@ export const Modal = ({
         </>
       )}
       {step === 2 && <ReviewAdNames selectedRows={selectedRows} setAdNameLineItems={setAdNameLineItems} selectedAd={selectedAdRows[0]} />}
-      {/*{step === 3 && <ReviewAdNames />}*/}
+      {step === 3 && <Confirm adNameLineItems={adNameLineItems} />}
     </AntModal>
   );
 };

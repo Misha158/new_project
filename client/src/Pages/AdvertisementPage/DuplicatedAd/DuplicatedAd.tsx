@@ -15,7 +15,7 @@ export const DuplicatedAd = ({ lineItems, selectedAdRows }: Props) => {
   const [step, setStep] = useState(1);
   const { selectedRows, onRow, rowSelection } = useSelectedRows();
   const { showModal, isModalOpen, handleOk, handleCancel } = useModal({ setStep });
-  const { setAdNameLineItems } = useSetAdNameLineItems({ selectedRows, selectedAdRows });
+  const { setAdNameLineItems, adNameLineItems } = useSetAdNameLineItems({ selectedRows, selectedAdRows });
 
   const tooltipText = selectedAdRows.length > 1 ? "Should choose only ONE ad" : "";
 
@@ -38,6 +38,7 @@ export const DuplicatedAd = ({ lineItems, selectedAdRows }: Props) => {
         onRow={onRow}
         setAdNameLineItems={setAdNameLineItems}
         selectedAdRows={selectedAdRows}
+        adNameLineItems={adNameLineItems}
       />
     </>
   );

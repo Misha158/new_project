@@ -24,7 +24,6 @@ export const useSetAdNameLineItems = ({ selectedRows, selectedAdRows }: Props) =
     );
   }, [selectedRows]);
 
-
   return {
     setAdNameLineItems,
     adNameLineItems,

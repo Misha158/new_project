@@ -33,6 +33,25 @@ app.use("/posts", postRouter);
 app.use("/", todoRouter);
 app.use("/advertisement", advertisementRouter);
 
+// Роут для массового создания записей в таблице ads
+app.post("/advertisement/createAds", async (req, res) => {
+  const adsData = (req.body as Record<string, string | number>[]).reduce<(string | number)[][]>((acc, current) => {
+    acc.push([`${current.title}`, `${current.status}`, current.line_item_id, current.campaign_id]);
+
+    return acc;
+  }, []);
+
+  try {
+    const sql = "INSERT INTO ads (title, status, line_item_id, campaign_id) VALUES ?";
+
+    const result = await pool.promise().query(sql, [adsData]);
+
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).send("Произошла ошибка при создании записей.");
+  }
+});
+
 app.listen(port, () => {
   console.log(`Сервер запущен на порту ${port}`);
 });
