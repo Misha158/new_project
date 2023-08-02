@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Tooltip } from "antd";
 import { useSelectedRows } from "../useSelectedRows";
 import { useModal } from "../useModal";
 import { Entity } from "../useFetchTableData";
 import { Modal } from "./Modal/Modal";
+import { useSetAdNameLineItems } from "./useSetAdNameLineItems";
 
 interface Props {
   lineItems: Entity[];
@@ -14,23 +15,13 @@ export const DuplicatedAd = ({ lineItems, selectedAdRows }: Props) => {
   const [step, setStep] = useState(1);
   const { selectedRows, onRow, rowSelection } = useSelectedRows();
   const { showModal, isModalOpen, handleOk, handleCancel } = useModal({ setStep });
+  const { setAdNameLineItems } = useSetAdNameLineItems({ selectedRows, selectedAdRows });
 
-  const [adNameLineItems, setAdNameLineItems] = useState<Record<string, Entity>>({});
-  console.log("adNameLineItems", adNameLineItems);
-
-  useEffect(() => {
-    setAdNameLineItems((prev) => {
-      return selectedRows.reduce<Record<string, Entity>>((acc, currentLi) => {
-        acc[`lineItemId-${currentLi.id}`] = selectedAdRows[0];
-
-        return { ...prev, ...acc };
-      }, {});
-    });
-  }, [selectedRows]);
+  const tooltipText = selectedAdRows.length > 1 ? "Should choose only ONE ad" : "";
 
   return (
     <>
-      <Tooltip title={selectedAdRows.length > 1 ? "Should choose only ONE ad" : ""}>
+      <Tooltip title={tooltipText}>
         <Button type="primary" onClick={showModal} disabled={selectedAdRows.length > 1}>
           Duplicate ad
         </Button>
