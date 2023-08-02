@@ -10,9 +10,9 @@ interface Props {
 
 export const useTable = ({ tabName }: Props) => {
   const { campaigns, lineItems, ads } = useFetchTableData();
-  const { selectedRows, onRow, rowSelection } = useSelectedRows();
+  const { selectedRows: selectedAdRows, onRow, rowSelection } = useSelectedRows();
 
-  const isShowDuplicateButton = tabName === "ads" && !!selectedRows.map((selectedRow) => selectedRow.id).length;
+  const isShowDuplicateButton = tabName === "ads" && !!selectedAdRows.map((selectedAdRow) => selectedAdRow.id).length;
 
   const tabItems = [
     {
@@ -30,7 +30,7 @@ export const useTable = ({ tabName }: Props) => {
       key: "ads",
       children: (
         <>
-          {isShowDuplicateButton && <DuplicatedAd lineItems={lineItems} />}
+          {isShowDuplicateButton && <DuplicatedAd lineItems={lineItems} selectedAdRows={selectedAdRows} />}
           <Table dataSource={ads} columns={adColumns} rowKey="id" rowSelection={rowSelection} onRow={onRow} />
         </>
       ),

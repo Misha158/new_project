@@ -1,61 +1,53 @@
-import React, { useEffect, useState } from "react";
-import { Button, Input, Modal, Table } from "antd";
-import { lineItemColumns } from "../columns/campaign";
+import { useEffect, useState } from "react";
+import { Button, Tooltip } from "antd";
 import { useSelectedRows } from "../useSelectedRows";
 import { useModal } from "../useModal";
 import { Entity } from "../useFetchTableData";
-import { ReviewAdNames } from "./ReviewAdNames/ReviewAdNames";
+import { Modal } from "./Modal/Modal";
 
 interface Props {
   lineItems: Entity[];
+  selectedAdRows: Entity[];
 }
 
-export const DuplicatedAd = ({ lineItems }: Props) => {
+export const DuplicatedAd = ({ lineItems, selectedAdRows }: Props) => {
   const [step, setStep] = useState(1);
   const { selectedRows, onRow, rowSelection } = useSelectedRows();
   const { showModal, isModalOpen, handleOk, handleCancel } = useModal({ setStep });
-  const [value, setValue] = useState("");
-  const [filteredLi, setFilteredLi] = useState<Entity[]>([]);
 
-  const onSearchFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
-    const newFilteredLis = lineItems.filter((li) => {
-      if (!event.target.value) return true;
-
-      return (
-        String(li.id) === event.target.value ||
-        li.title.toLowerCase().includes(event.target.value.toLowerCase()) ||
-        li.status.toLowerCase().includes(event.target.value.toLowerCase())
-      );
-    });
-
-    setFilteredLi(newFilteredLis);
-  };
+  const [adNameLineItems, setAdNameLineItems] = useState<Record<string, Entity>>({});
+  console.log("adNameLineItems", adNameLineItems);
 
   useEffect(() => {
-    if (isModalOpen) {
-      setFilteredLi(lineItems);
-    }
-  }, [isModalOpen]);
+    setAdNameLineItems((prev) => {
+      return selectedRows.reduce<Record<string, Entity>>((acc, currentLi) => {
+        acc[`lineItemId-${currentLi.id}`] = selectedAdRows[0];
 
-  const [adNameLineItems, setAdNameLineItems] = useState({})
+        return { ...prev, ...acc };
+      }, {});
+    });
+  }, [selectedRows]);
 
   return (
     <>
-      <Button type="primary" onClick={showModal}>
-        Duplicate ad
-      </Button>
+      <Tooltip title={selectedAdRows.length > 1 ? "Should choose only ONE ad" : ""}>
+        <Button type="primary" onClick={showModal} disabled={selectedAdRows.length > 1}>
+          Duplicate ad
+        </Button>
+      </Tooltip>
 
-      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} width={1000} okText="Next" cancelText="Back">
-        {step === 1 && (
-          <>
-            <Input value={value} onChange={onSearchFilter} />
-            <Table dataSource={filteredLi} columns={lineItemColumns} rowKey="id" rowSelection={rowSelection} onRow={onRow} />
-          </>
-        )}
-        {step === 2 && <ReviewAdNames selectedRows={selectedRows} setAdNameLineItems={setAdNameLineItems}/>}
-        {/*{step === 3 && <ReviewAdNames />}*/}
-      </Modal>
+      <Modal
+        isModalOpen={isModalOpen}
+        lineItems={lineItems}
+        handleOk={handleOk}
+        handleCancel={handleCancel}
+        selectedRows={selectedRows}
+        step={step}
+        rowSelection={rowSelection}
+        onRow={onRow}
+        setAdNameLineItems={setAdNameLineItems}
+        selectedAdRows={selectedAdRows}
+      />
     </>
   );
 };
