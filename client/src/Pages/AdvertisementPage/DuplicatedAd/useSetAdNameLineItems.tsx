@@ -12,12 +12,18 @@ export const useSetAdNameLineItems = ({ selectedRows, selectedAdRows }: Props) =
   useEffect(() => {
     setAdNameLineItems((prev) =>
       selectedRows.reduce<Record<string, Entity>>((acc, currentLi) => {
-        acc[`lineItemId-${currentLi.id}`] = selectedAdRows[0];
+        acc[`lineItemId-${currentLi.id}`] = {
+          campaign_id: currentLi.campaign_id,
+          line_item_id: currentLi.id,
+          title: selectedAdRows[0].title,
+          status: selectedAdRows[0].status,
+        };
 
         return { ...prev, ...acc };
       }, {})
     );
   }, [selectedRows]);
+
 
   return {
     setAdNameLineItems,
