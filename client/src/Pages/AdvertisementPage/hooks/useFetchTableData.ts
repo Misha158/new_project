@@ -22,6 +22,10 @@ export interface Ad extends Entity {
   line_item_id: number;
 }
 
+export interface EditedAd extends Ad {
+  editedAdName?: string;
+}
+
 interface Result {
   campaigns: Campaign[];
   lineItems: LineItem[];

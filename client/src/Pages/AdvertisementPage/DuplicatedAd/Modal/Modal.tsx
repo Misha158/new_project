@@ -18,7 +18,7 @@ interface Props {
 
 export const Modal = ({ isModalOpen, lineItems, closeModal, step, selectedAdRows, handleNext, handleBack }: Props) => {
   const { selectedRows: selectedLineItemsRows, onRow: onLineItemRow, rowSelection: rowLineItemSelection } = useSelectedRows();
-  const { setAdNameLineItems, adNameLineItems } = useSetAdNameLineItems({ selectedLineItemsRows, selectedAdRows });
+  const { adNameLineItems, setAdNameLineItems } = useSetAdNameLineItems({ selectedLineItemsRows, selectedAdRows });
 
   const modalProps = {
     title: "Basic Modal",
@@ -41,7 +41,12 @@ export const Modal = ({ isModalOpen, lineItems, closeModal, step, selectedAdRows
     <AntModal {...modalProps}>
       {step === 1 && <LineItemsTable lineItems={lineItems} rowLineItemSelection={rowLineItemSelection} onLineItemRow={onLineItemRow} />}
       {step === 2 && (
-        <ReviewAdNames selectedLineItemsRows={selectedLineItemsRows} setAdNameLineItems={setAdNameLineItems} selectedAd={selectedAdRows[0]} />
+        <ReviewAdNames
+          adNameLineItems={adNameLineItems}
+          selectedLineItemsRows={selectedLineItemsRows}
+          setAdNameLineItems={setAdNameLineItems}
+          selectedAd={selectedAdRows[0]}
+        />
       )}
       {step === 3 && <Confirm adNameLineItems={adNameLineItems} closeModal={closeModal} />}
     </AntModal>
