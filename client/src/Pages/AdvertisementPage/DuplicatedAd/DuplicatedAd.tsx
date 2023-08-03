@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { Button, Tooltip } from "antd";
-import { useSelectedRows } from "../hooks/useSelectedRows";
 import { useModal } from "./hooks/useModal";
 import { Ad, LineItem } from "../hooks/useFetchTableData";
 import { Modal } from "./Modal/Modal";
-import { useSetAdNameLineItems } from "./hooks/useSetAdNameLineItems";
 
 interface Props {
   lineItems: LineItem[];

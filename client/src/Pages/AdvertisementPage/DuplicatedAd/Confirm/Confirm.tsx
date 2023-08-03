@@ -1,9 +1,9 @@
-import { Entity } from "../../hooks/useFetchTableData";
 import { Button } from "antd";
 import axios from "axios";
+import { Ad } from "../../hooks/useFetchTableData";
 
 interface Props {
-  adNameLineItems: Record<string, Partial<Entity>>;
+  adNameLineItems: Record<string, Partial<Ad>>;
   closeModal: () => void;
 }
 
