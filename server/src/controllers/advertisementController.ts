@@ -13,10 +13,9 @@ class AdvertisementController {
   };
 
   getLineItems = async (req: Request, res: Response) => {
-    const { search } = req.body;
-
+    const { search } = req.query;
     try {
-      const lineItems = await AdvertisementService.getLineItems(search);
+      const lineItems = await AdvertisementService.getLineItems(search as string);
 
       res.status(200).json(lineItems);
     } catch (err) {

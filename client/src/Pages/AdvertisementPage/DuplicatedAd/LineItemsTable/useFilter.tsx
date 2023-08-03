@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { LineItem } from "../../hooks/useFetchTableData";
+import axios from "axios";
 
 interface Props {
   isModalOpen: boolean;
@@ -16,19 +17,12 @@ export const useFilter = ({ isModalOpen, lineItems }: Props) => {
     }
   }, [isModalOpen]);
 
-  const onSearchFilter = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onSearchFilter = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
-    const newFilteredLis = lineItems.filter((li) => {
-      if (!event.target.value) return true;
 
-      return (
-        String(li.id) === event.target.value ||
-        li.title.toLowerCase().includes(event.target.value.toLowerCase()) ||
-        li.status.toLowerCase().includes(event.target.value.toLowerCase())
-      );
-    });
+    const { data } = await axios.get(`http://localhost:3000/advertisement/lineItems?search=${event.target.value}`);
 
-    setFilteredLineItems(newFilteredLis);
+    setFilteredLineItems(data);
   };
 
   return {

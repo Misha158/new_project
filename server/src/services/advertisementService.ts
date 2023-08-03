@@ -17,11 +17,12 @@ class AdvertisementService {
     let sql = "SELECT * FROM line_items";
 
     if (search) {
-      sql += " WHERE status = ? OR title = ? OR id = ?";
+      sql += " WHERE status LIKE ? OR title LIKE ? OR id LIKE ?";
     }
+    const searchValue = `%${search}%`;
 
     try {
-      const [rows, fields] = await pool.promise().query(sql, [search, search, search]);
+      const [rows, fields] = await pool.promise().query(sql, [searchValue, searchValue, searchValue]);
 
       return rows;
     } catch (err) {

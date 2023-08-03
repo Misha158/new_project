@@ -1,5 +1,5 @@
 import { lineItemColumns } from "../../columns/campaign";
-import { useFilter } from "../Modal/useFilter";
+import { useFilter } from "./useFilter";
 import { Input, Table } from "antd";
 import { LineItem } from "../../hooks/useFetchTableData";
 import { TableRowSelection } from "antd/es/table/interface";
