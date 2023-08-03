@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import { Ad, LineItem } from "../../hooks/useFetchTableData";
 
 interface Props {
-  selectedRows: LineItem[];
+  selectedLineItemsRows: LineItem[];
   selectedAdRows: Ad[];
 }
 
-export const useSetAdNameLineItems = ({ selectedRows, selectedAdRows }: Props) => {
+export const useSetAdNameLineItems = ({ selectedLineItemsRows, selectedAdRows }: Props) => {
   const [adNameLineItems, setAdNameLineItems] = useState<Record<string, Partial<Ad>>>({});
 
   useEffect(() => {
     setAdNameLineItems((prev) =>
-      selectedRows.reduce<Record<string, Partial<Ad>>>((acc, currentLi) => {
+        selectedLineItemsRows.reduce<Record<string, Partial<Ad>>>((acc, currentLi) => {
         acc[`lineItemId-${currentLi.id}`] = {
           campaign_id: currentLi.campaign_id,
           line_item_id: currentLi.id,
@@ -22,7 +22,7 @@ export const useSetAdNameLineItems = ({ selectedRows, selectedAdRows }: Props) =
         return { ...prev, ...acc };
       }, {})
     );
-  }, [selectedRows]);
+  }, [selectedLineItemsRows]);
 
   return {
     setAdNameLineItems,

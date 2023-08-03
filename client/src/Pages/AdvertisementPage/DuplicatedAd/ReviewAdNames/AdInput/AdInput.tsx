@@ -1,6 +1,6 @@
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import { Input } from "antd";
-import { Ad, LineItem } from "../../hooks/useFetchTableData";
+import { Ad, LineItem } from "../../../hooks/useFetchTableData";
 
 interface Props {
   setAdNameLineItems: Dispatch<SetStateAction<Record<string, Partial<Ad>>>>;

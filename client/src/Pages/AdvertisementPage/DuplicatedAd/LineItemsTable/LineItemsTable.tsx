@@ -6,13 +6,13 @@ import {Input,
 
 
 
-export const LineItemsTable = ({lineItems, rowSelection, onRow}) => {
+export const LineItemsTable = ({lineItems, rowLineItemSelection, onLineItemRow}) => {
     const { filteredLineItems, onSearchFilter, value } = useFilter({ lineItems, isModalOpen: true });
 
     return (
         <>
             <Input value={value} onChange={onSearchFilter} />
-            <Table dataSource={filteredLineItems} columns={lineItemColumns} rowKey="id" rowSelection={rowSelection} onRow={onRow} />
+            <Table dataSource={filteredLineItems} columns={lineItemColumns} rowKey="id" rowSelection={rowLineItemSelection} onRow={onLineItemRow} />
         </>
     );
 };

@@ -1,9 +1,6 @@
 import {  Modal as AntModal, Button } from "antd";
 import { ReviewAdNames } from "../ReviewAdNames/ReviewAdNames";
 import { Ad, LineItem } from "../../hooks/useFetchTableData";
-import { Dispatch, SetStateAction } from "react";
-import type { TableRowSelection } from "antd/es/table/interface";
-import type { GetComponentProps } from "rc-table/lib/interface";
 import { Confirm } from "../Confirm/Confirm";
 import {LineItemsTable} from "../LineItemsTable/LineItemsTable";
 import {useSelectedRows} from "../../hooks/useSelectedRows";
@@ -28,8 +25,8 @@ export const Modal = ({
   handleNext,
   handleBack,
 }: Props) => {
-  const { selectedRows, onRow, rowSelection } = useSelectedRows();
-  const { setAdNameLineItems, adNameLineItems } = useSetAdNameLineItems({ selectedRows, selectedAdRows });
+  const { selectedRows: selectedLineItemsRows, onRow: onLineItemRow, rowSelection: rowLineItemSelection } = useSelectedRows();
+  const { setAdNameLineItems, adNameLineItems } = useSetAdNameLineItems({ selectedLineItemsRows, selectedAdRows });
 
 
   const modalProps = {
@@ -51,8 +48,8 @@ export const Modal = ({
 
   return (
     <AntModal {...modalProps}>
-      {step === 1 && ( <LineItemsTable lineItems={lineItems} rowSelection={rowSelection} onRow={onRow}/> )}
-      {step === 2 && <ReviewAdNames selectedRows={selectedRows} setAdNameLineItems={setAdNameLineItems} selectedAd={selectedAdRows[0]} />}
+      {step === 1 &&  <LineItemsTable lineItems={lineItems} rowLineItemSelection={rowLineItemSelection} onLineItemRow={onLineItemRow}/>}
+      {step === 2 && <ReviewAdNames selectedLineItemsRows={selectedLineItemsRows} setAdNameLineItems={setAdNameLineItems} selectedAd={selectedAdRows[0]} />}
       {step === 3 && <Confirm adNameLineItems={adNameLineItems} closeModal={closeModal} />}
     </AntModal>
   );
