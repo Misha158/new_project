@@ -1,4 +1,4 @@
-import { Input, Table, Modal as AntModal } from "antd";
+import { Input, Table, Modal as AntModal, Button } from "antd";
 import { lineItemColumns } from "../../columns/campaign";
 import { ReviewAdNames } from "../ReviewAdNames/ReviewAdNames";
 import { useFilter } from "./useFilter";
@@ -14,19 +14,19 @@ interface Props {
   selectedAdRows: Entity[];
   step: number;
   isModalOpen: boolean;
-  handleOk: () => void;
-  handleCancel: () => void;
-  setAdNameLineItems: Dispatch<SetStateAction<Record<string, Entity>>>;
+  closeModal: () => void;
+  setAdNameLineItems: Dispatch<SetStateAction<Record<string, Partial<Entity>>>>;
+  adNameLineItems: Record<string, Partial<Entity>>;
   rowSelection: TableRowSelection<Entity>;
   onRow: GetComponentProps<Entity>;
-  adNameLineItems: Record<string, Entity>;
+  handleNext: () => void;
+  handleBack: () => void;
 }
 
 export const Modal = ({
   isModalOpen,
   lineItems,
-  handleOk,
-  handleCancel,
+  closeModal,
   selectedRows,
   step,
   rowSelection,
@@ -34,23 +34,27 @@ export const Modal = ({
   setAdNameLineItems,
   selectedAdRows,
   adNameLineItems,
+  handleNext,
+  handleBack,
 }: Props) => {
   const { filteredLineItems, onSearchFilter, value } = useFilter({ lineItems, isModalOpen });
 
   const modalProps = {
     title: "Basic Modal",
     open: isModalOpen,
-    onOk: handleOk,
-    onCancel: handleCancel,
+    onCancel: closeModal,
     width: 1000,
     okText: "Next",
     cancelText: "Back",
-    okButtonProps: {
-      disabled: !selectedRows.length,
-    },
-    cancelButtonProps: {
-      disabled: step === 1,
-    },
+
+    footer: [
+      <Button key="back" onClick={handleBack} disabled={step === 1}>
+        Back
+      </Button>,
+      <Button key="next" type="primary" onClick={handleNext} disabled={!selectedRows.length}>
+        Next
+      </Button>,
+    ],
   };
 
   return (
@@ -62,7 +66,7 @@ export const Modal = ({
         </>
       )}
       {step === 2 && <ReviewAdNames selectedRows={selectedRows} setAdNameLineItems={setAdNameLineItems} selectedAd={selectedAdRows[0]} />}
-      {step === 3 && <Confirm adNameLineItems={adNameLineItems} />}
+      {step === 3 && <Confirm adNameLineItems={adNameLineItems} closeModal={closeModal} />}
     </AntModal>
   );
 };

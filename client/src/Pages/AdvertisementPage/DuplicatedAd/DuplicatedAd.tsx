@@ -14,7 +14,7 @@ interface Props {
 export const DuplicatedAd = ({ lineItems, selectedAdRows }: Props) => {
   const [step, setStep] = useState(1);
   const { selectedRows, onRow, rowSelection } = useSelectedRows();
-  const { showModal, isModalOpen, handleOk, handleCancel } = useModal({ setStep });
+  const { showModal, isModalOpen, closeModal, handleNext, handleBack } = useModal({ setStep });
   const { setAdNameLineItems, adNameLineItems } = useSetAdNameLineItems({ selectedRows, selectedAdRows });
 
   const tooltipText = selectedAdRows.length > 1 ? "Should choose only ONE ad" : "";
@@ -30,8 +30,7 @@ export const DuplicatedAd = ({ lineItems, selectedAdRows }: Props) => {
       <Modal
         isModalOpen={isModalOpen}
         lineItems={lineItems}
-        handleOk={handleOk}
-        handleCancel={handleCancel}
+        closeModal={closeModal}
         selectedRows={selectedRows}
         step={step}
         rowSelection={rowSelection}
@@ -39,6 +38,8 @@ export const DuplicatedAd = ({ lineItems, selectedAdRows }: Props) => {
         setAdNameLineItems={setAdNameLineItems}
         selectedAdRows={selectedAdRows}
         adNameLineItems={adNameLineItems}
+        handleNext={handleNext}
+        handleBack={handleBack}
       />
     </>
   );

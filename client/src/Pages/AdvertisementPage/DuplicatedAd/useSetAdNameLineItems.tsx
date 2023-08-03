@@ -7,11 +7,11 @@ interface Props {
 }
 
 export const useSetAdNameLineItems = ({ selectedRows, selectedAdRows }: Props) => {
-  const [adNameLineItems, setAdNameLineItems] = useState<Record<string, Entity>>({});
+  const [adNameLineItems, setAdNameLineItems] = useState<Record<string, Partial<Entity>>>({});
 
   useEffect(() => {
     setAdNameLineItems((prev) =>
-      selectedRows.reduce<Record<string, Entity>>((acc, currentLi) => {
+      selectedRows.reduce<Record<string, Partial<Entity>>>((acc, currentLi) => {
         acc[`lineItemId-${currentLi.id}`] = {
           campaign_id: currentLi.campaign_id,
           line_item_id: currentLi.id,

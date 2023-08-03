@@ -11,18 +11,23 @@ export const useModal = ({ setStep }: Props) => {
     setIsModalOpen(true);
   };
 
-  const handleOk = () => {
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleNext = () => {
     setStep((prev) => prev + 1);
   };
 
-  const handleCancel = () => {
+  const handleBack = () => {
     setStep((prev) => prev - 1);
   };
 
   return {
     isModalOpen,
     showModal,
-    handleOk,
-    handleCancel,
+    closeModal,
+    handleNext,
+    handleBack,
   };
 };
