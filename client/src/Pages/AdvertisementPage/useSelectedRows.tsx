@@ -1,20 +1,20 @@
 import React, { useState } from "react";
-import { Entity } from "./useFetchTableData";
+import { Ad, LineItem } from "./useFetchTableData";
 
 export const useSelectedRows = () => {
-  const [selectedRows, setSelectedRows] = useState<Entity[]>([]);
+  const [selectedRows, setSelectedRows] = useState<(Ad | LineItem)[]>([]);
   const selectedRowKeys = selectedRows.map((selectedRow) => selectedRow.id);
 
   const rowSelection = {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    onChange: (selectedRowKeys: React.Key[], selectedRows: Entity[]) => {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: LineItem[]) => {
       setSelectedRows(selectedRows);
     },
     selectedRowKeys,
   };
 
-  const selectRow = (record: Entity) => {
+  const selectRow = (record: Ad | LineItem) => {
     const isRowAlreadyChecked = selectedRowKeys.includes(record.id);
 
     if (isRowAlreadyChecked) {
@@ -24,7 +24,7 @@ export const useSelectedRows = () => {
     setSelectedRows((prev) => [...prev, record]);
   };
 
-  const onRow = (record: Entity) => ({
+  const onRow = (record: Ad | LineItem) => ({
     onClick: () => {
       selectRow(record);
     },

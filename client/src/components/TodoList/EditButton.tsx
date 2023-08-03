@@ -1,7 +1,8 @@
-import React from "react";
 import { Button, Input } from "antd";
 import { useEditButton } from "./useEditButton";
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export const EditButton = ({ todos, setTodos, todoId }) => {
   const { onEditHandler, onSaveHandler, inputIdForShow, newText, setNewText } = useEditButton({ todos, setTodos });
 

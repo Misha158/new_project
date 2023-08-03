@@ -2,13 +2,13 @@ import { useState } from "react";
 import { Button, Tooltip } from "antd";
 import { useSelectedRows } from "../useSelectedRows";
 import { useModal } from "../useModal";
-import { Entity } from "../useFetchTableData";
+import { Ad, LineItem } from "../useFetchTableData";
 import { Modal } from "./Modal/Modal";
 import { useSetAdNameLineItems } from "./useSetAdNameLineItems";
 
 interface Props {
-  lineItems: Entity[];
-  selectedAdRows: Entity[];
+  lineItems: LineItem[];
+  selectedAdRows: Ad[];
 }
 
 export const DuplicatedAd = ({ lineItems, selectedAdRows }: Props) => {

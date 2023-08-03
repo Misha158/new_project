@@ -23,9 +23,9 @@ export interface Ad extends Entity {
 }
 
 interface Result {
-  campaigns: Entity[];
-  lineItems: Entity[];
-  ads: Entity[];
+  campaigns: Campaign[];
+  lineItems: LineItem[];
+  ads: Ad[];
 }
 
 export const useFetchTableData = (): Result => {

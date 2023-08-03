@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export const useAddTodo = ({ setTodos }) => {
   const [isShowAddNewTodoInput, setIsShowAddNewTodoInput] = useState(false);
   const [newTodoText, setNewTodo] = useState("");
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const onChangeNewTodo = (e) => {
     setNewTodo(e.target.value);
   };
@@ -15,6 +19,8 @@ export const useAddTodo = ({ setTodos }) => {
         text: newTodoText,
       });
 
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       setTodos((prev) => [...prev, newTodoItem.data]);
     }
 

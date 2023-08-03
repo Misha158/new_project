@@ -1,10 +1,11 @@
-import React from "react";
 import { Button, Input } from "antd";
 import { TodoList } from "../../components/TodoList/TodoList";
 import { useAddTodo, useTodos } from "./hooks/useTodoPage";
 
 export const TodoPage = () => {
   const { todos, setTodos } = useTodos();
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const { newTodoText, isShowAddNewTodoInput, onChangeNewTodo, onShowInputOrSaveNewTodo } = useAddTodo({ setTodos });
 
   return (

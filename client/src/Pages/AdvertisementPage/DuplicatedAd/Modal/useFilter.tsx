@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Entity } from "../../useFetchTableData";
+import { LineItem } from "../../useFetchTableData";
 
 interface Props {
   isModalOpen: boolean;
-  lineItems: Entity[];
+  lineItems: LineItem[];
 }
 
 export const useFilter = ({ isModalOpen, lineItems }: Props) => {
   const [value, setValue] = useState("");
-  const [filteredLineItems, setFilteredLineItems] = useState<Entity[]>([]);
+  const [filteredLineItems, setFilteredLineItems] = useState<LineItem[]>([]);
 
   useEffect(() => {
     if (isModalOpen) {
