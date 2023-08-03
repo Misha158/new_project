@@ -13,11 +13,15 @@ class AdvertisementService {
     }
   };
 
-  getLineItems = async () => {
-    const sql = "SELECT * FROM line_items";
+  getLineItems = async (search?: string) => {
+    let sql = "SELECT * FROM line_items";
+
+    if (search) {
+      sql += " WHERE status = ? OR title = ? OR id = ?";
+    }
 
     try {
-      const [rows, fields] = await pool.promise().query(sql);
+      const [rows, fields] = await pool.promise().query(sql, [search, search, search]);
 
       return rows;
     } catch (err) {
