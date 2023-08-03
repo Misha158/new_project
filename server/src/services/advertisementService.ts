@@ -36,6 +36,24 @@ class AdvertisementService {
       throw err;
     }
   };
+
+  createAds = async (adsForCreate: Record<string, string | number>[]) => {
+    const sql = "INSERT INTO ads (title, status, line_item_id, campaign_id) VALUES ?";
+
+    const adsData = adsForCreate.reduce<(string | number)[][]>((acc, current) => {
+      acc.push([`${current.title}`, `${current.status}`, current.line_item_id, current.campaign_id]);
+
+      return acc;
+    }, []);
+
+    try {
+      const result = await pool.promise().query(sql, [adsData]);
+
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  };
 }
 
 export default new AdvertisementService();

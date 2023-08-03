@@ -31,6 +31,16 @@ class AdvertisementController {
       res.status(500).send("Error with ads.");
     }
   };
+
+  createAds = async (req: Request, res: Response) => {
+    try {
+      const ads = await AdvertisementService.createAds(req.body);
+
+      res.status(200).json(ads);
+    } catch (err) {
+      res.status(500).send("Error with ads.");
+    }
+  };
 }
 
 export default new AdvertisementController();
