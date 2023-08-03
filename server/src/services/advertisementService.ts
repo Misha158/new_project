@@ -19,6 +19,7 @@ class AdvertisementService {
     if (search) {
       sql += " WHERE status LIKE ? OR title LIKE ? OR id LIKE ?";
     }
+
     const searchValue = `%${search}%`;
 
     try {
