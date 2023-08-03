@@ -7,6 +7,21 @@ export interface Entity {
   status: string;
 }
 
+export interface Campaign extends Entity {
+  title: string;
+  id: number;
+  status: string;
+}
+
+export interface LineItem extends Entity {
+  campaign_id: number;
+}
+
+export interface Ad extends Entity {
+  campaign_id: number;
+  line_item_id: number;
+}
+
 interface Result {
   campaigns: Entity[];
   lineItems: Entity[];
@@ -14,9 +29,9 @@ interface Result {
 }
 
 export const useFetchTableData = (): Result => {
-  const [campaigns, setCampaigns] = useState<Entity[]>([]);
-  const [lineItems, setLineItems] = useState<Entity[]>([]);
-  const [ads, setAds] = useState<Entity[]>([]);
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [lineItems, setLineItems] = useState<LineItem[]>([]);
+  const [ads, setAds] = useState<Ad[]>([]);
 
   useEffect(() => {
     const fetchDada = async () => {

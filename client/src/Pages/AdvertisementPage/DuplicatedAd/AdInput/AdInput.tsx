@@ -1,11 +1,11 @@
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import { Input } from "antd";
-import { Entity } from "../../useFetchTableData";
+import { Ad, LineItem } from "../../useFetchTableData";
 
 interface Props {
-  setAdNameLineItems: Dispatch<SetStateAction<Record<string, Partial<Entity>>>>;
-  selectedAd: Entity;
-  lineItem: Entity;
+  setAdNameLineItems: Dispatch<SetStateAction<Record<string, Partial<Ad>>>>;
+  selectedAd: Ad;
+  lineItem: LineItem;
   index: number;
 }
 
@@ -14,6 +14,7 @@ export const AdInput = ({ setAdNameLineItems, lineItem, selectedAd, index }: Pro
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
+
     setAdNameLineItems((prev) => ({
       ...prev,
       [`lineItemId-${lineItem.id}`]: {
