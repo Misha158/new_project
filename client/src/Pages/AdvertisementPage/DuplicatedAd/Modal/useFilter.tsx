@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { LineItem } from "../../useFetchTableData";
+import { LineItem } from "../../hooks/useFetchTableData";
 
 interface Props {
   isModalOpen: boolean;

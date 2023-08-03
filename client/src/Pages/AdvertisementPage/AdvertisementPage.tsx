@@ -1,6 +1,6 @@
 import { Tabs } from "antd";
 
-import { useTable } from "./useTable";
+import { useTable } from "./hooks/useTable";
 import { useState } from "react";
 
 export const AdvertisementPage = () => {

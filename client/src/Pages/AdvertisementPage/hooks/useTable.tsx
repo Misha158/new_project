@@ -1,8 +1,8 @@
 import { Table } from "antd";
-import { adColumns, campaignColumns, lineItemColumns } from "./columns/campaign";
+import { adColumns, campaignColumns, lineItemColumns } from "../columns/campaign";
 import { useSelectedRows } from "./useSelectedRows";
 import { Ad, useFetchTableData } from "./useFetchTableData";
-import { DuplicatedAd } from "./DuplicatedAd/DuplicatedAd";
+import { DuplicatedAd } from "../DuplicatedAd/DuplicatedAd";
 
 interface Props {
   tabName: string;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Ad, LineItem } from "../useFetchTableData";
+import { Ad, LineItem } from "../../hooks/useFetchTableData";
 
 interface Props {
   selectedRows: LineItem[];

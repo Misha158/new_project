@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Button, Tooltip } from "antd";
-import { useSelectedRows } from "../useSelectedRows";
-import { useModal } from "../useModal";
-import { Ad, LineItem } from "../useFetchTableData";
+import { useSelectedRows } from "../hooks/useSelectedRows";
+import { useModal } from "./hooks/useModal";
+import { Ad, LineItem } from "../hooks/useFetchTableData";
 import { Modal } from "./Modal/Modal";
-import { useSetAdNameLineItems } from "./useSetAdNameLineItems";
+import { useSetAdNameLineItems } from "./hooks/useSetAdNameLineItems";
 
 interface Props {
   lineItems: LineItem[];
@@ -13,9 +13,7 @@ interface Props {
 
 export const DuplicatedAd = ({ lineItems, selectedAdRows }: Props) => {
   const [step, setStep] = useState(1);
-  const { selectedRows, onRow, rowSelection } = useSelectedRows();
   const { showModal, isModalOpen, closeModal, handleNext, handleBack } = useModal({ setStep });
-  const { setAdNameLineItems, adNameLineItems } = useSetAdNameLineItems({ selectedRows, selectedAdRows });
 
   const tooltipText = selectedAdRows.length > 1 ? "Should choose only ONE ad" : "";
 
@@ -31,13 +29,8 @@ export const DuplicatedAd = ({ lineItems, selectedAdRows }: Props) => {
         isModalOpen={isModalOpen}
         lineItems={lineItems}
         closeModal={closeModal}
-        selectedRows={selectedRows}
         step={step}
-        rowSelection={rowSelection}
-        onRow={onRow}
-        setAdNameLineItems={setAdNameLineItems}
         selectedAdRows={selectedAdRows}
-        adNameLineItems={adNameLineItems}
         handleNext={handleNext}
         handleBack={handleBack}
       />

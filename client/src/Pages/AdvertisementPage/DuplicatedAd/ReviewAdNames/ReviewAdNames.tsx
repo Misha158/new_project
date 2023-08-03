@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { AdInput } from "../AdInput/AdInput";
-import { Ad, LineItem } from "../../useFetchTableData";
+import { Ad, LineItem } from "../../hooks/useFetchTableData";
 
 interface Props {
   selectedRows: LineItem[];

@@ -1,4 +1,4 @@
-import { Entity } from "../../useFetchTableData";
+import { Entity } from "../../hooks/useFetchTableData";
 import { Button } from "antd";
 import axios from "axios";
 
