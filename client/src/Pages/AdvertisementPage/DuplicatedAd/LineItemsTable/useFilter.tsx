@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { LineItem } from "../../hooks/useFetchTableData";
 import axios from "axios";
-import { useDebounce } from "../../../../shared/hooks/useDebounce";
 import { debounce } from "lodash";
+import React, { useCallback, useEffect, useState } from "react";
+import { LineItem } from "../../hooks/useFetchTableData";
 
 interface Props {
   isModalOpen: boolean;
@@ -17,7 +16,7 @@ export const useFilter = ({ isModalOpen, lineItems }: Props) => {
     debounce(async (searchValue: string) => {
       const { data } = await axios.get(`http://localhost:3000/advertisement/lineItems?search=${searchValue}`);
       setFilteredLineItems(data);
-    }, 2000),
+    }, 2000) as Function,
     []
   );
 
@@ -32,8 +31,6 @@ export const useFilter = ({ isModalOpen, lineItems }: Props) => {
   const onSearchFilter = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
 
-    // Вызываем debounce функцию с задержкой
-    // debounceRef.current?.(event.target.value);
     fetchLineItems(event.target.value);
   };
 

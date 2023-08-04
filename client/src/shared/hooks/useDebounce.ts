@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { debounce } from "lodash";
 
 export const useDebounce = (cb: any) => {
@@ -11,3 +11,13 @@ export const useDebounce = (cb: any) => {
 
   return { debounceRef };
 };
+
+// HOW TO USE
+
+// const { debounceRef } = useDebounce(fetchLineItems);
+
+// const onSearchFilter = async (event: React.ChangeEvent<HTMLInputElement>) => {
+//   setValue(event.target.value);
+//   // Вызываем debounce функцию с задержкой
+//   // debounceRef.current?.(event.target.value);
+// };
