@@ -1,5 +1,5 @@
 import { Button, Input } from "antd";
-import { TodoList } from "../../components/TodoList/TodoList";
+import { TodoList } from "../../shared/components/TodoList/TodoList";
 import { useAddTodo, useTodos } from "./hooks/useTodoPage";
 
 export const TodoPage = () => {
