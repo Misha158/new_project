@@ -18,7 +18,6 @@ export const LineItemsTable = ({ lineItems, rowLineItemSelection, onLineItemRow 
   return (
     <>
       <Input value={value} onChange={onSearchFilter} />
-      <DebouncedInput onChange={() => "misha call"} />
       <Table dataSource={filteredLineItems} columns={lineItemColumns} rowKey="id" rowSelection={rowLineItemSelection} onRow={onLineItemRow} />
     </>
   );

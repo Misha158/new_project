@@ -1,22 +1,20 @@
-import { Button } from "antd";
-import axios from "axios";
+import { Button, Spin } from "antd";
 import { Ad } from "../../hooks/useFetchTableData";
+import { useConfirm } from "./useConfirm";
 
-interface Props {
+export interface Props {
   adNameLineItems: Record<string, Partial<Ad>>;
   closeModal: () => void;
 }
 
 export const Confirm = ({ adNameLineItems, closeModal }: Props) => {
-  const onConfirm = async () => {
-    const data = Object.values(adNameLineItems);
-    await axios.post("http://localhost:3000/advertisement/createAds", data);
-    closeModal();
-  };
+  const { onConfirm, loading, error } = useConfirm({ adNameLineItems, closeModal });
 
   return (
     <div>
       <Button onClick={onConfirm}>Confirm</Button>
+      {loading && <Spin data-testid="antd-spinner" />}
+      {error && <div>Some error appear</div>}
     </div>
   );
 };

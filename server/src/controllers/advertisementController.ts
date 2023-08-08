@@ -38,6 +38,10 @@ class AdvertisementController {
       const ads = await AdvertisementService.createAds(req.body);
 
       res.status(200).json(ads);
+
+      // setTimeout(() => {
+      //   res.status(200).json(ads);
+      // }, 4000);
     } catch (err) {
       res.status(500).send("Error with ads.");
     }
