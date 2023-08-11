@@ -1,0 +1,3 @@
+describe("useSetAdNameLineItems", () => {
+  it("test", () => {});
+});

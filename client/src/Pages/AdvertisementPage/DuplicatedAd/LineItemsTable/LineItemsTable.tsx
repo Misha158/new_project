@@ -4,7 +4,6 @@ import { Input, Table } from "antd";
 import { LineItem } from "../../hooks/useFetchTableData";
 import { TableRowSelection } from "antd/es/table/interface";
 import type { GetComponentProps } from "rc-table/lib/interface";
-import { DebouncedInput } from "../../../../shared/hooks/DebouncedInput/DebouncedInput";
 
 interface Props {
   lineItems: LineItem[];

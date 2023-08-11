@@ -6,22 +6,33 @@ interface Props {
   selectedAdRows: Ad[];
 }
 
+type AdNameLineItems = Record<string, Partial<Ad>>;
+
+interface GenerateAdNameLineItems {
+  selectedLineItemsRows: LineItem[];
+  selectedAdRows: Ad[];
+  prev: AdNameLineItems;
+}
+
+const generateAd = ({ campaign_id, id, title, status }) => ({
+  line_item_id: id,
+  campaign_id,
+  title,
+  status,
+});
+
+const generateAdNameLineItems = ({ prev, selectedLineItemsRows, selectedAdRows }: GenerateAdNameLineItems) =>
+  selectedLineItemsRows.reduce<AdNameLineItems>((acc, { id, campaign_id }) => {
+    acc[`lineItemId-${id}`] = generateAd({ id, status: selectedAdRows[0].status, title: selectedAdRows[0].title, campaign_id });
+
+    return { ...prev, ...acc };
+  }, {});
+
 export const useSetAdNameLineItems = ({ selectedLineItemsRows, selectedAdRows }: Props) => {
-  const [adNameLineItems, setAdNameLineItems] = useState<Record<string, Partial<Ad>>>({});
+  const [adNameLineItems, setAdNameLineItems] = useState<AdNameLineItems>({});
 
   useEffect(() => {
-    setAdNameLineItems((prev) =>
-        selectedLineItemsRows.reduce<Record<string, Partial<Ad>>>((acc, currentLi) => {
-        acc[`lineItemId-${currentLi.id}`] = {
-          campaign_id: currentLi.campaign_id,
-          line_item_id: currentLi.id,
-          title: selectedAdRows[0].title,
-          status: selectedAdRows[0].status,
-        };
-
-        return { ...prev, ...acc };
-      }, {})
-    );
+    setAdNameLineItems((prev) => generateAdNameLineItems({ prev, selectedLineItemsRows, selectedAdRows }));
   }, [selectedLineItemsRows]);
 
   return {
