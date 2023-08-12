@@ -16,7 +16,7 @@ export const LineItemsTable = ({ lineItems, rowLineItemSelection, onLineItemRow 
 
   return (
     <>
-      <Input value={value} onChange={onSearchFilter} />
+      <Input value={value} onChange={onSearchFilter} placeholder="Search for Line items" />
       <Table dataSource={filteredLineItems} columns={lineItemColumns} rowKey="id" rowSelection={rowLineItemSelection} onRow={onLineItemRow} />
     </>
   );
