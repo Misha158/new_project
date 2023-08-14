@@ -4,10 +4,14 @@ import { mockAds } from "../../../../mocks/ads";
 import { mockLineItems } from "../../../../mocks/lineItems";
 
 const mockProps = {
-  selectedLineItemsRows: [mockLineItems[0]],
+  selectedLineItemsRows: [mockLineItems],
   selectedAd: mockAds[0],
   setAdNameLineItems: () => {},
-  adNameLineItems: {},
+  adNameLineItems: {
+    "lineItemId-4": {
+      editedAdName: "editedAdName",
+    },
+  },
 };
 
 describe("<ReviewAdNames />", () => {
@@ -16,6 +20,7 @@ describe("<ReviewAdNames />", () => {
   });
   it("Should render line item inputs with auto incremented names", () => {
     render(<ReviewAdNames {...mockProps} />);
+    screen.logTestingPlaygroundURL();
   });
   it("Should render line item inputs with auto incremented names and edited names", () => {});
   it("Should change ad name correctly", () => {});
