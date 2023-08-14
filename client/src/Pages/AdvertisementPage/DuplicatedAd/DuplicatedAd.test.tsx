@@ -1,0 +1,3 @@
+describe("<DuplicatedAd />", () => {
+  it("test", () => {});
+});

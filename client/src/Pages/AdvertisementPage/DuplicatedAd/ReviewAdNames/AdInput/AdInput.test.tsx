@@ -1,0 +1,3 @@
+describe("<AdInput />", () => {
+  it("test", () => {});
+});

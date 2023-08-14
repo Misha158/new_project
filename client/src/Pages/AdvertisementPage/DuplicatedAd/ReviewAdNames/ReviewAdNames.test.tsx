@@ -1,0 +1,3 @@
+describe("<ReviewAdNames />", () => {
+  it("test", () => {});
+});
