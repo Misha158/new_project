@@ -16,17 +16,17 @@ jobs:
       - name: List files in current directory
         run: ls
       - name: Navigate to ./client
-        run: cd client
+        working-directory: ./client
       - name: Print current working directory
         run: pwd
       - name: List files in current directory
         run: ls
       - name: Install dependencies
+        working-directory: ./client
         run: yarn
       - name: Test and coverage
+        working-directory: ./client
         run: yarn jest --coverage
-      - name: Return to previous directory
-        run: cd ..
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
