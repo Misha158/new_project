@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import { Test } from "../shared/components/Test/Test";
+import { Counter } from "./Counter";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -16,6 +17,7 @@ function App() {
       </div>
       <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
       <Test testProp={"1"} />
+      <Counter />
     </>
   );
 }
