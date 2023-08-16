@@ -8,6 +8,7 @@ describe("TodoPage", () => {
 
   it("Should show cat text", () => {
     render(<TodoPage />);
+
     expect(screen.getByText("cat")).toBeInTheDocument();
   });
 });
