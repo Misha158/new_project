@@ -14,9 +14,8 @@ jobs:
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: List files in current directory
-        run: ls
-      - name: Navigate to ./client
         working-directory: ./client
+        run: ls
       - name: Print current working directory
         run: pwd
       - name: List files in current directory
