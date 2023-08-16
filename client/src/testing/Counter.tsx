@@ -16,7 +16,7 @@ export const Counter = () => {
     <div>
       <Button onClick={increment}>Increment</Button>
       <Button onClick={decrement}>Decrement</Button>
-      <div>count: {count}</div>
+      {count && <div>Count: {count}</div>}
     </div>
   );
 };
