@@ -19,6 +19,7 @@ export const TodoPage = () => {
 
   return (
     <div>
+      cat
       <TodoList todos={todos} setTodos={setTodos} />
       {isShowAddNewTodoInput && <Input value={newTodoText} onChange={onChangeNewTodo} />}
       <Button type="primary" onClick={onShowInputOrSaveNewTodo}>
