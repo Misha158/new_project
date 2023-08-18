@@ -37,7 +37,6 @@ describe("<Modal />", () => {
     expect(screen.queryByText("Basic Modal")).not.toBeInTheDocument();
 
     rerender(<Modal {...{ ...mockProps, isModalOpen: true }} />);
-    screen.logTestingPlaygroundURL();
     expect(screen.getByText("Basic Modal")).toBeInTheDocument();
   });
 

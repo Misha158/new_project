@@ -1,6 +1,6 @@
-import { useFormik } from "formik";
 import { useEffect } from "react";
-import { Ad, LineItem } from "../../hooks/useFetchTableData";
+import { Ad, EditedAd, LineItem } from "../../hooks/useFetchTableData";
+import { useForm } from "react-hook-form";
 
 interface UseCustomFormik {
   selectedLineItemsRows: LineItem[];
@@ -36,23 +36,27 @@ export const generateAdNameLineItems = ({ selectedLineItemsRows, selectedAdRow }
     return { ...acc };
   }, {});
 
+interface FormikValues {
+  adNameLineItems: Record<string, Partial<EditedAd>>;
+}
+
 export const useCustomFormik = ({ selectedLineItemsRows, selectedAdRow }: UseCustomFormik) => {
-  const formik = useFormik({
-    initialValues: {
+  const { setValue, getValues } = useForm<FormikValues>({
+    defaultValues: {
       adNameLineItems: {},
-      test: "",
-    },
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
     },
   });
 
   useEffect(() => {
-    formik.setFieldValue("adNameLineItems", generateAdNameLineItems({ selectedLineItemsRows, selectedAdRow }));
+    console.log("useeffect");
+    setValue("adNameLineItems", generateAdNameLineItems({ selectedLineItemsRows, selectedAdRow }));
+    console.log("after setter");
   }, [selectedLineItemsRows]);
 
+  console.log("misha-2", getValues().adNameLineItems);
+
   return {
-    adNameLineItems: formik.values.adNameLineItems,
-    setAdNameLineItems: formik.setFieldValue,
+    adNameLineItems: getValues().adNameLineItems,
+    setAdNameLineItems: setValue as (field: string, value: any) => void,
   };
 };

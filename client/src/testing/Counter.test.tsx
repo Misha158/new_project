@@ -13,7 +13,6 @@ describe("Counter", () => {
     const incrementBtn = screen.getByText("Increment");
 
     await userEvent.click(incrementBtn);
-    screen.logTestingPlaygroundURL();
 
     expect(screen.getByText(/count: 1/i)).toBeInTheDocument();
   });

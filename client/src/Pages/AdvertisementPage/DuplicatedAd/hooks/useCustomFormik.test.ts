@@ -23,28 +23,35 @@ const mockSelectedLineItemsRows = [
     status: "line-test-status-2",
   },
 ];
+const mockSetterForm = jest.fn();
+jest.mock("react-hook-form", () => ({
+  useForm: () => ({
+    setValue: mockSetterForm,
+    getValues: () => ({ adNameLineItems: {} }),
+  }),
+}));
 
 describe("useSetAdNameLineItems", () => {
   it("Should correct set ad name for line items", () => {
-    const { result } = renderHook(() =>
+    renderHook(() =>
       useCustomFormik({
         selectedAdRow: mockSelectedAdRows,
         selectedLineItemsRows: mockSelectedLineItemsRows,
       })
     );
 
-    expect(result.current.adNameLineItems).toEqual({
+    expect(mockSetterForm).toHaveBeenCalledWith("adNameLineItems", {
       "lineItemId-1": {
         campaign_id: 1,
         line_item_id: 1,
         status: "ad-test-status",
-        title: "ad-title",
+        title: "ad-title_1",
       },
       "lineItemId-2": {
         campaign_id: 2,
         line_item_id: 2,
         status: "ad-test-status",
-        title: "ad-title",
+        title: "ad-title_2",
       },
     });
   });
