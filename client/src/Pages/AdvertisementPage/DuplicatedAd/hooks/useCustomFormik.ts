@@ -19,18 +19,19 @@ interface GenerateAd {
   id: number;
   title: string;
   status: string;
+  index: number;
 }
 
-const generateAd = ({ campaign_id, id, title, status }: GenerateAd) => ({
+const generateAd = ({ campaign_id, id, title, status, index }: GenerateAd) => ({
   line_item_id: id,
   campaign_id,
-  title,
+  title: `${title}_${index + 1}`,
   status,
 });
 
 export const generateAdNameLineItems = ({ selectedLineItemsRows, selectedAdRow }: GenerateAdNameLineItems) =>
-  selectedLineItemsRows.reduce<AdNameLineItems>((acc, { id, campaign_id }) => {
-    acc[`lineItemId-${id}`] = generateAd({ id, status: selectedAdRow.status, title: selectedAdRow.title, campaign_id });
+  selectedLineItemsRows.reduce<AdNameLineItems>((acc, { id, campaign_id }, index) => {
+    acc[`lineItemId-${id}`] = generateAd({ id, status: selectedAdRow.status, title: selectedAdRow.title, campaign_id, index });
 
     return { ...acc };
   }, {});

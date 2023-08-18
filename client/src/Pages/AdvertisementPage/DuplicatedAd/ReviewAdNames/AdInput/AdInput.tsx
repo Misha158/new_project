@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent } from "react";
 import { Input } from "antd";
 import { Ad, EditedAd, LineItem } from "../../../hooks/useFetchTableData";
 import { generateAdNameLineItems, getAdName } from "./utils";
@@ -12,16 +12,14 @@ interface Props {
 }
 
 export const AdInput = ({ adNameLineItems, setAdNameLineItems, lineItem, selectedAd, index }: Props) => {
-  const [value, setValue] = useState(getAdName({ adNameLineItems, lineItem, selectedAd, index }));
+  const adTitle = getAdName({ adNameLineItems, lineItem, selectedAd, index });
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
-
     setAdNameLineItems("adNameLineItems", {
       ...adNameLineItems,
       [`lineItemId-${lineItem.id}`]: generateAdNameLineItems({ lineItem, selectedAd, event }),
     });
   };
 
-  return <Input value={value} onChange={onChange} />;
+  return <Input value={adTitle} onChange={onChange} />;
 };
