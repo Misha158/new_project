@@ -1,12 +1,11 @@
-import { Dispatch, SetStateAction } from "react";
 import { AdInput } from "./AdInput/AdInput";
-import { Ad, LineItem } from "../../hooks/useFetchTableData";
+import { Ad, EditedAd, LineItem } from "../../hooks/useFetchTableData";
 
 interface Props {
   selectedLineItemsRows: LineItem[];
   selectedAd: Ad;
-  setAdNameLineItems: Dispatch<SetStateAction<Record<string, Partial<Ad>>>>;
-  adNameLineItems: Record<string, Partial<Ad>>;
+  setAdNameLineItems: (field: string, value: any) => void;
+  adNameLineItems: Record<string, Partial<EditedAd>>;
 }
 
 export const ReviewAdNames = ({ selectedLineItemsRows, setAdNameLineItems, selectedAd, adNameLineItems }: Props) => {

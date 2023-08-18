@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const DebouncedInput = ({ onChange }) => {
+export const DebouncedInput = ({ onChange }: { onChange: (value: string) => void }) => {
   const [value, setValue] = useState("");
 
   useEffect(() => {

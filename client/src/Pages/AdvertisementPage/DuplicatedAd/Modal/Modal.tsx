@@ -4,7 +4,9 @@ import { Ad, LineItem } from "../../hooks/useFetchTableData";
 import { Confirm } from "../Confirm/Confirm";
 import { LineItemsTable } from "../LineItemsTable/LineItemsTable";
 import { useSelectedRows } from "../../hooks/useSelectedRows";
-import { useSetAdNameLineItems } from "../hooks/useSetAdNameLineItems";
+import { generateAdNameLineItems } from "../hooks/useSetAdNameLineItems";
+import { useFormik } from "formik";
+import { useEffect } from "react";
 
 interface Props {
   lineItems: LineItem[];
@@ -18,7 +20,20 @@ interface Props {
 
 export const Modal = ({ isModalOpen, lineItems, closeModal, step, selectedAdRows, handleNext, handleBack }: Props) => {
   const { selectedRows: selectedLineItemsRows, onRow: onLineItemRow, rowSelection: rowLineItemSelection } = useSelectedRows();
-  const { adNameLineItems, setAdNameLineItems } = useSetAdNameLineItems({ selectedLineItemsRows, selectedAdRows });
+
+  const formik = useFormik({
+    initialValues: {
+      adNameLineItems: {},
+      test: "",
+    },
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
+
+  useEffect(() => {
+    formik.setFieldValue("adNameLineItems", generateAdNameLineItems({ selectedLineItemsRows, selectedAdRow: selectedAdRows[0] }));
+  }, [selectedLineItemsRows]);
 
   const modalProps = {
     title: "Basic Modal",
@@ -42,13 +57,13 @@ export const Modal = ({ isModalOpen, lineItems, closeModal, step, selectedAdRows
       {step === 1 && <LineItemsTable lineItems={lineItems} rowLineItemSelection={rowLineItemSelection} onLineItemRow={onLineItemRow} />}
       {step === 2 && (
         <ReviewAdNames
-          adNameLineItems={adNameLineItems}
+          adNameLineItems={formik.values.adNameLineItems}
           selectedLineItemsRows={selectedLineItemsRows}
-          setAdNameLineItems={setAdNameLineItems}
+          setAdNameLineItems={formik.setFieldValue}
           selectedAd={selectedAdRows[0]}
         />
       )}
-      {step === 3 && <Confirm adNameLineItems={adNameLineItems} closeModal={closeModal} />}
+      {step === 3 && <Confirm adNameLineItems={formik.values.adNameLineItems} closeModal={closeModal} />}
     </AntModal>
   );
 };
