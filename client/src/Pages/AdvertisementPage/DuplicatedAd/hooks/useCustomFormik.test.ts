@@ -1,15 +1,13 @@
 import { renderHook } from "@testing-library/react-hooks";
-import { useSetAdNameLineItems } from "./useSetAdNameLineItems";
+import { useCustomFormik } from "./useCustomFormik";
 
-const mockSelectedAdRows = [
-  {
-    campaign_id: 1,
-    line_item_id: 1,
-    title: "ad-title",
-    id: 1,
-    status: "ad-test-status",
-  },
-];
+const mockSelectedAdRows = {
+  campaign_id: 1,
+  line_item_id: 1,
+  title: "ad-title",
+  id: 1,
+  status: "ad-test-status",
+};
 
 const mockSelectedLineItemsRows = [
   {
@@ -29,8 +27,8 @@ const mockSelectedLineItemsRows = [
 describe("useSetAdNameLineItems", () => {
   it("Should correct set ad name for line items", () => {
     const { result } = renderHook(() =>
-      useSetAdNameLineItems({
-        selectedAdRows: mockSelectedAdRows,
+      useCustomFormik({
+        selectedAdRow: mockSelectedAdRows,
         selectedLineItemsRows: mockSelectedLineItemsRows,
       })
     );

@@ -12,8 +12,8 @@ jest.mock("../../hooks/useSelectedRows", () => ({
   }),
 }));
 
-jest.mock("../hooks/useSetAdNameLineItems", () => ({
-  useSetAdNameLineItems: () => ({
+jest.mock("../hooks/useCustomFormik", () => ({
+  useCustomFormik: () => ({
     adNameLineItems: {},
     setAdNameLineItems: () => {},
   }),
