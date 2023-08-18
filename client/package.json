@@ -8,7 +8,8 @@
     "lint": "eslint .. --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "typecheck": "npx tsc --noEmit",
     "preview": "vite preview",
-    "snyk": "npx snyk test"
+    "snyk": "npx snyk test",
+    "test": "jest"
   },
   "dependencies": {
     "@babel/preset-env": "^7.22.9",

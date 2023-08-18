@@ -6,14 +6,21 @@ import { LineItemsTable } from "./LineItemsTable";
 
 jest.mock("axios");
 
+const mockProps = {
+  lineItems: mockLineItems,
+  rowLineItemSelection: {
+    onChange: () => {},
+    selectedRowKeys: [],
+  },
+  onLineItemRow: jest.fn(),
+};
+
 describe("LineItemsTable", () => {
   it("Should render without crashing", () => {
-    const mockProps = { lineItems: mockLineItems, rowLineItemSelection: jest.fn(), onLineItemRow: jest.fn() };
     render(<LineItemsTable {...mockProps} />);
   });
 
   it("Should show column headers", async () => {
-    const mockProps = { lineItems: mockLineItems, rowLineItemSelection: jest.fn(), onLineItemRow: jest.fn() };
     render(<LineItemsTable {...mockProps} />);
 
     const titleHeader = screen.getByRole("columnheader", {
@@ -29,7 +36,6 @@ describe("LineItemsTable", () => {
   });
 
   it("Should show line items in table", async () => {
-    const mockProps = { lineItems: mockLineItems, rowLineItemSelection: jest.fn(), onLineItemRow: jest.fn() };
     const { container } = render(<LineItemsTable {...mockProps} />);
 
     const rows = container.querySelectorAll(".ant-table-tbody  tr");
@@ -44,7 +50,6 @@ describe("LineItemsTable", () => {
 
     (axios.get as jest.Mock).mockReturnValue(mockAxiosResponse);
 
-    const mockProps = { lineItems: mockLineItems, rowLineItemSelection: jest.fn(), onLineItemRow: jest.fn() };
     const { container } = render(<LineItemsTable {...mockProps} />);
 
     const inputSearch = screen.getByPlaceholderText("Search for Line items");

@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { Ad, LineItem } from "./useFetchTableData";
 
-export const useSelectedRows = () => {
+interface Props {
+  setFieldValue?: (id: number) => void;
+}
+
+export const useSelectedRows = ({ setFieldValue } = {} as Props) => {
   const [selectedRows, setSelectedRows] = useState<(Ad | LineItem)[]>([]);
   const selectedRowKeys = selectedRows.map((selectedRow) => selectedRow.id);
 
@@ -27,6 +31,7 @@ export const useSelectedRows = () => {
   const onRow = (record: Ad | LineItem) => ({
     onClick: () => {
       selectRow(record);
+      setFieldValue?.(record.id);
     },
   });
 

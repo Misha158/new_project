@@ -47,6 +47,7 @@ describe("<DuplicatedAd />", () => {
 
     expect(await screen.findByText("Should choose only ONE ad")).toBeInTheDocument();
   });
+
   it("Should call open modal on click at button", async () => {
     const mockShowModal = jest.fn();
 

@@ -1,5 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button } from "antd";
+
+const TestComp = ({ text }: { text: string }) => {
+  return <div>{text}</div>;
+};
 
 export const Counter = () => {
   const [count, setCount] = useState(0);
@@ -16,6 +20,7 @@ export const Counter = () => {
     <div>
       <Button onClick={increment}>Increment</Button>
       <Button onClick={decrement}>Decrement</Button>
+      <TestComp text={"1"} />
       {count && <div>Count: {count}</div>}
     </div>
   );

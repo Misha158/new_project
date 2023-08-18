@@ -11,7 +11,7 @@ export const TodoPage = () => {
 
   // DELETE LATER TEST FOR SONARQUBE
   const [test, setTest] = useState(false);
-
+  console.log("setTest", setTest);
   if (test) {
     return <div>test</div>;
   }

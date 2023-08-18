@@ -4,7 +4,7 @@ import { Ad, LineItem } from "../../hooks/useFetchTableData";
 import { Confirm } from "../Confirm/Confirm";
 import { LineItemsTable } from "../LineItemsTable/LineItemsTable";
 import { useSelectedRows } from "../../hooks/useSelectedRows";
-import { useSetAdNameLineItems } from "../hooks/useSetAdNameLineItems";
+import { useCustomFormik } from "../hooks/useCustomFormik";
 
 interface Props {
   lineItems: LineItem[];
@@ -18,7 +18,7 @@ interface Props {
 
 export const Modal = ({ isModalOpen, lineItems, closeModal, step, selectedAdRows, handleNext, handleBack }: Props) => {
   const { selectedRows: selectedLineItemsRows, onRow: onLineItemRow, rowSelection: rowLineItemSelection } = useSelectedRows();
-  const { adNameLineItems, setAdNameLineItems } = useSetAdNameLineItems({ selectedLineItemsRows, selectedAdRows });
+  const { adNameLineItems, setAdNameLineItems } = useCustomFormik({ selectedLineItemsRows, selectedAdRow: selectedAdRows[0] });
 
   const modalProps = {
     title: "Basic Modal",
