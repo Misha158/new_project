@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Ad, EditedAd, LineItem } from "../../hooks/useFetchTableData";
 import { useForm } from "react-hook-form";
 
-interface UseCustomFormik {
+interface UseCustomReactForm {
   selectedLineItemsRows: LineItem[];
   selectedAdRow: Ad;
 }
@@ -40,7 +40,7 @@ interface FormikValues {
   adNameLineItems: Record<string, Partial<EditedAd>>;
 }
 
-export const useCustomFormik = ({ selectedLineItemsRows, selectedAdRow }: UseCustomFormik) => {
+export const useCustomReactForm = ({ selectedLineItemsRows, selectedAdRow }: UseCustomReactForm) => {
   const { setValue, getValues } = useForm<FormikValues>({
     defaultValues: {
       adNameLineItems: {},
@@ -48,12 +48,8 @@ export const useCustomFormik = ({ selectedLineItemsRows, selectedAdRow }: UseCus
   });
 
   useEffect(() => {
-    console.log("useeffect");
     setValue("adNameLineItems", generateAdNameLineItems({ selectedLineItemsRows, selectedAdRow }));
-    console.log("after setter");
   }, [selectedLineItemsRows]);
-
-  console.log("misha-2", getValues().adNameLineItems);
 
   return {
     adNameLineItems: getValues().adNameLineItems,

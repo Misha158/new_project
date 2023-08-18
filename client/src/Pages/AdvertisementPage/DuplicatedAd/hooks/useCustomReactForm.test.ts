@@ -1,5 +1,5 @@
 import { renderHook } from "@testing-library/react-hooks";
-import { useCustomFormik } from "./useCustomFormik";
+import { useCustomReactForm } from "./useCustomReactForm";
 
 const mockSelectedAdRows = {
   campaign_id: 1,
@@ -34,7 +34,7 @@ jest.mock("react-hook-form", () => ({
 describe("useSetAdNameLineItems", () => {
   it("Should correct set ad name for line items", () => {
     renderHook(() =>
-      useCustomFormik({
+      useCustomReactForm({
         selectedAdRow: mockSelectedAdRows,
         selectedLineItemsRows: mockSelectedLineItemsRows,
       })

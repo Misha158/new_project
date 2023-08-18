@@ -12,8 +12,8 @@ jest.mock("../../hooks/useSelectedRows", () => ({
   }),
 }));
 
-jest.mock("../hooks/useCustomFormik", () => ({
-  useCustomFormik: () => ({
+jest.mock("../hooks/useCustomReactForm", () => ({
+  useCustomReactForm: () => ({
     adNameLineItems: {},
     setAdNameLineItems: () => {},
   }),
