@@ -65,7 +65,6 @@ describe("<DuplicatedAd />", () => {
 
     await userEvent.click(btn);
 
-    screen.logTestingPlaygroundURL();
     expect(mockShowModal).toHaveBeenCalled();
   });
 });

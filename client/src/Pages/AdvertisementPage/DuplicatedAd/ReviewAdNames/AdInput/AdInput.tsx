@@ -13,10 +13,8 @@ interface Props {
 
 export const AdInput = ({ adNameLineItems, setAdNameLineItems, lineItem, selectedAd, index }: Props) => {
   const [value, setValue] = useState(getAdName({ adNameLineItems, lineItem, selectedAd, index }));
-
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
-
     setAdNameLineItems("adNameLineItems", {
       ...adNameLineItems,
       [`lineItemId-${lineItem.id}`]: generateAdNameLineItems({ lineItem, selectedAd, event }),
