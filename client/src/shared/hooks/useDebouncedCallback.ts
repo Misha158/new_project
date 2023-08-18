@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import { debounce } from "lodash";
 
-export const useDebouncedCallback = (callback: () => void) => {
+export const useDebouncedCallback = (callback: () => Promise<void>) => {
   const ref = useRef<() => void>();
 
   useEffect(() => {
