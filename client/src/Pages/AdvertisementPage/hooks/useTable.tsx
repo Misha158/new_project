@@ -12,18 +12,21 @@ export const useTable = ({ tabName }: Props) => {
   const { campaigns, lineItems, ads } = useFetchTableData();
   const { selectedRows: selectedAdRows, onRow, rowSelection } = useSelectedRows();
 
+  const { selectedRows: selectedLineItemRows, onRow: onLineItemRow, rowSelection: lineItemRowSelection } = useSelectedRows();
+  const { selectedRows: selectedCampaignRows, onRow: onCampaignRow, rowSelection: campaignRowSelection } = useSelectedRows();
+
   const isShowDuplicateButton = tabName === "ads" && !!selectedAdRows.map((selectedAdRow) => selectedAdRow.id).length;
 
   const tabItems = [
     {
       label: `Campaigns ${campaigns.length}`,
       key: "campaigns",
-      children: <Table dataSource={campaigns} columns={campaignColumns} rowKey="id" />,
+      children: <Table dataSource={campaigns} columns={campaignColumns} rowKey="id" rowSelection={campaignRowSelection} onRow={onCampaignRow} />,
     },
     {
       label: `Line items ${lineItems.length}`,
       key: "lineItems",
-      children: <Table dataSource={lineItems} columns={lineItemColumns} rowKey="id" />,
+      children: <Table dataSource={lineItems} columns={lineItemColumns} rowKey="id" rowSelection={lineItemRowSelection} onRow={onLineItemRow} />,
     },
     {
       label: `Ads ${ads.length}`,

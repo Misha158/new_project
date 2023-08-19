@@ -51,6 +51,26 @@ export const useFetchTableData = (): Result => {
     fetchDada();
   }, []);
 
+  useEffect(() => {
+    if (firstRender) {
+      return skip;
+    }
+    const lineItems = await axios.get("http://localhost:3000/advertisement/lineItems?campaignIds=[]");
+    const ads = await axios.get("http://localhost:3000/advertisement/ads?campaignIds=[]&lineItemIds=[]");
+
+    setLineItems(lineItems.data);
+    setAds(ads.data);
+  }, [selectedCampaigns]);
+
+  useEffect(() => {
+    if (firstRender) {
+      return skip;
+    }
+    const ads = await axios.get("http://localhost:3000/advertisement/ads?campaignIds=[]&lineItemIds=[]");
+
+    setAds(ads.data);
+  }, [selectedLineItems]);
+
   return {
     campaigns,
     lineItems,
