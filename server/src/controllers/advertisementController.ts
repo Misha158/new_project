@@ -13,9 +13,12 @@ class AdvertisementController {
   };
 
   getLineItems = async (req: Request, res: Response) => {
-    const { search } = req.query;
+    const { search, campaignIds } = req.query;
+    const typedSearch = search as string;
+    const parsedCampaigns = campaignIds ? JSON.parse(campaignIds as string) : [];
+
     try {
-      const lineItems = await AdvertisementService.getLineItems(search as string);
+      const lineItems = await AdvertisementService.getLineItems(typedSearch, parsedCampaigns);
 
       res.status(200).json(lineItems);
     } catch (err) {
@@ -24,8 +27,12 @@ class AdvertisementController {
   };
 
   getAds = async (req: Request, res: Response) => {
+    const { campaignIds, lineItemIds } = req.query;
+    const parsedCampaigns = campaignIds ? JSON.parse(campaignIds as string) : [];
+    const parsedLineItems = lineItemIds ? JSON.parse(lineItemIds as string) : [];
+
     try {
-      const ads = await AdvertisementService.getAds();
+      const ads = await AdvertisementService.getAds({ campaignIds: parsedCampaigns, lineItemIds: parsedLineItems });
 
       res.status(200).json(ads);
     } catch (err) {
