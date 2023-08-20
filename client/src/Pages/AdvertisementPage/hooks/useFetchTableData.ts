@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
 export interface Entity {
@@ -32,10 +32,17 @@ interface Result {
   ads: Ad[];
 }
 
-export const useFetchTableData = (): Result => {
+interface Props {
+  selectedCampaignIds: number[];
+  selectedLineItemIds: number[];
+}
+
+export const useFetchTableData = ({ selectedCampaignIds, selectedLineItemIds }: Props): Result => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [lineItems, setLineItems] = useState<LineItem[]>([]);
   const [ads, setAds] = useState<Ad[]>([]);
+
+  const ref = useRef(false);
 
   useEffect(() => {
     const fetchDada = async () => {
@@ -52,24 +59,40 @@ export const useFetchTableData = (): Result => {
   }, []);
 
   useEffect(() => {
-    if (firstRender) {
-      return skip;
+    if (!ref.current) {
+      ref.current = true;
+      return;
     }
-    const lineItems = await axios.get("http://localhost:3000/advertisement/lineItems?campaignIds=[]");
-    const ads = await axios.get("http://localhost:3000/advertisement/ads?campaignIds=[]&lineItemIds=[]");
 
-    setLineItems(lineItems.data);
-    setAds(ads.data);
-  }, [selectedCampaigns]);
+    const fetchData = async () => {
+      const lineItems = await axios.get(`http://localhost:3000/advertisement/lineItems?campaignIds=[${selectedCampaignIds}]`);
+      const ads = await axios.get(
+        `http://localhost:3000/advertisement/ads?campaignIds=[${selectedCampaignIds}]&lineItemIds=[${selectedLineItemIds}]`
+      );
+
+      setLineItems(lineItems.data);
+      setAds(ads.data);
+    };
+
+    fetchData();
+  }, [selectedCampaignIds]);
 
   useEffect(() => {
-    if (firstRender) {
-      return skip;
+    if (!ref.current) {
+      ref.current = true;
+      return;
     }
-    const ads = await axios.get("http://localhost:3000/advertisement/ads?campaignIds=[]&lineItemIds=[]");
 
-    setAds(ads.data);
-  }, [selectedLineItems]);
+    const fetchData = async () => {
+      const ads = await axios.get(
+        `http://localhost:3000/advertisement/ads?campaignIds=[${selectedCampaignIds}]&lineItemIds=[${selectedLineItemIds}]`
+      );
+
+      setAds(ads.data);
+    };
+
+    fetchData();
+  }, [selectedLineItemIds]);
 
   return {
     campaigns,
