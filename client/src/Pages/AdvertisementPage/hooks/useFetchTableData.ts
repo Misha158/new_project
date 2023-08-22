@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
+import { AdvertisementService } from "../../../services/AdvertisementService";
 
 export interface Entity {
   title: string;
@@ -37,23 +37,10 @@ interface Props {
   selectedLineItemIds: number[];
 }
 
-const fetchAds = async ({ selectedCampaignIds, selectedLineItemIds }) => {
-  const ads = await axios.get(`http://localhost:3000/advertisement/ads?campaignIds=[${selectedCampaignIds}]&lineItemIds=[${selectedLineItemIds}]`);
-
-  return ads;
-};
-
-const fetchLineItemsAndAds = async ({ selectedCampaignIds, selectedLineItemIds }) => {
-  const lineItems = await axios.get(`http://localhost:3000/advertisement/lineItems?campaignIds=[${selectedCampaignIds}]`);
-  const ads = await fetchAds({ selectedCampaignIds, selectedLineItemIds });
-
-  return { lineItems, ads };
-};
-
 const fetchAll = async () => {
-  const campaigns = await axios.get("http://localhost:3000/advertisement/campaigns");
-  const lineItems = await axios.get("http://localhost:3000/advertisement/lineItems");
-  const ads = await axios.get("http://localhost:3000/advertisement/ads");
+  const campaigns = await AdvertisementService.getCampaigns();
+  const lineItems = await AdvertisementService.getLineItems({});
+  const ads = await AdvertisementService.getAds({});
 
   return {
     campaigns,
@@ -67,8 +54,8 @@ export const useFetchTableData = ({ selectedCampaignIds, selectedLineItemIds }: 
   const [lineItems, setLineItems] = useState<LineItem[]>([]);
   const [ads, setAds] = useState<Ad[]>([]);
 
-  const [oldSelectedCampaignIds, setOldSelectedCampaignIds] = useState(selectedCampaignIds);
-  const [oldSelectedLineItemIds, setOldSelectedLineItemIds] = useState(selectedLineItemIds);
+  const refOldSelectedCampaignIds = useRef(selectedCampaignIds);
+  const refOldSelectedLineItemIds = useRef(selectedLineItemIds);
 
   const ref = useRef(false);
 
@@ -77,9 +64,9 @@ export const useFetchTableData = ({ selectedCampaignIds, selectedLineItemIds }: 
       const fetchAllData = async () => {
         const { campaigns, lineItems, ads } = await fetchAll();
 
-        setCampaigns(campaigns.data);
-        setLineItems(lineItems.data);
-        setAds(ads.data);
+        setCampaigns(campaigns);
+        setLineItems(lineItems);
+        setAds(ads);
       };
 
       void fetchAllData();
@@ -88,19 +75,32 @@ export const useFetchTableData = ({ selectedCampaignIds, selectedLineItemIds }: 
       return;
     }
 
-    if (oldSelectedCampaignIds !== selectedCampaignIds) {
-      const { lineItems, ads } = fetchLineItemsAndAds({ selectedLineItemIds, selectedCampaignIds });
+    if (refOldSelectedCampaignIds.current !== selectedCampaignIds) {
+      const fetchLineItemsAndAds = async ({
+        selectedCampaignIds,
+        selectedLineItemIds,
+      }: {
+        selectedCampaignIds: number[];
+        selectedLineItemIds: number[];
+      }) => {
+        const lineItems = await AdvertisementService.getLineItems({ selectedCampaignIds });
+        const ads = await AdvertisementService.getAds({ selectedCampaignIds, selectedLineItemIds });
 
-      setLineItems(lineItems.data);
-      setAds(ads.data);
+        setLineItems(lineItems);
+        setAds(ads);
+        refOldSelectedCampaignIds.current = selectedCampaignIds;
+      };
 
-      setOldSelectedCampaignIds(selectedCampaignIds);
-    } else if (oldSelectedCampaignIds === selectedCampaignIds && oldSelectedLineItemIds !== selectedLineItemIds) {
-      const ads = fetchAds({ selectedCampaignIds, selectedLineItemIds });
+      void fetchLineItemsAndAds({ selectedCampaignIds, selectedLineItemIds });
+    } else if (refOldSelectedCampaignIds.current === selectedCampaignIds && refOldSelectedLineItemIds.current !== selectedLineItemIds) {
+      const fetchOnlyAds = async () => {
+        const ads = await AdvertisementService.getAds({ selectedCampaignIds, selectedLineItemIds });
 
-      setAds(ads.data);
+        setAds(ads);
+        refOldSelectedLineItemIds.current = selectedLineItemIds;
+      };
 
-      setOldSelectedLineItemIds(selectedLineItemIds);
+      void fetchOnlyAds();
     }
   }, [selectedCampaignIds, selectedLineItemIds]);
 
