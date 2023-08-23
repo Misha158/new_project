@@ -38,22 +38,33 @@ describe("useFetchTableData", () => {
     expect(result.current.lineItems).toEqual(mockLineItems);
     expect(result.current.ads).toEqual(mockAds);
   });
-  it("Should return filtered data", async () => {
-    const mockProps = {
+
+  it("Should make request with campaignIds", async () => {
+    (axios.get as jest.Mock).mockReturnValue(axiosResponseAds);
+
+    const initialProps = {
       selectedCampaignIds: [],
       selectedLineItemIds: [],
     };
 
-    const { result, waitForNextUpdate, rerender } = renderHook(() => useFetchTableData(mockProps));
-
-    rerender({
+    const updatedProps = {
       selectedCampaignIds: [6],
-      selectedLineItemIds: [9],
+      selectedLineItemIds: [5],
+    };
+
+    const { rerender } = renderHook((props) => useFetchTableData(props), {
+      initialProps: initialProps,
     });
 
+    rerender(updatedProps);
+
     await act(async () => {
-      await waitForNextUpdate();
-      expect(axios.get as jest.Mock).toHaveBeenCalledWith({});
+      expect(axios.get as jest.Mock).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          params: { campaignIds: "[6]" },
+        })
+      );
     });
   });
 });
