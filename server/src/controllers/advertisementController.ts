@@ -14,6 +14,7 @@ class AdvertisementController {
 
   getLineItems = async (req: Request, res: Response) => {
     const { search, campaignIds } = req.query;
+
     const typedSearch = search as string;
     const parsedCampaigns = campaignIds ? JSON.parse(campaignIds as string) : [];
 

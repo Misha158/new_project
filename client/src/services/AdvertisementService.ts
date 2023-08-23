@@ -7,7 +7,7 @@ export class AdvertisementService {
     return data;
   };
 
-  static getLineItems = async ({ selectedCampaignIds = [] }: { selectedCampaignIds: number[] }) => {
+  static getLineItems = async ({ selectedCampaignIds = [] }: { selectedCampaignIds?: number[] }) => {
     const { data } = await axios.get(`http://localhost:3000/advertisement/lineItems`, {
       params: {
         campaignIds: `[${selectedCampaignIds.join(",")}]`,
@@ -21,8 +21,8 @@ export class AdvertisementService {
     selectedCampaignIds = [],
     selectedLineItemIds = [],
   }: {
-    selectedCampaignIds: number[];
-    selectedLineItemIds: number[];
+    selectedCampaignIds?: number[];
+    selectedLineItemIds?: number[];
   }) => {
     const { data } = await axios.get(`http://localhost:3000/advertisement/ads`, {
       params: {
