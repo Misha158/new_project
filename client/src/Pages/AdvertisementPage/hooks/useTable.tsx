@@ -3,6 +3,7 @@ import { adColumns, campaignColumns, lineItemColumns } from "../columns/campaign
 import { useSelectedRows } from "./useSelectedRows";
 import { Ad, useFetchTableData } from "./useFetchTableData";
 import { DuplicatedAd } from "../DuplicatedAd/DuplicatedAd";
+import { TabNames } from "../../../consts/consts";
 import { useMemo } from "react";
 
 interface Props {
@@ -28,17 +29,17 @@ export const useTable = ({ tabName }: Props) => {
   const tabItems = [
     {
       label: `Campaigns ${campaigns.length}`,
-      key: "campaigns",
+      key: TabNames.Campaigns,
       children: <Table dataSource={campaigns} columns={campaignColumns} rowKey="id" rowSelection={campaignRowSelection} onRow={onCampaignRow} />,
     },
     {
       label: `Line items ${lineItems.length}`,
-      key: "lineItems",
+      key: TabNames.LineItems,
       children: <Table dataSource={lineItems} columns={lineItemColumns} rowKey="id" rowSelection={lineItemRowSelection} onRow={onLineItemRow} />,
     },
     {
       label: `Ads ${ads.length}`,
-      key: "ads",
+      key: TabNames.Ads,
       children: (
         <>
           {isShowDuplicateButton && <DuplicatedAd lineItems={lineItems} selectedAdRows={selectedAdRows as Ad[]} />}
