@@ -10,7 +10,7 @@ describe("Counter", () => {
 
   it("Should render without crashing", async () => {
     render(<Counter />);
-    const incrementBtn = screen.getByText("Increment");
+    const incrementBtn = screen.getByText("Increment1");
 
     await userEvent.click(incrementBtn);
 
