@@ -33,4 +33,12 @@ export class AdvertisementService {
 
     return data;
   };
+
+  static deleteAds = async ({ adIds }: { adIds: number[] }) => {
+    const { data } = await axios.post(`http://localhost:3000/advertisement/ads`, {
+      adIds,
+    });
+
+    return data;
+  };
 }

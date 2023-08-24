@@ -1,4 +1,4 @@
-const generalColumns = [
+export const generalColumns = [
   {
     title: "Id",
     dataIndex: "id",

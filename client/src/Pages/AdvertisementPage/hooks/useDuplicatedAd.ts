@@ -5,12 +5,9 @@ import { Ad } from "./useFetchTableData";
 
 interface Props {
   selectedAdRows: Ad[];
-  tabName: TabNames;
 }
 
-export const useDuplicatedAd = ({ selectedAdRows, tabName }: Props) => {
-  const isShowDuplicateButton = tabName === "ads" && !!selectedAdRows.map((selectedAdRow) => selectedAdRow.id).length;
-
+export const useDuplicatedAd = ({ selectedAdRows }: Props) => {
   const [step, setStep] = useState(1);
   const { showModal, isModalOpen, closeModal, handleNext, handleBack } = useModal({ setStep });
 
@@ -24,6 +21,5 @@ export const useDuplicatedAd = ({ selectedAdRows, tabName }: Props) => {
     handleNext,
     handleBack,
     step,
-    isShowDuplicateButton,
   };
 };

@@ -1,11 +1,11 @@
-import { Button, Table, Tooltip } from "antd";
+import { Table } from "antd";
 import { adColumns, campaignColumns, lineItemColumns } from "../columns/campaign";
 import { useSelectedRows } from "./useSelectedRows";
 import { Ad, useFetchTableData } from "./useFetchTableData";
 import { DuplicatedAd } from "../DuplicatedAd/DuplicatedAd";
 import { TabNames } from "../../../consts/consts";
 import { useMemo } from "react";
-import { useDuplicatedAd } from "./useDuplicatedAd";
+import { DeleteAd } from "../DeleteAd/DeleteAd";
 
 interface Props {
   tabName: TabNames;
@@ -14,6 +14,7 @@ interface Props {
 export const useTable = ({ tabName }: Props) => {
   const { selectedRows: selectedLineItemRows, onRow: onLineItemRow, rowSelection: lineItemRowSelection } = useSelectedRows();
   const { selectedRows: selectedCampaignRows, onRow: onCampaignRow, rowSelection: campaignRowSelection } = useSelectedRows();
+  const { selectedRows: selectedAdRows, onRow, rowSelection } = useSelectedRows();
 
   const selectedLineItemIds = useMemo(() => selectedLineItemRows.map((lineItem) => lineItem.id), [selectedLineItemRows]);
   const selectedCampaignIds = useMemo(() => selectedCampaignRows.map((lineItem) => lineItem.id), [selectedCampaignRows]);
@@ -21,13 +22,6 @@ export const useTable = ({ tabName }: Props) => {
   const { campaigns, lineItems, ads } = useFetchTableData({
     selectedLineItemIds,
     selectedCampaignIds,
-  });
-
-  const { selectedRows: selectedAdRows, onRow, rowSelection } = useSelectedRows();
-
-  const { step, tooltipText, isModalOpen, isShowDuplicateButton, closeModal, handleNext, handleBack, showModal } = useDuplicatedAd({
-    tabName,
-    selectedAdRows: selectedAdRows as Ad[],
   });
 
   const tabItems = [
@@ -46,26 +40,8 @@ export const useTable = ({ tabName }: Props) => {
       key: TabNames.Ads,
       children: (
         <>
-          {isShowDuplicateButton && (
-            <DuplicatedAd
-              lineItems={lineItems}
-              selectedAdRows={selectedAdRows as Ad[]}
-              isModalOpen={isModalOpen}
-              closeModal={closeModal}
-              handleNext={handleNext}
-              handleBack={handleBack}
-              step={step}
-            />
-          )}
-          <Tooltip title={tooltipText}>
-            <Button disabled={!selectedAdRows.length || selectedAdRows.length > 1} type="primary" onClick={showModal}>
-              Duplicate ad
-            </Button>
-          </Tooltip>
-
-          <Tooltip title={!selectedAdRows.length ? "Choose an ad to delete" : ""}>
-            <Button disabled={!selectedAdRows.length}>Delete {selectedAdRows.length > 1 ? "ads" : "ad"}</Button>
-          </Tooltip>
+          <DuplicatedAd lineItems={lineItems} selectedAdRows={selectedAdRows as Ad[]} />
+          <DeleteAd selectedAdRows={selectedAdRows} />
 
           <Table dataSource={ads} columns={adColumns} rowKey="id" rowSelection={rowSelection} onRow={onRow} />
         </>

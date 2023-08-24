@@ -5,6 +5,7 @@ import { Confirm } from "../Confirm/Confirm";
 import { LineItemsTable } from "../LineItemsTable/LineItemsTable";
 import { useSelectedRows } from "../../hooks/useSelectedRows";
 import { useCustomReactForm } from "../hooks/useCustomReactForm";
+import { useEffect } from "react";
 
 interface Props {
   lineItems: LineItem[];
@@ -36,6 +37,10 @@ export const Modal = ({ isModalOpen, lineItems, closeModal, step, selectedAdRows
       </Button>,
     ],
   };
+
+  useEffect(() => {
+    console.log("THIS IS MODAL");
+  }, []);
 
   return (
     <AntModal {...modalProps}>
