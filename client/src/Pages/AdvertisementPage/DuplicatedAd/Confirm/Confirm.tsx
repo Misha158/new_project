@@ -9,7 +9,6 @@ export interface Props {
 
 export const Confirm = ({ adNameLineItems, closeModal }: Props) => {
   const { onConfirm, loading, error } = useConfirm({ adNameLineItems, closeModal });
-
   return (
     <div>
       <Button onClick={onConfirm}>Confirm</Button>

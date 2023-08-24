@@ -13,17 +13,24 @@ class AdvertisementService {
     }
   };
 
-  getLineItems = async (search?: string) => {
+  getLineItems = async (search?: string, campaignIds = [] as number[]) => {
+    const isFilterByCampaignIds = campaignIds?.length > 0;
     let sql = "SELECT * FROM line_items";
 
     if (search) {
       sql += " WHERE status LIKE ? OR title LIKE ? OR id LIKE ?";
     }
 
+    if (isFilterByCampaignIds) {
+      const placeholders = campaignIds.map(() => "?").join(", ");
+      sql += ` WHERE campaign_id IN (${placeholders})`;
+    }
+
     const searchValue = `%${search}%`;
 
     try {
-      const [rows, fields] = await pool.promise().query(sql, [searchValue, searchValue, searchValue]);
+      const searchQueryOrCampaignIds = isFilterByCampaignIds ? campaignIds : [searchValue, searchValue, searchValue];
+      const [rows, fields] = await pool.promise().query(sql, searchQueryOrCampaignIds);
 
       return rows;
     } catch (err) {
@@ -31,11 +38,24 @@ class AdvertisementService {
     }
   };
 
-  getAds = async () => {
-    const sql = "SELECT * FROM ads";
+  getAds = async ({ campaignIds, lineItemIds }: { campaignIds: number[]; lineItemIds: number[] }) => {
+    const isFilterByCampaignIds = campaignIds?.length > 0;
+    const isFilterByLineItemIds = lineItemIds?.length > 0;
+
+    let sql = "SELECT * FROM ads";
+
+    if (campaignIds?.length && !lineItemIds.length) {
+      const placeholders = campaignIds.map(() => "?").join(", ");
+      sql += ` WHERE campaign_id IN (${placeholders})`;
+    } else if (lineItemIds?.length) {
+      const placeholders = lineItemIds.map(() => "?").join(", ");
+      sql += ` WHERE line_item_id IN (${placeholders})`;
+    }
+
+    const queryParams = (isFilterByLineItemIds && lineItemIds) || (isFilterByCampaignIds && campaignIds) || false;
 
     try {
-      const [rows, fields] = await pool.promise().query(sql);
+      const [rows, fields] = await pool.promise().query(sql, queryParams);
 
       return rows;
     } catch (err) {
