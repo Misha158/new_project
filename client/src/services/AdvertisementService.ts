@@ -3,10 +3,12 @@ import { axios } from "./config";
 export class AdvertisementService {
   static getCampaigns = async () => {
     try {
+      console.log("before call", axios);
       const { data } = await axios.get("/advertisement/campaigns");
 
       return data;
     } catch (e) {
+      console.log("error", e.message);
       throw new Error(e.message);
     }
   };

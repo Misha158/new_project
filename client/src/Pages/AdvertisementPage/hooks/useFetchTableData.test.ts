@@ -1,11 +1,11 @@
 import { renderHook, act } from "@testing-library/react-hooks";
 import { useFetchTableData } from "./useFetchTableData";
-import axios from "axios";
 import { mockLineItems } from "../../../mocks/lineItems";
 import { mockCampaigns } from "../../../mocks/campaigns";
 import { mockAds } from "../../../mocks/ads";
+import { axios } from "../../../services/config";
 
-jest.mock("axios");
+jest.mock("../../../services/config");
 
 const axiosResponseCampaigns = {
   data: mockCampaigns,

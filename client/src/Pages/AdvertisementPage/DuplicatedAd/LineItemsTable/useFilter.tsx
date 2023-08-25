@@ -1,7 +1,7 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { LineItem } from "../../hooks/useFetchTableData";
 import { useDebouncedCallback } from "../../../../shared/hooks/useDebouncedCallback";
+import { axios } from "../../../../services/config";
 
 interface Props {
   isModalOpen: boolean;
@@ -13,7 +13,7 @@ export const useFilter = ({ isModalOpen, lineItems }: Props) => {
   const [filteredLineItems, setFilteredLineItems] = useState<LineItem[]>([]);
 
   const fetchItems = async (value: string) => {
-    const { data } = await axios.get(`http://localhost:3000/advertisement/lineItems?search=${value}`);
+    const { data } = await axios.get(`/advertisement/lineItems?search=${value}`);
     setFilteredLineItems(data);
   };
 
