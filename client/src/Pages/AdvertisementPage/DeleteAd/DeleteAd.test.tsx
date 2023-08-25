@@ -2,6 +2,11 @@ import { screen, render, waitFor } from "@testing-library/react";
 import { DeleteAd } from "./DeleteAd";
 import { mockAds } from "../../../mocks/ads";
 import userEvent from "@testing-library/user-event";
+import { axios } from "../../../services/config";
+
+jest.mock("../../../services/config");
+
+(axios.delete as jest.Mock).mockReturnValue({ data: mockAds });
 
 describe("<DeleteAd />", () => {
   it("Button should be disabled, if selectedAdRows is empty", () => {
@@ -45,6 +50,7 @@ describe("<DeleteAd />", () => {
 
     await waitFor(() => {
       expect(mockSetAds).toHaveBeenCalled();
+      expect(axios.delete).toHaveBeenCalled();
     });
   });
 });
