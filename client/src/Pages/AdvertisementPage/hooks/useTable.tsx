@@ -19,7 +19,7 @@ export const useTable = ({ tabName }: Props) => {
   const selectedLineItemIds = useMemo(() => selectedLineItemRows.map((lineItem) => lineItem.id), [selectedLineItemRows]);
   const selectedCampaignIds = useMemo(() => selectedCampaignRows.map((lineItem) => lineItem.id), [selectedCampaignRows]);
 
-  const { campaigns, lineItems, ads } = useFetchTableData({
+  const { campaigns, lineItems, ads, setAds } = useFetchTableData({
     selectedLineItemIds,
     selectedCampaignIds,
   });
@@ -41,7 +41,7 @@ export const useTable = ({ tabName }: Props) => {
       children: (
         <>
           <DuplicatedAd lineItems={lineItems} selectedAdRows={selectedAdRows as Ad[]} />
-          <DeleteAd selectedAdRows={selectedAdRows} />
+          <DeleteAd selectedAdRows={selectedAdRows} setAds={setAds} />
 
           <Table dataSource={ads} columns={adColumns} rowKey="id" rowSelection={rowSelection} onRow={onRow} />
         </>

@@ -3,16 +3,23 @@ import { Ad } from "../hooks/useFetchTableData";
 import { useModal } from "../../../shared/hooks/useModal/useModal";
 import { generalColumns } from "../columns/campaign";
 import { AdvertisementService } from "../../../services/AdvertisementService";
+import { Dispatch, SetStateAction } from "react";
 
 interface Props {
   selectedAdRows: Ad[];
+  setAds: Dispatch<SetStateAction<Ad[]>>;
 }
 
-export const DeleteAd = ({ selectedAdRows }: Props) => {
+export const DeleteAd = ({ selectedAdRows, setAds }: Props) => {
   const { isShow, showModal, closeModal } = useModal();
 
   const deleteAdsHandler = async () => {
-    await AdvertisementService.deleteAds({ adIds: selectedAdRows.map((ad) => ad.id) });
+    const deletedAds = await AdvertisementService.deleteAds({ adIds: selectedAdRows.map((ad) => ad.id) });
+    const deletedAdIds = deletedAds.map((ad) => ad.id);
+
+    setAds((prev) => prev.filter((ad) => !deletedAdIds.includes(ad.id)));
+
+    closeModal();
   };
 
   const modalProps = {

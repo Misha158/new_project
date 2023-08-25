@@ -8,5 +8,6 @@ advertisementRouter.get("/lineItems", AdvertisementController.getLineItems);
 advertisementRouter.get("/ads", AdvertisementController.getAds);
 
 advertisementRouter.post("/createAds", AdvertisementController.createAds);
+advertisementRouter.delete("/ads", AdvertisementController.deleteAds);
 
 export default advertisementRouter;

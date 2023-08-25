@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { AdvertisementService } from "../../../services/AdvertisementService";
 
 export interface Entity {
@@ -30,6 +30,7 @@ interface Result {
   campaigns: Campaign[];
   lineItems: LineItem[];
   ads: Ad[];
+  setAds: Dispatch<SetStateAction<Ad[]>>;
 }
 
 interface Props {
@@ -108,5 +109,6 @@ export const useFetchTableData = ({ selectedCampaignIds, selectedLineItemIds }: 
     campaigns,
     lineItems,
     ads,
+    setAds,
   };
 };

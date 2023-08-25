@@ -80,6 +80,22 @@ class AdvertisementService {
       throw err;
     }
   };
+
+  deleteAds = async (adsIds: number[]) => {
+    const placeholders = adsIds.map(() => "?").join(", ");
+    const deleteSql = `DELETE FROM ads WHERE id IN (${placeholders})`;
+
+    const fetchSql = `SELECT * FROM ads WHERE id IN (?)`;
+
+    try {
+      const fetchedRecords = await pool.promise().query(fetchSql, [adsIds]);
+      await pool.promise().query(deleteSql, adsIds);
+
+      return fetchedRecords[0];
+    } catch (err) {
+      throw err;
+    }
+  };
 }
 
 export default new AdvertisementService();
