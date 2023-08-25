@@ -20,9 +20,10 @@ describe("<DeleteAd />", () => {
   });
 
   it("Should open modal with table with ads which will be deleted", async () => {
+    const mockSetAds = jest.fn();
     const mockProps = {
       selectedAdRows: mockAds,
-      setAds: jest.fn(),
+      setAds: mockSetAds,
     };
 
     render(<DeleteAd {...mockProps} />);
@@ -35,6 +36,15 @@ describe("<DeleteAd />", () => {
 
     await waitFor(() => {
       expect(window.document.querySelector(".ant-modal-content")).toBeInTheDocument();
+      screen.logTestingPlaygroundURL();
+    });
+
+    const deleteBtn = screen.getByRole("button", { name: "Delete" });
+
+    await userEvent.click(deleteBtn);
+
+    await waitFor(() => {
+      expect(mockSetAds).toHaveBeenCalled();
     });
   });
 });
