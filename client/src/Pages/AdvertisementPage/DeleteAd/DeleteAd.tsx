@@ -1,9 +1,9 @@
+import { Dispatch, SetStateAction } from "react";
 import { Button, Modal, Tooltip, Table } from "antd";
 import { Ad } from "../hooks/useFetchTableData";
 import { useModal } from "../../../shared/hooks/useModal/useModal";
 import { generalColumns } from "../columns/campaign";
 import { AdvertisementService } from "../../../services/AdvertisementService";
-import { Dispatch, SetStateAction } from "react";
 
 interface Props {
   selectedAdRows: Ad[];

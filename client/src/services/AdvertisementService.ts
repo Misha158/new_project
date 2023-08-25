@@ -33,7 +33,7 @@ export class AdvertisementService {
     selectedLineItemIds?: number[];
   }) => {
     try {
-      const { data } = await axios.get(`http://localhost:3000/advertisement/ads`, {
+      const { data } = await axios.get(`/advertisement/ads`, {
         params: {
           campaignIds: `[${selectedCampaignIds.join(",")}]`,
           lineItemIds: `[${selectedLineItemIds.join(",")}]`,
@@ -48,7 +48,7 @@ export class AdvertisementService {
 
   static deleteAds = async ({ adIds }: { adIds: number[] }) => {
     try {
-      const { data } = await axios.delete(`http://localhost:3000/advertisement/ads`, {
+      const { data } = await axios.delete(`/advertisement/ads`, {
         data: adIds,
       });
 
