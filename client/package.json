@@ -48,9 +48,9 @@
     "eslint": "7.32.0",
     "eslint-plugin-react-hooks": "3.0.0",
     "eslint-plugin-react-refresh": "^0.4.3",
-    "husky": "^8.0.3",
+    "husky": "^4.3.8",
+    "lint-staged": "^12.3.7",
     "jest": "^28.1.3",
-    "lint-staged": "^14.0.1",
     "prettier": "2.8.8",
     "ts-jest": "^29.1.1",
     "typescript": "^5.0.2",
@@ -64,7 +64,6 @@
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
-      "echo \"misha lint-staged is running\"",
       "npm run prettier",
       "git add"
     ]
