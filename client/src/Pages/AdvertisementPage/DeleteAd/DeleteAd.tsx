@@ -10,8 +10,6 @@ interface Props {
   setAds: Dispatch<SetStateAction<Ad[]>>;
 }
 
-console.log();
-
 export const DeleteAd = ({ selectedAdRows, setAds }: Props) => {
   const { isShow, showModal, closeModal } = useModal();
 
