@@ -64,6 +64,7 @@
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
+      "echo \"misha lint-staged is running\"",
       "npm run prettier",
       "git add"
     ]
