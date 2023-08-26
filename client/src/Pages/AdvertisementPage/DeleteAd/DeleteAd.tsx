@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const DeleteAd = ({ selectedAdRows, setAds }: Props) => {
-  const { isShow, showModal, closeModal }= useModal();
+  const { isShow, showModal, closeModal } = useModal();
 
   const deleteAdsHandler = async () => {
     const deletedAds = await AdvertisementService.deleteAds({ adIds: selectedAdRows.map((ad) => ad.id) });
