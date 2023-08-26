@@ -2,12 +2,14 @@ import { Tabs } from "antd";
 
 import { useTable } from "./hooks/useTable";
 import { useState } from "react";
+import { TabNames } from "../../consts/consts";
 
 export const AdvertisementPage = () => {
-  const [tabName, setTabName] = useState("campaigns");
+  const [tabName, setTabName] = useState(TabNames.Campaigns);
+
   const { tabItems } = useTable({ tabName });
 
-  const onChange = (key: string) => {
+  const onChange = (key: TabNames) => {
     setTabName(key);
   };
 

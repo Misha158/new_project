@@ -1,10 +1,10 @@
-import axios from "axios";
 import { screen, render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { mockLineItems } from "../../../../mocks/lineItems";
 import { LineItemsTable } from "./LineItemsTable";
+import { axios } from "../../../../services/config";
 
-jest.mock("axios");
+jest.mock("../../../../services/config");
 
 const mockProps = {
   lineItems: mockLineItems,
@@ -56,7 +56,7 @@ describe("LineItemsTable", () => {
     await userEvent.type(inputSearch, "cat");
 
     await waitFor(() => {
-      expect(axios.get).toHaveBeenCalledWith("http://localhost:3000/advertisement/lineItems?search=cat");
+      expect(axios.get).toHaveBeenCalledWith("/advertisement/lineItems?search=cat");
     });
 
     const rows = container.querySelectorAll(".ant-table-tbody  tr");

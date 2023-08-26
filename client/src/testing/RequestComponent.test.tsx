@@ -20,7 +20,6 @@ describe("RequestComponent", () => {
     render(<RequestComponent />);
 
     expect(await screen.findByText("test post")).toBeInTheDocument();
-    screen.logTestingPlaygroundURL();
   });
 
   it("", async () => {
@@ -38,6 +37,5 @@ describe("RequestComponent", () => {
     render(<RequestComponent />);
 
     expect(await screen.findByText("test post - 2")).toBeInTheDocument();
-    screen.logTestingPlaygroundURL();
   });
 });

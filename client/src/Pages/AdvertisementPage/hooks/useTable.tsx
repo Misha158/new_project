@@ -5,26 +5,24 @@ import { Ad, useFetchTableData } from "./useFetchTableData";
 import { DuplicatedAd } from "../DuplicatedAd/DuplicatedAd";
 import { TabNames } from "../../../consts/consts";
 import { useMemo } from "react";
+import { DeleteAd } from "../DeleteAd/DeleteAd";
 
 interface Props {
-  tabName: string;
+  tabName: TabNames;
 }
 
 export const useTable = ({ tabName }: Props) => {
   const { selectedRows: selectedLineItemRows, onRow: onLineItemRow, rowSelection: lineItemRowSelection } = useSelectedRows();
   const { selectedRows: selectedCampaignRows, onRow: onCampaignRow, rowSelection: campaignRowSelection } = useSelectedRows();
+  const { selectedRows: selectedAdRows, onRow, rowSelection } = useSelectedRows();
 
   const selectedLineItemIds = useMemo(() => selectedLineItemRows.map((lineItem) => lineItem.id), [selectedLineItemRows]);
   const selectedCampaignIds = useMemo(() => selectedCampaignRows.map((lineItem) => lineItem.id), [selectedCampaignRows]);
 
-  const { campaigns, lineItems, ads } = useFetchTableData({
+  const { campaigns, lineItems, ads, setAds } = useFetchTableData({
     selectedLineItemIds,
     selectedCampaignIds,
   });
-
-  const { selectedRows: selectedAdRows, onRow, rowSelection } = useSelectedRows();
-
-  const isShowDuplicateButton = tabName === "ads" && !!selectedAdRows.map((selectedAdRow) => selectedAdRow.id).length;
 
   const tabItems = [
     {
@@ -42,7 +40,9 @@ export const useTable = ({ tabName }: Props) => {
       key: TabNames.Ads,
       children: (
         <>
-          {isShowDuplicateButton && <DuplicatedAd lineItems={lineItems} selectedAdRows={selectedAdRows as Ad[]} />}
+          <DuplicatedAd lineItems={lineItems} selectedAdRows={selectedAdRows as Ad[]} />
+          <DeleteAd selectedAdRows={selectedAdRows} setAds={setAds} />
+
           <Table dataSource={ads} columns={adColumns} rowKey="id" rowSelection={rowSelection} onRow={onRow} />
         </>
       ),

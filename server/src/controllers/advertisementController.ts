@@ -54,6 +54,18 @@ class AdvertisementController {
       res.status(500).send("Error with ads.");
     }
   };
+
+  deleteAds = async (req: Request, res: Response) => {
+    const adsIds = req.body;
+
+    try {
+      const ads = await AdvertisementService.deleteAds(adsIds);
+
+      res.status(200).json(ads);
+    } catch (err) {
+      res.status(500).send("Error with ads.");
+    }
+  };
 }
 
 export default new AdvertisementController();

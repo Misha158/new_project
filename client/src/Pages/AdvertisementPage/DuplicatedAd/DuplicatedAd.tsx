@@ -1,8 +1,7 @@
-import { useState } from "react";
-import { Button, Tooltip } from "antd";
-import { useModal } from "./hooks/useModal";
 import { Ad, LineItem } from "../hooks/useFetchTableData";
 import { Modal } from "./Modal/Modal";
+import { Button, Tooltip } from "antd";
+import { useDuplicatedAd } from "../hooks/useDuplicatedAd";
 
 interface Props {
   lineItems: LineItem[];
@@ -10,28 +9,29 @@ interface Props {
 }
 
 export const DuplicatedAd = ({ lineItems, selectedAdRows }: Props) => {
-  const [step, setStep] = useState(1);
-  const { showModal, isModalOpen, closeModal, handleNext, handleBack } = useModal({ setStep });
-
-  const tooltipText = selectedAdRows.length > 1 ? "Should choose only ONE ad" : "";
+  const { step, tooltipText, isModalOpen, closeModal, handleNext, handleBack, showModal } = useDuplicatedAd({
+    selectedAdRows: selectedAdRows as Ad[],
+  });
 
   return (
     <>
       <Tooltip title={tooltipText}>
-        <Button type="primary" onClick={showModal} disabled={selectedAdRows.length > 1}>
+        <Button disabled={!selectedAdRows.length || selectedAdRows.length > 1} type="primary" onClick={showModal}>
           Duplicate ad
         </Button>
       </Tooltip>
 
-      <Modal
-        isModalOpen={isModalOpen}
-        lineItems={lineItems}
-        closeModal={closeModal}
-        step={step}
-        selectedAdRows={selectedAdRows}
-        handleNext={handleNext}
-        handleBack={handleBack}
-      />
+      {selectedAdRows.length === 1 && (
+        <Modal
+          isModalOpen={isModalOpen}
+          lineItems={lineItems}
+          closeModal={closeModal}
+          step={step}
+          selectedAdRows={selectedAdRows}
+          handleNext={handleNext}
+          handleBack={handleBack}
+        />
+      )}
     </>
   );
 };

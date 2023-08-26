@@ -1,6 +1,6 @@
 import { screen, render } from "@testing-library/react";
-import { Counter } from "./Counter";
 import userEvent from "@testing-library/user-event";
+import { Counter } from "./Counter";
 
 describe("Counter", () => {
   it("Should render without crashing", () => {
@@ -8,7 +8,7 @@ describe("Counter", () => {
     expect(screen.getByText("Decrement")).toBeInTheDocument();
   });
 
-  it("Should render without crashing", async () => {
+  it("Should FIND count", async () => {
     render(<Counter />);
     const incrementBtn = screen.getByText("Increment");
 
