@@ -18,7 +18,7 @@ interface Props {
 }
 
 export const Modal = ({ isModalOpen, lineItems, closeModal, step, selectedAdRows, handleNext, handleBack }: Props) => {
-  const { selectedRows: selectedLineItemsRows, onRow: onLineItemRow, rowSelection: rowLineItemSelection } = useSelectedRows();
+  const { selectedRows: selectedLineItemsRows, onRow: onLineItemRow, rowSelection: rowLineItemSelection } = useSelectedRows<LineItem>();
   const { adNameLineItems, setAdNameLineItems } = useCustomReactForm({ selectedLineItemsRows, selectedAdRow: selectedAdRows[0] });
 
   const modalProps = {

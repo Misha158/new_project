@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useModal } from "../DuplicatedAd/hooks/useModal";
-import { TabNames } from "../../../consts/consts";
 import { Ad } from "./useFetchTableData";
 
 interface Props {

@@ -5,20 +5,22 @@ interface Props {
   setFieldValue?: (id: number) => void;
 }
 
-export const useSelectedRows = ({ setFieldValue } = {} as Props) => {
-  const [selectedRows, setSelectedRows] = useState<(Campaign | LineItem | Ad)[]>([]);
+type Entity = Campaign | LineItem | Ad;
+
+export const useSelectedRows = <T extends Entity>({ setFieldValue } = {} as Props) => {
+  const [selectedRows, setSelectedRows] = useState<T[]>([]);
   const selectedRowKeys = selectedRows.map((selectedRow) => selectedRow.id);
 
   const rowSelection = {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    onChange: (selectedRowKeys: React.Key[], selectedRows: Campaign[] | LineItem[] | Ad[]) => {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: T[]) => {
       setSelectedRows(selectedRows);
     },
     selectedRowKeys,
   };
 
-  const selectRow = (record: Campaign | LineItem | Ad) => {
+  const selectRow = (record: T) => {
     const isRowAlreadyChecked = selectedRowKeys.includes(record.id);
 
     if (isRowAlreadyChecked) {
@@ -28,7 +30,7 @@ export const useSelectedRows = ({ setFieldValue } = {} as Props) => {
     setSelectedRows((prev) => [...prev, record]);
   };
 
-  const onRow = (record: Campaign | LineItem | Ad) => ({
+  const onRow = (record: T) => ({
     onClick: () => {
       selectRow(record);
       setFieldValue?.(record.id);
