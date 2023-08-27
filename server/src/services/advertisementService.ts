@@ -1,14 +1,7 @@
 import { Op } from "sequelize";
 import Campaign from "../Models/Campaign";
 import LineItem from "../Models/LineItem";
-import Ad from "../Models/Ad";
-
-interface AdsForCreate {
-  line_item_id: number;
-  campaign_id: number;
-  title: string;
-  status: string;
-}
+import Ad, { IAd } from "../Models/Ad";
 
 const withSearch = (search: string) => ({
   where: {
@@ -71,11 +64,9 @@ class AdvertisementService {
     }
   };
 
-  createAds = async (adsForCreate: Ad[]) => {
+  createAds = async (adsForCreate: IAd[]) => {
     try {
-      // @ts-ignore
-      const result = await Ad.bulkCreate(adsForCreate);
-      return result;
+      return await Ad.bulkCreate(adsForCreate);
     } catch (err) {
       throw err;
     }

@@ -2,11 +2,19 @@ import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from "sequelize
 import Campaign from "./Campaign";
 import LineItem from "./LineItem";
 
+export interface IAd {
+  id: number;
+  status: string;
+  title: string;
+  campaign_id: number;
+  line_item_id: number;
+}
+
 @Table({
   tableName: "ads", // Название таблицы в базе данных
   timestamps: false, // Добавляет поля createdAt и updatedAt
 })
-export class Ad extends Model {
+export class Ad extends Model<IAd> {
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,
@@ -48,4 +56,4 @@ export class Ad extends Model {
   line_item: LineItem; // Поле для хранения связанной записи Campaign
 }
 
-export default Ad; // Экспортируем модель
+export default Ad;

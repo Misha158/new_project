@@ -1,11 +1,17 @@
 import { Table, Column, Model, DataType, HasMany } from "sequelize-typescript";
 import LineItem from "./LineItem";
 
+export interface ICampaign {
+  id: number;
+  status: string;
+  title: string;
+}
+
 @Table({
   tableName: "campaigns", // Название таблицы в базе данных
   timestamps: false, // Добавляет поля createdAt и updatedAt
 })
-export class Campaign extends Model {
+export class Campaign extends Model<ICampaign> {
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,
