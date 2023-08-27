@@ -1,27 +1,31 @@
 import express from "express";
-import mysql2 from "mysql2";
 import cors from "cors";
 
 import postRouter from "./routers/postRouter";
-import todoRouter from "./routers/todoRouter";
 import advertisementRouter from "./routers/advertisementRouter";
-import { dbConfig } from "./config";
+import { Sequelize } from "sequelize-typescript";
+import Campaign from "./Models/Campaign";
+import LineItem from "./Models/LineItem";
+import Ad from "./Models/Ad";
+import { sequelizeConfig } from "./config";
 
 const app = express();
 const port = 3000;
 
-// Создаем пул подключения к базе данных
-export const pool = mysql2.createPool(dbConfig);
+export const sequelize = new Sequelize(sequelizeConfig);
 
-// Проверка подключения к базе данных
-pool.getConnection((err, connection) => {
-  if (err) {
-    console.error("Ошибка подключения к базе данных:", err);
-    return;
+const connectToDataBase = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("Connection has been established successfully.");
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
   }
-  console.log("Успешное подключение к базе данных!");
-  connection.release(); // Возвращаем соединение в пул
-});
+};
+
+connectToDataBase();
+
+sequelize.addModels([Campaign, LineItem, Ad]); // Добавление модели в список моделей Sequelize
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -30,7 +34,6 @@ app.use(cors());
 
 // Используем маршрутизатор для постов
 app.use("/posts", postRouter);
-app.use("/", todoRouter);
 app.use("/advertisement", advertisementRouter);
 
 app.listen(port, () => {
