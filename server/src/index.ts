@@ -36,6 +36,36 @@ app.use(cors());
 app.use("/posts", postRouter);
 app.use("/advertisement", advertisementRouter);
 
+const defaultOptions = [
+  {
+    value: "jack-1",
+    label: "Jack-1",
+  },
+  {
+    value: "lucy-1",
+    label: "Lucy-1",
+  },
+  {
+    value: "tom-1",
+    label: "Tom-1",
+  },
+];
+
+app.get("/options", (req, res) => {
+  const search = req.query?.search as string;
+
+  if (search) {
+    setTimeout(() => {
+      res.json(defaultOptions.filter((option) => option.value.includes(search)));
+    }, 1000); // Задержка в миллисекундах (1 секунда)
+    return;
+  }
+
+  setTimeout(() => {
+    res.json(defaultOptions);
+  }, 1000); // Задержка в миллисекундах (1 секунда)
+});
+
 app.listen(port, () => {
   console.log(`Сервер запущен на порту ${port}`);
 });
