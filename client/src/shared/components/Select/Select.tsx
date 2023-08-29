@@ -7,9 +7,10 @@ interface Props {
   fetchFn?: (search?: string) => Promise<Option[]>;
   defaultOptions?: Option[];
   placeholder?: string;
+  onChange?: (value: string) => void;
 }
 
-export const Select = ({ fetchFn, defaultOptions = mockOptions, placeholder = "Select for priority" }: Props) => {
+export const Select = ({ fetchFn, defaultOptions = mockOptions, placeholder = "Select for priority", onChange }: Props) => {
   const [isTyping, setIsTyping] = useState(false);
   const [options, setOptions] = useState(defaultOptions);
   const isMount = useRef(true);
@@ -21,8 +22,11 @@ export const Select = ({ fetchFn, defaultOptions = mockOptions, placeholder = "S
     setIsTyping(false);
   });
 
-  const onChange = (e) => {
-    console.log("onChange selected", e.target.value);
+  const handlerOnChange = (value) => {
+    console.log("onChange selected", value);
+    if (onChange) {
+      onChange(value);
+    }
   };
 
   const onSearch = async (value) => {
@@ -51,10 +55,10 @@ export const Select = ({ fetchFn, defaultOptions = mockOptions, placeholder = "S
       showSearch
       placeholder={placeholder}
       filterOption={!fetchFn}
-      onChange={onChange}
+      onChange={handlerOnChange}
       onSearch={onSearch}
       options={options}
-      notFoundContent={isTyping ? <Spin size="small" /> : null}
+      notFoundContent={isTyping ? <Spin size="small" data-testid="antd-spinner" /> : null}
     />
   );
 };
