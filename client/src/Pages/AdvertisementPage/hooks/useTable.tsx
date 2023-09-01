@@ -19,7 +19,7 @@ export const useTable = ({ tabName }: Props) => {
   const selectedLineItemIds = useMemo(() => selectedLineItemRows.map((lineItem) => lineItem.id), [selectedLineItemRows]);
   const selectedCampaignIds = useMemo(() => selectedCampaignRows.map((lineItem) => lineItem.id), [selectedCampaignRows]);
 
-  const { campaigns, lineItems, ads, setAds } = useFetchTableData({
+  const { campaigns, lineItems, ads, setAds, setCampaigns, setLineItems } = useFetchTableData({
     selectedLineItemIds,
     selectedCampaignIds,
   });
@@ -49,5 +49,5 @@ export const useTable = ({ tabName }: Props) => {
     },
   ];
 
-  return { tabItems };
+  return { tabItems, setAds, setCampaigns, setLineItems };
 };

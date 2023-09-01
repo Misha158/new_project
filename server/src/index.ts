@@ -8,6 +8,7 @@ import Campaign from "./Models/Campaign";
 import LineItem from "./Models/LineItem";
 import Ad from "./Models/Ad";
 import { sequelizeConfig } from "./config";
+import { Status } from "./Models/Status";
 
 const app = express();
 const port = 3000;
@@ -25,7 +26,7 @@ const connectToDataBase = async () => {
 
 connectToDataBase();
 
-sequelize.addModels([Campaign, LineItem, Ad]); // Добавление модели в список моделей Sequelize
+sequelize.addModels([Campaign, LineItem, Ad, Status]); // Добавление модели в список моделей Sequelize
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

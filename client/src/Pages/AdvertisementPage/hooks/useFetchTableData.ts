@@ -31,6 +31,8 @@ interface Result {
   lineItems: LineItem[];
   ads: Ad[];
   setAds: Dispatch<SetStateAction<Ad[]>>;
+  setCampaigns: Dispatch<SetStateAction<Campaign[]>>;
+  setLineItems: Dispatch<SetStateAction<LineItem[]>>;
 }
 
 interface Props {
@@ -38,10 +40,10 @@ interface Props {
   selectedLineItemIds: number[];
 }
 
-const fetchAll = async () => {
-  const campaigns = await AdvertisementService.getCampaigns();
-  const lineItems = await AdvertisementService.getLineItems({});
-  const ads = await AdvertisementService.getAds({});
+export const fetchAll = async ({ status }: { status?: string }) => {
+  const campaigns = await AdvertisementService.getCampaigns({ status });
+  const lineItems = await AdvertisementService.getLineItems({ status });
+  const ads = await AdvertisementService.getAds({ status });
 
   return {
     campaigns,
@@ -63,7 +65,7 @@ export const useFetchTableData = ({ selectedCampaignIds, selectedLineItemIds }: 
   useEffect(() => {
     if (!ref.current) {
       const fetchAllData = async () => {
-        const { campaigns, lineItems, ads } = await fetchAll();
+        const { campaigns, lineItems, ads } = await fetchAll({});
 
         setCampaigns(campaigns);
         setLineItems(lineItems);
@@ -110,5 +112,7 @@ export const useFetchTableData = ({ selectedCampaignIds, selectedLineItemIds }: 
     lineItems,
     ads,
     setAds,
+    setCampaigns,
+    setLineItems,
   };
 };

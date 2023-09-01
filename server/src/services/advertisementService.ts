@@ -1,7 +1,9 @@
-import { Op } from "sequelize";
+import { Op, literal, Sequelize, fn } from "sequelize";
+import { identity, pickBy } from "lodash";
 import Campaign from "../Models/Campaign";
 import LineItem from "../Models/LineItem";
 import Ad, { IAd } from "../Models/Ad";
+import Status from "../Models/Status";
 
 const withSearch = (search: string) => ({
   where: {
@@ -25,17 +27,50 @@ const withAdIds = (adsIds: number[]) => ({
   },
 });
 
+const getWhere = (status?: string) =>
+  status
+    ? {
+        "$status.title$": status,
+      }
+    : {};
+
 class AdvertisementService {
-  getCampaigns = async () => {
+  getCampaigns = async ({ status }: { status?: string }) => {
     try {
-      return await Campaign.findAll();
+      return await Campaign.findAll({
+        where: getWhere(status),
+        raw: true, // Устанавливаем опцию raw: true для модели Status
+        group: ["Campaign.id"], // Группируем результат по идентификатору Campaign
+        attributes: ["id", "title", [fn("group_concat", Sequelize.col("Status.title")), "status"]],
+        include: [
+          {
+            model: Status, // Модель, которую вы хотите включить
+            as: "status", // Псевдоним для связи
+            attributes: [], // Оставляем пустой массив атрибутов для модели Status
+          },
+        ],
+      });
     } catch (err) {
       throw err;
     }
   };
-
-  getLineItems = async (search?: string, campaignIds = [] as number[]) => {
+  getLineItems = async ({ search, campaignIds = [], status }: { search?: string; campaignIds: number[]; status?: string }) => {
     try {
+      if (status) {
+        return await LineItem.findAll({
+          raw: true,
+          group: ["LineItem.id"],
+          attributes: ["id", "title", "campaign_id", [fn("group_concat", Sequelize.col("Status.title")), "status"]],
+          include: [
+            {
+              model: Status,
+              as: "status",
+              attributes: [],
+            },
+          ],
+        });
+      }
+
       if (search) {
         return await LineItem.findAll(withSearch(search));
       }
@@ -44,7 +79,18 @@ class AdvertisementService {
         return await LineItem.findAll(withCampaignIds(campaignIds));
       }
 
-      return await LineItem.findAll();
+      return await LineItem.findAll({
+        raw: true,
+        group: ["LineItem.id"],
+        attributes: ["id", "title", "campaign_id", [fn("group_concat", Sequelize.col("Status.title")), "status"]],
+        include: [
+          {
+            model: Status,
+            as: "status",
+            attributes: [],
+          },
+        ],
+      });
     } catch (err) {
       throw err;
     }
