@@ -19,6 +19,20 @@ const withLineItemIds = (lineItemIds: number[]) => ({
   where: { line_item_id: { [Op.in]: lineItemIds } },
 });
 
+interface FilterOptions {
+  campaignIds?: number[];
+  lineItemIds?: number[];
+  search?: string;
+}
+
+const filterOptions = ({ campaignIds, lineItemIds, search }: FilterOptions) => ({
+  ...(campaignIds?.length ? { campaign_id: { [Op.in]: campaignIds } } : {}),
+  ...(lineItemIds?.length ? { line_item_id: { [Op.in]: lineItemIds } } : {}),
+  ...(search
+    ? { [Op.or]: [{ id: { [Op.like]: `%${search}%` } }, { status: { [Op.like]: `%${search}%` } }, { title: { [Op.like]: `%${search}%` } }] }
+    : {}),
+});
+
 const withAdIds = (adsIds: number[]) => ({
   where: {
     id: {
@@ -56,30 +70,8 @@ class AdvertisementService {
   };
   getLineItems = async ({ search, campaignIds = [], status }: { search?: string; campaignIds: number[]; status?: string }) => {
     try {
-      if (status) {
-        return await LineItem.findAll({
-          raw: true,
-          group: ["LineItem.id"],
-          attributes: ["id", "title", "campaign_id", [fn("group_concat", Sequelize.col("Status.title")), "status"]],
-          include: [
-            {
-              model: Status,
-              as: "status",
-              attributes: [],
-            },
-          ],
-        });
-      }
-
-      if (search) {
-        return await LineItem.findAll(withSearch(search));
-      }
-
-      if (campaignIds.length) {
-        return await LineItem.findAll(withCampaignIds(campaignIds));
-      }
-
       return await LineItem.findAll({
+        where: filterOptions({ search, campaignIds }),
         raw: true,
         group: ["LineItem.id"],
         attributes: ["id", "title", "campaign_id", [fn("group_concat", Sequelize.col("Status.title")), "status"]],
@@ -91,6 +83,43 @@ class AdvertisementService {
           },
         ],
       });
+
+      ////////////////////////////////////////////////
+      // if (status) {
+      //   return await LineItem.findAll({
+      //     raw: true,
+      //     group: ["LineItem.id"],
+      //     attributes: ["id", "title", "campaign_id", [fn("group_concat", Sequelize.col("Status.title")), "status"]],
+      //     include: [
+      //       {
+      //         model: Status,
+      //         as: "status",
+      //         attributes: [],
+      //       },
+      //     ],
+      //   });
+      // }
+      //
+      // if (search) {
+      //   return await LineItem.findAll(withSearch(search));
+      // }
+      //
+      // if (campaignIds.length) {
+      //   return await LineItem.findAll(withCampaignIds(campaignIds));
+      // }
+      //
+      // return await LineItem.findAll({
+      //   raw: true,
+      //   group: ["LineItem.id"],
+      //   attributes: ["id", "title", "campaign_id", [fn("group_concat", Sequelize.col("Status.title")), "status"]],
+      //   include: [
+      //     {
+      //       model: Status,
+      //       as: "status",
+      //       attributes: [],
+      //     },
+      //   ],
+      // });
     } catch (err) {
       throw err;
     }
