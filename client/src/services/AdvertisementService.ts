@@ -19,7 +19,7 @@ export class AdvertisementService {
     try {
       const { data } = await axios.get(`/advertisement/lineItems`, {
         params: {
-          campaignIds: `[${selectedCampaignIds.join(",")}]`,
+          campaignIds: selectedCampaignIds.length ? `[${selectedCampaignIds.join(",")}]` : undefined,
           status,
         },
       });
@@ -42,8 +42,8 @@ export class AdvertisementService {
     try {
       const { data } = await axios.get(`/advertisement/ads`, {
         params: {
-          campaignIds: `[${selectedCampaignIds.join(",")}]`,
-          lineItemIds: `[${selectedLineItemIds.join(",")}]`,
+          campaignIds: selectedCampaignIds.length ? `[${selectedCampaignIds.join(",")}]` : undefined,
+          lineItemIds: selectedLineItemIds.length ? `[${selectedLineItemIds.join(",")}]` : undefined,
           status,
         },
       });
