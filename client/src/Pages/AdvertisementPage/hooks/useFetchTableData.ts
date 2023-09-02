@@ -41,10 +41,10 @@ interface Props {
   status?: string;
 }
 
-export const fetchAll = async ({ status, selectedLineItemIds, selectedCampaignIds }: FetchAllData) => {
-  const campaigns = await AdvertisementService.getCampaigns({ status });
-  const lineItems = await AdvertisementService.getLineItems({ status, selectedCampaignIds });
-  const ads = await AdvertisementService.getAds({ status, selectedCampaignIds, selectedLineItemIds });
+export const fetchAll = async ({ search, status, selectedLineItemIds, selectedCampaignIds }: FetchAllData) => {
+  const campaigns = await AdvertisementService.getCampaigns({ status, search });
+  const lineItems = await AdvertisementService.getLineItems({ status, selectedCampaignIds, search });
+  const ads = await AdvertisementService.getAds({ status, selectedCampaignIds, selectedLineItemIds, search });
 
   return {
     campaigns,
@@ -55,6 +55,7 @@ export const fetchAll = async ({ status, selectedLineItemIds, selectedCampaignId
 
 export interface FetchAllData {
   status?: string;
+  search?: string;
   selectedCampaignIds?: number[];
   selectedLineItemIds?: number[];
 }

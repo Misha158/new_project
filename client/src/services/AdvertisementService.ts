@@ -2,11 +2,12 @@ import { message } from "antd";
 import { axios } from "./config";
 
 export class AdvertisementService {
-  static getCampaigns = async ({ status }: { status?: string }) => {
+  static getCampaigns = async ({ status, search }: { status?: string; search?: string }) => {
     try {
       const { data } = await axios.get("/advertisement/campaigns", {
         params: {
           status,
+          search: search ? search : undefined,
         },
       });
 
@@ -17,12 +18,21 @@ export class AdvertisementService {
     }
   };
 
-  static getLineItems = async ({ selectedCampaignIds = [], status }: { selectedCampaignIds?: number[]; status?: string }) => {
+  static getLineItems = async ({
+    selectedCampaignIds = [],
+    status,
+    search,
+  }: {
+    selectedCampaignIds?: number[];
+    status?: string;
+    search?: string;
+  }) => {
     try {
       const { data } = await axios.get(`/advertisement/lineItems`, {
         params: {
           campaignIds: selectedCampaignIds.length ? `[${selectedCampaignIds.join(",")}]` : undefined,
           status,
+          search: search ? search : undefined,
         },
       });
 
@@ -37,10 +47,12 @@ export class AdvertisementService {
     selectedCampaignIds = [],
     selectedLineItemIds = [],
     status,
+    search,
   }: {
     selectedCampaignIds?: number[];
     selectedLineItemIds?: number[];
     status?: string;
+    search?: string;
   }) => {
     try {
       const { data } = await axios.get(`/advertisement/ads`, {
@@ -48,6 +60,7 @@ export class AdvertisementService {
           campaignIds: selectedCampaignIds.length ? `[${selectedCampaignIds.join(",")}]` : undefined,
           lineItemIds: selectedLineItemIds.length ? `[${selectedLineItemIds.join(",")}]` : undefined,
           status,
+          search: search ? search : undefined,
         },
       });
 

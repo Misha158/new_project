@@ -28,18 +28,18 @@ const withAdIds = (adsIds: number[]) => ({
   },
 });
 
-const getWhere = (status?: string) =>
-  status
-    ? {
-        "$status.title$": status,
-      }
-    : {};
+const getWhere = ({ search, status }: { search?: string; status?: string }) => ({
+  ...(status ? { "$status.title$": status } : {}),
+  ...(search
+    ? { [Op.or]: [{ id: { [Op.like]: `%${search}%` } }, { "$status.title$": { [Op.like]: `%${search}%` } }, { title: { [Op.like]: `%${search}%` } }] }
+    : {}),
+});
 
 class AdvertisementService {
-  getCampaigns = async ({ status }: { status?: string }) => {
+  getCampaigns = async ({ status, search }: { status?: string; search?: string }) => {
     try {
       return await Campaign.findAll({
-        where: getWhere(status),
+        where: getWhere({ status, search }),
         raw: true, // Устанавливаем опцию raw: true для модели Status
         group: ["Campaign.id"], // Группируем результат по идентификатору Campaign
         attributes: ["id", "title", [fn("group_concat", Sequelize.col("Status.title")), "status"]],
@@ -76,13 +76,32 @@ class AdvertisementService {
     }
   };
 
-  getAds = async ({ campaignIds, lineItemIds, status }: { campaignIds: number[]; lineItemIds: number[]; status?: string }) => {
+  getAds = async ({
+    campaignIds,
+    lineItemIds,
+    status,
+    search,
+  }: {
+    campaignIds: number[];
+    lineItemIds: number[];
+    status?: string;
+    search?: string;
+  }) => {
     const filterOptions = ({ campaignIds, lineItemIds, status }: { campaignIds?: number[]; lineItemIds?: number[]; status?: string }) => ({
       ...(campaignIds?.length && !lineItemIds?.length ? { campaign_id: { [Op.in]: campaignIds } } : {}),
       ...(lineItemIds?.length ? { line_item_id: { [Op.in]: lineItemIds } } : {}),
       ...(status
         ? {
             "$status.title$": status,
+          }
+        : {}),
+      ...(search
+        ? {
+            [Op.or]: [
+              { id: { [Op.like]: `%${search}%` } },
+              { "$status.title$": { [Op.like]: `%${search}%` } },
+              { title: { [Op.like]: `%${search}%` } },
+            ],
           }
         : {}),
     });

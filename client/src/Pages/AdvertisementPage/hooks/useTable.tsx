@@ -1,10 +1,10 @@
+import { useMemo } from "react";
 import { Table } from "antd";
 import { adColumns, campaignColumns, lineItemColumns } from "../columns/campaign";
 import { useSelectedRows } from "./useSelectedRows";
 import { Ad, Campaign, LineItem, useFetchTableData } from "./useFetchTableData";
 import { DuplicatedAd } from "../DuplicatedAd/DuplicatedAd";
 import { TabNames } from "../../../consts/consts";
-import { useMemo } from "react";
 import { DeleteAd } from "../DeleteAd/DeleteAd";
 
 interface Props {

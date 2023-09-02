@@ -4,8 +4,8 @@ import AdvertisementService from "../services/advertisementService";
 class AdvertisementController {
   getCampaigns = async (req: Request, res: Response) => {
     try {
-      const { status } = req.query as { status?: string };
-      const campaigns = await AdvertisementService.getCampaigns({ status });
+      const { status, search } = req.query as { status?: string; search?: string };
+      const campaigns = await AdvertisementService.getCampaigns({ status, search });
 
       res.status(200).json(campaigns);
     } catch (err) {
@@ -31,13 +31,19 @@ class AdvertisementController {
   };
 
   getAds = async (req: Request, res: Response) => {
-    const { campaignIds, lineItemIds, status } = req.query;
+    const { campaignIds, lineItemIds, status, search } = req.query;
     const parsedCampaigns = campaignIds ? JSON.parse(campaignIds as string) : [];
     const parsedLineItems = lineItemIds ? JSON.parse(lineItemIds as string) : [];
     const parsedStatus = status as string;
+    const typedSearch = search as string;
 
     try {
-      const ads = await AdvertisementService.getAds({ campaignIds: parsedCampaigns, lineItemIds: parsedLineItems, status: parsedStatus });
+      const ads = await AdvertisementService.getAds({
+        campaignIds: parsedCampaigns,
+        lineItemIds: parsedLineItems,
+        status: parsedStatus,
+        search: typedSearch,
+      });
 
       res.status(200).json(ads);
     } catch (err) {
