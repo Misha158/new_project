@@ -31,12 +31,13 @@ class AdvertisementController {
   };
 
   getAds = async (req: Request, res: Response) => {
-    const { campaignIds, lineItemIds } = req.query;
+    const { campaignIds, lineItemIds, status } = req.query;
     const parsedCampaigns = campaignIds ? JSON.parse(campaignIds as string) : [];
     const parsedLineItems = lineItemIds ? JSON.parse(lineItemIds as string) : [];
+    const parsedStatus = status as string;
 
     try {
-      const ads = await AdvertisementService.getAds({ campaignIds: parsedCampaigns, lineItemIds: parsedLineItems });
+      const ads = await AdvertisementService.getAds({ campaignIds: parsedCampaigns, lineItemIds: parsedLineItems, status: parsedStatus });
 
       res.status(200).json(ads);
     } catch (err) {

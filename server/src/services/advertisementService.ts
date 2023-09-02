@@ -23,13 +23,15 @@ interface FilterOptions {
   campaignIds?: number[];
   lineItemIds?: number[];
   search?: string;
+  status?: string;
 }
 
-const filterOptions = ({ campaignIds, lineItemIds, search }: FilterOptions) => ({
+const filterOptions = ({ campaignIds, lineItemIds, search, status }: FilterOptions) => ({
   ...(campaignIds?.length ? { campaign_id: { [Op.in]: campaignIds } } : {}),
   ...(lineItemIds?.length ? { line_item_id: { [Op.in]: lineItemIds } } : {}),
+  ...(status ? { "$status.title$": status } : {}),
   ...(search
-    ? { [Op.or]: [{ id: { [Op.like]: `%${search}%` } }, { status: { [Op.like]: `%${search}%` } }, { title: { [Op.like]: `%${search}%` } }] }
+    ? { [Op.or]: [{ id: { [Op.like]: `%${search}%` } }, { "$status.title$": { [Op.like]: `%${search}%` } }, { title: { [Op.like]: `%${search}%` } }] }
     : {}),
 });
 
@@ -68,10 +70,11 @@ class AdvertisementService {
       throw err;
     }
   };
+
   getLineItems = async ({ search, campaignIds = [], status }: { search?: string; campaignIds: number[]; status?: string }) => {
     try {
       return await LineItem.findAll({
-        where: filterOptions({ search, campaignIds }),
+        where: filterOptions({ search, campaignIds, status }),
         raw: true,
         group: ["LineItem.id"],
         attributes: ["id", "title", "campaign_id", [fn("group_concat", Sequelize.col("Status.title")), "status"]],
@@ -83,57 +86,36 @@ class AdvertisementService {
           },
         ],
       });
-
-      ////////////////////////////////////////////////
-      // if (status) {
-      //   return await LineItem.findAll({
-      //     raw: true,
-      //     group: ["LineItem.id"],
-      //     attributes: ["id", "title", "campaign_id", [fn("group_concat", Sequelize.col("Status.title")), "status"]],
-      //     include: [
-      //       {
-      //         model: Status,
-      //         as: "status",
-      //         attributes: [],
-      //       },
-      //     ],
-      //   });
-      // }
-      //
-      // if (search) {
-      //   return await LineItem.findAll(withSearch(search));
-      // }
-      //
-      // if (campaignIds.length) {
-      //   return await LineItem.findAll(withCampaignIds(campaignIds));
-      // }
-      //
-      // return await LineItem.findAll({
-      //   raw: true,
-      //   group: ["LineItem.id"],
-      //   attributes: ["id", "title", "campaign_id", [fn("group_concat", Sequelize.col("Status.title")), "status"]],
-      //   include: [
-      //     {
-      //       model: Status,
-      //       as: "status",
-      //       attributes: [],
-      //     },
-      //   ],
-      // });
     } catch (err) {
       throw err;
     }
   };
 
-  getAds = async ({ campaignIds, lineItemIds }: { campaignIds: number[]; lineItemIds: number[] }) => {
-    if (campaignIds?.length && !lineItemIds.length) {
-      return await Ad.findAll(withCampaignIds(campaignIds));
-    } else if (lineItemIds?.length) {
-      return await Ad.findAll(withLineItemIds(lineItemIds));
-    }
+  getAds = async ({ campaignIds, lineItemIds, status }: { campaignIds: number[]; lineItemIds: number[]; status?: string }) => {
+    const filterOptions = ({ campaignIds, lineItemIds, status }: { campaignIds?: number[]; lineItemIds?: number[]; status?: string }) => ({
+      ...(campaignIds?.length && !lineItemIds?.length ? { campaign_id: { [Op.in]: campaignIds } } : {}),
+      ...(lineItemIds?.length ? { line_item_id: { [Op.in]: lineItemIds } } : {}),
+      ...(status
+        ? {
+            "$status.title$": status,
+          }
+        : {}),
+    });
 
     try {
-      return await Ad.findAll();
+      return await Ad.findAll({
+        where: filterOptions({ campaignIds, lineItemIds, status }),
+        raw: true,
+        group: ["Ad.id"],
+        attributes: ["id", "title", "campaign_id", "line_item_id", [fn("group_concat", Sequelize.col("Status.title")), "status"]],
+        include: [
+          {
+            model: Status,
+            as: "status",
+            attributes: [],
+          },
+        ],
+      });
     } catch (err) {
       throw err;
     }
