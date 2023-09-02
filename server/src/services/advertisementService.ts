@@ -1,23 +1,8 @@
-import { Op, literal, Sequelize, fn } from "sequelize";
-import { identity, pickBy } from "lodash";
+import { Op, Sequelize, fn } from "sequelize";
 import Campaign from "../Models/Campaign";
 import LineItem from "../Models/LineItem";
 import Ad, { IAd } from "../Models/Ad";
 import Status from "../Models/Status";
-
-const withSearch = (search: string) => ({
-  where: {
-    [Op.or]: [{ id: { [Op.like]: `%${search}%` } }, { status: { [Op.like]: `%${search}%` } }, { title: { [Op.like]: `%${search}%` } }],
-  },
-});
-
-const withCampaignIds = (campaignIds: number[]) => ({
-  where: { campaign_id: { [Op.in]: campaignIds } },
-});
-
-const withLineItemIds = (lineItemIds: number[]) => ({
-  where: { line_item_id: { [Op.in]: lineItemIds } },
-});
 
 interface FilterOptions {
   campaignIds?: number[];
