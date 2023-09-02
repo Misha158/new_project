@@ -9,9 +9,10 @@ import { DeleteAd } from "../DeleteAd/DeleteAd";
 
 interface Props {
   tabName: TabNames;
+  status?: string;
 }
 
-export const useTable = ({ tabName }: Props) => {
+export const useTable = ({ tabName, status }: Props) => {
   const { selectedRows: selectedLineItemRows, onRow: onLineItemRow, rowSelection: lineItemRowSelection } = useSelectedRows<LineItem>();
   const { selectedRows: selectedCampaignRows, onRow: onCampaignRow, rowSelection: campaignRowSelection } = useSelectedRows<Campaign>();
   const { selectedRows: selectedAdRows, onRow, rowSelection } = useSelectedRows<Ad>();
@@ -22,6 +23,7 @@ export const useTable = ({ tabName }: Props) => {
   const { campaigns, lineItems, ads, setAds, setCampaigns, setLineItems } = useFetchTableData({
     selectedLineItemIds,
     selectedCampaignIds,
+    status,
   });
 
   const tabItems = [
@@ -49,5 +51,5 @@ export const useTable = ({ tabName }: Props) => {
     },
   ];
 
-  return { tabItems, setAds, setCampaigns, setLineItems };
+  return { tabItems, setAds, setCampaigns, setLineItems, selectedLineItemIds, selectedCampaignIds };
 };

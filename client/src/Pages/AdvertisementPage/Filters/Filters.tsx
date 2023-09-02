@@ -13,11 +13,15 @@ interface Props {
   setAds: Dispatch<SetStateAction<Ad[]>>;
   setCampaigns: Dispatch<SetStateAction<Campaign[]>>;
   setLineItems: Dispatch<SetStateAction<LineItem[]>>;
+  selectedCampaignIds: number[];
+  selectedLineItemIds: number[];
+  setStatus: Dispatch<SetStateAction<string>>;
 }
 
-export const Filters = ({ setAds, setCampaigns, setLineItems }: Props) => {
+export const Filters = ({ setAds, setCampaigns, setLineItems, setStatus, selectedCampaignIds, selectedLineItemIds }: Props) => {
   const onFilterStatus = async (status: string) => {
-    const { campaigns, lineItems, ads } = await fetchAll({ status });
+    setStatus(status);
+    const { campaigns, lineItems, ads } = await fetchAll({ status, selectedCampaignIds, selectedLineItemIds });
 
     setCampaigns(campaigns);
     setLineItems(lineItems);

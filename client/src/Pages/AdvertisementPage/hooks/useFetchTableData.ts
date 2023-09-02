@@ -38,6 +38,7 @@ interface Result {
 interface Props {
   selectedCampaignIds: number[];
   selectedLineItemIds: number[];
+  status?: string;
 }
 
 export const fetchAll = async ({ status, selectedLineItemIds, selectedCampaignIds }: FetchAllData) => {
@@ -58,7 +59,7 @@ export interface FetchAllData {
   selectedLineItemIds?: number[];
 }
 
-export const useFetchTableData = ({ selectedCampaignIds, selectedLineItemIds }: Props): Result => {
+export const useFetchTableData = ({ selectedCampaignIds, selectedLineItemIds, status }: Props): Result => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [lineItems, setLineItems] = useState<LineItem[]>([]);
   const [ads, setAds] = useState<Ad[]>([]);
@@ -82,8 +83,8 @@ export const useFetchTableData = ({ selectedCampaignIds, selectedLineItemIds }: 
     setAds(ads);
   };
 
-  const fetchOnlyAds = async () => {
-    const ads = await AdvertisementService.getAds({ selectedCampaignIds, selectedLineItemIds });
+  const fetchOnlyAds = async ({ status }: { status?: string }) => {
+    const ads = await AdvertisementService.getAds({ selectedCampaignIds, selectedLineItemIds, status });
 
     setAds(ads);
     refOldSelectedLineItemIds.current = selectedLineItemIds;
@@ -92,12 +93,14 @@ export const useFetchTableData = ({ selectedCampaignIds, selectedLineItemIds }: 
   const fetchLineItemsAndAds = async ({
     selectedCampaignIds,
     selectedLineItemIds,
+    status,
   }: {
     selectedCampaignIds: number[];
     selectedLineItemIds: number[];
+    status?: string;
   }) => {
-    const lineItems = await AdvertisementService.getLineItems({ selectedCampaignIds });
-    const ads = await AdvertisementService.getAds({ selectedCampaignIds, selectedLineItemIds });
+    const lineItems = await AdvertisementService.getLineItems({ selectedCampaignIds, status });
+    const ads = await AdvertisementService.getAds({ selectedCampaignIds, selectedLineItemIds, status });
 
     setLineItems(lineItems);
     setAds(ads);
@@ -113,10 +116,10 @@ export const useFetchTableData = ({ selectedCampaignIds, selectedLineItemIds }: 
     }
 
     if (refOldSelectedCampaignIds.current !== selectedCampaignIds) {
-      void fetchLineItemsAndAds({ selectedCampaignIds, selectedLineItemIds });
+      void fetchLineItemsAndAds({ selectedCampaignIds, selectedLineItemIds, status });
       return;
     } else if (refOldSelectedCampaignIds.current === selectedCampaignIds && refOldSelectedLineItemIds.current !== selectedLineItemIds) {
-      void fetchOnlyAds();
+      void fetchOnlyAds({ status });
       return;
     }
 

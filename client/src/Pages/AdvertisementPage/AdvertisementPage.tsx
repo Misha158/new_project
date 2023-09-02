@@ -6,9 +6,10 @@ import { Filters } from "./Filters/Filters";
 import { TabNames } from "../../consts/consts";
 
 export const AdvertisementPage = () => {
+  const [status, setStatus] = useState(undefined);
   const [tabName, setTabName] = useState(TabNames.Campaigns);
 
-  const { tabItems, setAds, setCampaigns, setLineItems } = useTable({ tabName });
+  const { tabItems, setAds, setCampaigns, setLineItems, selectedLineItemIds, selectedCampaignIds } = useTable({ tabName, status });
 
   const onChange = (key: TabNames) => {
     setTabName(key);
@@ -16,7 +17,14 @@ export const AdvertisementPage = () => {
 
   return (
     <div>
-      <Filters setAds={setAds} setCampaigns={setCampaigns} setLineItems={setLineItems} />
+      <Filters
+        selectedCampaignIds={selectedCampaignIds}
+        selectedLineItemIds={selectedLineItemIds}
+        setStatus={setStatus}
+        setAds={setAds}
+        setCampaigns={setCampaigns}
+        setLineItems={setLineItems}
+      />
       <Tabs onChange={onChange} type="card" items={tabItems} />
     </div>
   );
