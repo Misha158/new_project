@@ -1,3 +1,4 @@
+import { message } from "antd";
 import { axios } from "./config";
 
 export class AdvertisementService {
@@ -11,6 +12,7 @@ export class AdvertisementService {
 
       return data;
     } catch (e) {
+      message.error(`Campaigns failed with ${e.message}`);
       throw new Error(e.message);
     }
   };
@@ -26,6 +28,7 @@ export class AdvertisementService {
 
       return data;
     } catch (e) {
+      message.error(`LineItems failed with ${e.message}`);
       throw new Error(e.message);
     }
   };
@@ -50,6 +53,7 @@ export class AdvertisementService {
 
       return data;
     } catch (e) {
+      message.error(`Ads failed with ${e.message}`);
       throw new Error(e.message);
     }
   };
@@ -62,6 +66,7 @@ export class AdvertisementService {
 
       return data;
     } catch (e) {
+      message.error(`Delete failed with ${e.message}`);
       throw new Error(e.message);
     }
   };
