@@ -4,6 +4,7 @@ import { Tabs } from "antd";
 import { useTable } from "./hooks/useTable";
 import { Filters } from "./Filters/Filters";
 import { TabNames } from "../../consts/consts";
+import { ReduxCounter } from "../../shared/components/redux/ReduxCounter";
 
 export const AdvertisementPage = () => {
   const [status, setStatus] = useState<string | undefined>(undefined);
@@ -17,6 +18,7 @@ export const AdvertisementPage = () => {
 
   return (
     <div>
+      <ReduxCounter />
       <Filters
         selectedCampaignIds={selectedCampaignIds}
         selectedLineItemIds={selectedLineItemIds}
