@@ -1,34 +1,31 @@
-import { Button, Tabs } from "antd";
+import { useState } from "react";
+import { Tabs } from "antd";
 
 import { useTable } from "./hooks/useTable";
-import { useState } from "react";
+import { Filters } from "./Filters/Filters";
 import { TabNames } from "../../consts/consts";
-import { Select } from "../../shared/components/Select/Select";
-import { axios } from "../../services/config";
 
 export const AdvertisementPage = () => {
+  const [status, setStatus] = useState<string | undefined>(undefined);
   const [tabName, setTabName] = useState(TabNames.Campaigns);
 
-  const { tabItems } = useTable({ tabName });
+  const { tabItems, setAds, setCampaigns, setLineItems, selectedLineItemIds, selectedCampaignIds } = useTable({ tabName, status });
 
   const onChange = (key: TabNames) => {
     setTabName(key);
   };
 
-  const fetchFn = async (search: string) => {
-    const { data } = await axios.get("/options", {
-      params: {
-        search: search,
-      },
-    });
-
-    return data;
-  };
-
   return (
     <div>
-      <Select fetchFn={fetchFn} placeholder="with request" />
-      <Select placeholder="default" />
+      <Filters
+        selectedCampaignIds={selectedCampaignIds}
+        selectedLineItemIds={selectedLineItemIds}
+        setStatus={setStatus}
+        setAds={setAds}
+        setCampaigns={setCampaigns}
+        setLineItems={setLineItems}
+        status={status}
+      />
       <Tabs onChange={onChange} type="card" items={tabItems} />
     </div>
   );

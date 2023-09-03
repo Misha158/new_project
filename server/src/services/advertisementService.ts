@@ -1,20 +1,23 @@
-import { Op } from "sequelize";
+import { Op, Sequelize, fn } from "sequelize";
 import Campaign from "../Models/Campaign";
 import LineItem from "../Models/LineItem";
 import Ad, { IAd } from "../Models/Ad";
+import Status from "../Models/Status";
 
-const withSearch = (search: string) => ({
-  where: {
-    [Op.or]: [{ id: { [Op.like]: `%${search}%` } }, { status: { [Op.like]: `%${search}%` } }, { title: { [Op.like]: `%${search}%` } }],
-  },
-});
+interface FilterOptions {
+  campaignIds?: number[];
+  lineItemIds?: number[];
+  search?: string;
+  status?: string;
+}
 
-const withCampaignIds = (campaignIds: number[]) => ({
-  where: { campaign_id: { [Op.in]: campaignIds } },
-});
-
-const withLineItemIds = (lineItemIds: number[]) => ({
-  where: { line_item_id: { [Op.in]: lineItemIds } },
+const filterOptions = ({ campaignIds, lineItemIds, search, status }: FilterOptions) => ({
+  ...(campaignIds?.length ? { campaign_id: { [Op.in]: campaignIds } } : {}),
+  ...(lineItemIds?.length ? { line_item_id: { [Op.in]: lineItemIds } } : {}),
+  ...(status ? { "$status.title$": status } : {}),
+  ...(search
+    ? { [Op.or]: [{ id: { [Op.like]: `%${search}%` } }, { "$status.title$": { [Op.like]: `%${search}%` } }, { title: { [Op.like]: `%${search}%` } }] }
+    : {}),
 });
 
 const withAdIds = (adsIds: number[]) => ({
@@ -25,40 +28,98 @@ const withAdIds = (adsIds: number[]) => ({
   },
 });
 
+const getWhere = ({ search, status }: { search?: string; status?: string }) => ({
+  ...(status ? { "$status.title$": status } : {}),
+  ...(search
+    ? { [Op.or]: [{ id: { [Op.like]: `%${search}%` } }, { "$status.title$": { [Op.like]: `%${search}%` } }, { title: { [Op.like]: `%${search}%` } }] }
+    : {}),
+});
+
 class AdvertisementService {
-  getCampaigns = async () => {
+  getCampaigns = async ({ status, search }: { status?: string; search?: string }) => {
     try {
-      return await Campaign.findAll();
+      return await Campaign.findAll({
+        where: getWhere({ status, search }),
+        raw: true, // Устанавливаем опцию raw: true для модели Status
+        group: ["Campaign.id"], // Группируем результат по идентификатору Campaign
+        attributes: ["id", "title", [fn("group_concat", Sequelize.col("Status.title")), "status"]],
+        include: [
+          {
+            model: Status, // Модель, которую вы хотите включить
+            as: "status", // Псевдоним для связи
+            attributes: [], // Оставляем пустой массив атрибутов для модели Status
+          },
+        ],
+      });
     } catch (err) {
       throw err;
     }
   };
 
-  getLineItems = async (search?: string, campaignIds = [] as number[]) => {
+  getLineItems = async ({ search, campaignIds = [], status }: { search?: string; campaignIds: number[]; status?: string }) => {
     try {
-      if (search) {
-        return await LineItem.findAll(withSearch(search));
-      }
-
-      if (campaignIds.length) {
-        return await LineItem.findAll(withCampaignIds(campaignIds));
-      }
-
-      return await LineItem.findAll();
+      return await LineItem.findAll({
+        where: filterOptions({ search, campaignIds, status }),
+        raw: true,
+        group: ["LineItem.id"],
+        attributes: ["id", "title", "campaign_id", [fn("group_concat", Sequelize.col("Status.title")), "status"]],
+        include: [
+          {
+            model: Status,
+            as: "status",
+            attributes: [],
+          },
+        ],
+      });
     } catch (err) {
       throw err;
     }
   };
 
-  getAds = async ({ campaignIds, lineItemIds }: { campaignIds: number[]; lineItemIds: number[] }) => {
-    if (campaignIds?.length && !lineItemIds.length) {
-      return await Ad.findAll(withCampaignIds(campaignIds));
-    } else if (lineItemIds?.length) {
-      return await Ad.findAll(withLineItemIds(lineItemIds));
-    }
+  getAds = async ({
+    campaignIds,
+    lineItemIds,
+    status,
+    search,
+  }: {
+    campaignIds: number[];
+    lineItemIds: number[];
+    status?: string;
+    search?: string;
+  }) => {
+    const filterOptions = ({ campaignIds, lineItemIds, status }: { campaignIds?: number[]; lineItemIds?: number[]; status?: string }) => ({
+      ...(campaignIds?.length && !lineItemIds?.length ? { campaign_id: { [Op.in]: campaignIds } } : {}),
+      ...(lineItemIds?.length ? { line_item_id: { [Op.in]: lineItemIds } } : {}),
+      ...(status
+        ? {
+            "$status.title$": status,
+          }
+        : {}),
+      ...(search
+        ? {
+            [Op.or]: [
+              { id: { [Op.like]: `%${search}%` } },
+              { "$status.title$": { [Op.like]: `%${search}%` } },
+              { title: { [Op.like]: `%${search}%` } },
+            ],
+          }
+        : {}),
+    });
 
     try {
-      return await Ad.findAll();
+      return await Ad.findAll({
+        where: filterOptions({ campaignIds, lineItemIds, status }),
+        raw: true,
+        group: ["Ad.id"],
+        attributes: ["id", "title", "campaign_id", "line_item_id", [fn("group_concat", Sequelize.col("Status.title")), "status"]],
+        include: [
+          {
+            model: Status,
+            as: "status",
+            attributes: [],
+          },
+        ],
+      });
     } catch (err) {
       throw err;
     }

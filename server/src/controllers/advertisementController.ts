@@ -4,40 +4,50 @@ import AdvertisementService from "../services/advertisementService";
 class AdvertisementController {
   getCampaigns = async (req: Request, res: Response) => {
     try {
-      const campaigns = await AdvertisementService.getCampaigns();
+      const { status, search } = req.query as { status?: string; search?: string };
+      const campaigns = await AdvertisementService.getCampaigns({ status, search });
 
       res.status(200).json(campaigns);
     } catch (err) {
-      res.status(500).send("Error with campaigns");
+      console.log("err", err);
+      res.status(500).send(`Error with campaigns ${err}`);
     }
   };
 
   getLineItems = async (req: Request, res: Response) => {
-    const { search, campaignIds } = req.query;
+    const { search, campaignIds, status } = req.query;
 
     const typedSearch = search as string;
     const parsedCampaigns = campaignIds ? JSON.parse(campaignIds as string) : [];
+    const parsedStatus = status as string;
 
     try {
-      const lineItems = await AdvertisementService.getLineItems(typedSearch, parsedCampaigns);
+      const lineItems = await AdvertisementService.getLineItems({ search: typedSearch, campaignIds: parsedCampaigns, status: parsedStatus });
 
       res.status(200).json(lineItems);
     } catch (err) {
-      res.status(500).send("Error with line items.");
+      res.status(500).send(`Error with line items ${err}`);
     }
   };
 
   getAds = async (req: Request, res: Response) => {
-    const { campaignIds, lineItemIds } = req.query;
+    const { campaignIds, lineItemIds, status, search } = req.query;
     const parsedCampaigns = campaignIds ? JSON.parse(campaignIds as string) : [];
     const parsedLineItems = lineItemIds ? JSON.parse(lineItemIds as string) : [];
+    const parsedStatus = status as string;
+    const typedSearch = search as string;
 
     try {
-      const ads = await AdvertisementService.getAds({ campaignIds: parsedCampaigns, lineItemIds: parsedLineItems });
+      const ads = await AdvertisementService.getAds({
+        campaignIds: parsedCampaigns,
+        lineItemIds: parsedLineItems,
+        status: parsedStatus,
+        search: typedSearch,
+      });
 
       res.status(200).json(ads);
     } catch (err) {
-      res.status(500).send("Error with ads.");
+      res.status(500).send(`Error with ads ${err}`);
     }
   };
 

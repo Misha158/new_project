@@ -1,17 +1,18 @@
+import { useMemo } from "react";
 import { Table } from "antd";
 import { adColumns, campaignColumns, lineItemColumns } from "../columns/campaign";
 import { useSelectedRows } from "./useSelectedRows";
 import { Ad, Campaign, LineItem, useFetchTableData } from "./useFetchTableData";
 import { DuplicatedAd } from "../DuplicatedAd/DuplicatedAd";
 import { TabNames } from "../../../consts/consts";
-import { useMemo } from "react";
 import { DeleteAd } from "../DeleteAd/DeleteAd";
 
 interface Props {
   tabName: TabNames;
+  status?: string;
 }
 
-export const useTable = ({ tabName }: Props) => {
+export const useTable = ({ tabName, status }: Props) => {
   const { selectedRows: selectedLineItemRows, onRow: onLineItemRow, rowSelection: lineItemRowSelection } = useSelectedRows<LineItem>();
   const { selectedRows: selectedCampaignRows, onRow: onCampaignRow, rowSelection: campaignRowSelection } = useSelectedRows<Campaign>();
   const { selectedRows: selectedAdRows, onRow, rowSelection } = useSelectedRows<Ad>();
@@ -19,9 +20,10 @@ export const useTable = ({ tabName }: Props) => {
   const selectedLineItemIds = useMemo(() => selectedLineItemRows.map((lineItem) => lineItem.id), [selectedLineItemRows]);
   const selectedCampaignIds = useMemo(() => selectedCampaignRows.map((lineItem) => lineItem.id), [selectedCampaignRows]);
 
-  const { campaigns, lineItems, ads, setAds } = useFetchTableData({
+  const { campaigns, lineItems, ads, setAds, setCampaigns, setLineItems } = useFetchTableData({
     selectedLineItemIds,
     selectedCampaignIds,
+    status,
   });
 
   const tabItems = [
@@ -49,5 +51,5 @@ export const useTable = ({ tabName }: Props) => {
     },
   ];
 
-  return { tabItems };
+  return { tabItems, setAds, setCampaigns, setLineItems, selectedLineItemIds, selectedCampaignIds };
 };

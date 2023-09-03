@@ -1,6 +1,7 @@
 import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from "sequelize-typescript";
 import Campaign from "./Campaign";
 import LineItem from "./LineItem";
+import Status from "./Status";
 
 export interface IAd {
   id: number;
@@ -26,13 +27,14 @@ export class Ad extends Model<IAd> {
     type: DataType.STRING,
     allowNull: false,
   })
-  status: string;
+  title: string;
 
+  @ForeignKey(() => Status) // Определение внешнего ключа
   @Column({
-    type: DataType.STRING,
+    type: DataType.INTEGER,
     allowNull: false,
   })
-  title: string;
+  status_id: number;
 
   @ForeignKey(() => Campaign) // Определение внешнего ключа
   @Column({
@@ -51,6 +53,9 @@ export class Ad extends Model<IAd> {
     allowNull: false,
   })
   line_item_id: number;
+
+  @BelongsTo(() => Status) // Определение связи
+  status: Status; // Свойство, в котором будет храниться связанный статус
 
   @BelongsTo(() => LineItem) // Определение ассоциации
   line_item: LineItem; // Поле для хранения связанной записи Campaign

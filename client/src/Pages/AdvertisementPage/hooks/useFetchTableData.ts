@@ -31,17 +31,20 @@ interface Result {
   lineItems: LineItem[];
   ads: Ad[];
   setAds: Dispatch<SetStateAction<Ad[]>>;
+  setCampaigns: Dispatch<SetStateAction<Campaign[]>>;
+  setLineItems: Dispatch<SetStateAction<LineItem[]>>;
 }
 
 interface Props {
   selectedCampaignIds: number[];
   selectedLineItemIds: number[];
+  status?: string;
 }
 
-const fetchAll = async () => {
-  const campaigns = await AdvertisementService.getCampaigns();
-  const lineItems = await AdvertisementService.getLineItems({});
-  const ads = await AdvertisementService.getAds({});
+export const fetchAll = async ({ search, status, selectedLineItemIds, selectedCampaignIds }: FetchAllData) => {
+  const campaigns = await AdvertisementService.getCampaigns({ status, search });
+  const lineItems = await AdvertisementService.getLineItems({ status, selectedCampaignIds, search });
+  const ads = await AdvertisementService.getAds({ status, selectedCampaignIds, selectedLineItemIds, search });
 
   return {
     campaigns,
@@ -50,7 +53,14 @@ const fetchAll = async () => {
   };
 };
 
-export const useFetchTableData = ({ selectedCampaignIds, selectedLineItemIds }: Props): Result => {
+export interface FetchAllData {
+  status?: string;
+  search?: string;
+  selectedCampaignIds?: number[];
+  selectedLineItemIds?: number[];
+}
+
+export const useFetchTableData = ({ selectedCampaignIds, selectedLineItemIds, status }: Props): Result => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [lineItems, setLineItems] = useState<LineItem[]>([]);
   const [ads, setAds] = useState<Ad[]>([]);
@@ -60,49 +70,61 @@ export const useFetchTableData = ({ selectedCampaignIds, selectedLineItemIds }: 
 
   const ref = useRef(false);
 
+  const fetchAllData = async ({ status, selectedLineItemIds, selectedCampaignIds }: FetchAllData) => {
+    const filterOptions = {
+      ...(status ? { status } : {}),
+      ...(selectedLineItemIds?.length ? { selectedLineItemIds } : {}),
+      ...(selectedCampaignIds?.length ? { selectedCampaignIds } : {}),
+    };
+
+    const { campaigns, lineItems, ads } = await fetchAll(filterOptions);
+
+    setCampaigns(campaigns);
+    setLineItems(lineItems);
+    setAds(ads);
+  };
+
+  const fetchOnlyAds = async ({ status }: { status?: string }) => {
+    const ads = await AdvertisementService.getAds({ selectedCampaignIds, selectedLineItemIds, status });
+
+    setAds(ads);
+    refOldSelectedLineItemIds.current = selectedLineItemIds;
+  };
+
+  const fetchLineItemsAndAds = async ({
+    selectedCampaignIds,
+    selectedLineItemIds,
+    status,
+  }: {
+    selectedCampaignIds: number[];
+    selectedLineItemIds: number[];
+    status?: string;
+  }) => {
+    const lineItems = await AdvertisementService.getLineItems({ selectedCampaignIds, status });
+    const ads = await AdvertisementService.getAds({ selectedCampaignIds, selectedLineItemIds, status });
+
+    setLineItems(lineItems);
+    setAds(ads);
+    refOldSelectedCampaignIds.current = selectedCampaignIds;
+  };
+
   useEffect(() => {
     if (!ref.current) {
-      const fetchAllData = async () => {
-        const { campaigns, lineItems, ads } = await fetchAll();
-
-        setCampaigns(campaigns);
-        setLineItems(lineItems);
-        setAds(ads);
-      };
-
-      void fetchAllData();
+      void fetchAllData({});
 
       ref.current = true;
       return;
     }
 
     if (refOldSelectedCampaignIds.current !== selectedCampaignIds) {
-      const fetchLineItemsAndAds = async ({
-        selectedCampaignIds,
-        selectedLineItemIds,
-      }: {
-        selectedCampaignIds: number[];
-        selectedLineItemIds: number[];
-      }) => {
-        const lineItems = await AdvertisementService.getLineItems({ selectedCampaignIds });
-        const ads = await AdvertisementService.getAds({ selectedCampaignIds, selectedLineItemIds });
-
-        setLineItems(lineItems);
-        setAds(ads);
-        refOldSelectedCampaignIds.current = selectedCampaignIds;
-      };
-
-      void fetchLineItemsAndAds({ selectedCampaignIds, selectedLineItemIds });
+      void fetchLineItemsAndAds({ selectedCampaignIds, selectedLineItemIds, status });
+      return;
     } else if (refOldSelectedCampaignIds.current === selectedCampaignIds && refOldSelectedLineItemIds.current !== selectedLineItemIds) {
-      const fetchOnlyAds = async () => {
-        const ads = await AdvertisementService.getAds({ selectedCampaignIds, selectedLineItemIds });
-
-        setAds(ads);
-        refOldSelectedLineItemIds.current = selectedLineItemIds;
-      };
-
-      void fetchOnlyAds();
+      void fetchOnlyAds({ status });
+      return;
     }
+
+    fetchAllData({ status, selectedCampaignIds, selectedLineItemIds });
   }, [selectedCampaignIds, selectedLineItemIds]);
 
   return {
@@ -110,5 +132,7 @@ export const useFetchTableData = ({ selectedCampaignIds, selectedLineItemIds }: 
     lineItems,
     ads,
     setAds,
+    setCampaigns,
+    setLineItems,
   };
 };

@@ -8,9 +8,22 @@ interface Props {
   defaultOptions?: Option[];
   placeholder?: string;
   onChange?: (value: string) => void;
+  label?: string;
+  width?: number;
 }
 
-export const Select = ({ fetchFn, defaultOptions = mockOptions, placeholder = "Select for priority", onChange }: Props) => {
+/** Spare function for passing into this component to get options from BE */
+// const fetchFn = async (search: string) => {
+//   const { data } = await axios.get("/options", {
+//     params: {
+//       search: search,
+//     },
+//   });
+//
+//   return data;
+// };
+
+export const Select = ({ fetchFn, onChange, defaultOptions = mockOptions, placeholder = "Select for priority", label, width = 100 }: Props) => {
   const [isTyping, setIsTyping] = useState(false);
   const [options, setOptions] = useState(defaultOptions);
   const isMount = useRef(true);
@@ -23,7 +36,6 @@ export const Select = ({ fetchFn, defaultOptions = mockOptions, placeholder = "S
   });
 
   const handlerOnChange = (value) => {
-    console.log("onChange selected", value);
     if (onChange) {
       onChange(value);
     }
@@ -51,14 +63,19 @@ export const Select = ({ fetchFn, defaultOptions = mockOptions, placeholder = "S
   }, [fetchFn]);
 
   return (
-    <AntdSelect
-      showSearch
-      placeholder={placeholder}
-      filterOption={!fetchFn}
-      onChange={handlerOnChange}
-      onSearch={onSearch}
-      options={options}
-      notFoundContent={isTyping ? <Spin size="small" data-testid="antd-spinner" /> : null}
-    />
+    <>
+      {label && <div>{label}</div>}
+      <AntdSelect
+        showSearch
+        placeholder={placeholder}
+        filterOption={!fetchFn}
+        onChange={handlerOnChange}
+        onSearch={onSearch}
+        options={options}
+        notFoundContent={isTyping ? <Spin size="small" data-testid="antd-spinner" /> : null}
+        style={{ width }}
+        allowClear
+      />
+    </>
   );
 };
