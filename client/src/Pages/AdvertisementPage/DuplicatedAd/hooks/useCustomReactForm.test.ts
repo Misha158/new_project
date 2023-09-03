@@ -28,6 +28,7 @@ jest.mock("react-hook-form", () => ({
   useForm: () => ({
     setValue: mockSetterForm,
     getValues: () => ({ adNameLineItems: {} }),
+    watch: jest.fn(),
   }),
 }));
 
