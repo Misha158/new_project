@@ -18,7 +18,7 @@ export const AdvertisementPage = () => {
 
   return (
     <div>
-      <ReduxCounter />
+      {/*<ReduxCounter />*/}
       <Filters
         selectedCampaignIds={selectedCampaignIds}
         selectedLineItemIds={selectedLineItemIds}
