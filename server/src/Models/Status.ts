@@ -39,5 +39,3 @@ export class Status extends Model<IStatus> {
   @HasMany(() => Ad)
   ads: Ad[];
 }
-
-export default Status;

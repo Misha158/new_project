@@ -9,7 +9,18 @@ export class AuthService {
 
       return data;
     } catch (e) {
-      message.error(`Sighup failed with ${e.message}`);
+      message.error(`Signup failed with ${e.message}`);
+      throw new Error(e.message);
+    }
+  };
+
+  static signinUser = async ({ credentials }: { credentials: SignupCredentials }) => {
+    try {
+      const { data } = await axios.post("/auth/signinUser", credentials);
+
+      return data;
+    } catch (e) {
+      message.error(`Signin failed with ${e.message}`);
       throw new Error(e.message);
     }
   };

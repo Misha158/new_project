@@ -1,18 +1,24 @@
 import express from "express";
+import { Sequelize } from "sequelize-typescript";
 import cors from "cors";
+import dotenv from "dotenv";
+
+import { sequelizeConfig } from "./config";
 
 import postRouter from "./routers/postRouter";
 import advertisementRouter from "./routers/advertisementRouter";
-import { Sequelize } from "sequelize-typescript";
+import authRouter from "./routers/authRouter";
+
 import Campaign from "./Models/Campaign";
 import LineItem from "./Models/LineItem";
 import Ad from "./Models/Ad";
-import { sequelizeConfig } from "./config";
 import { Status } from "./Models/Status";
+import { User } from "./Models/User";
+import { mockHandleSelectOptions } from "./mocks/selectOptions";
 
 const app = express();
 const port = 3000;
-
+dotenv.config();
 export const sequelize = new Sequelize(sequelizeConfig);
 
 const connectToDataBase = async () => {
@@ -26,7 +32,7 @@ const connectToDataBase = async () => {
 
 connectToDataBase();
 
-sequelize.addModels([Campaign, LineItem, Ad, Status]); // Добавление модели в список моделей Sequelize
+sequelize.addModels([Campaign, LineItem, Ad, Status, User]); // Добавление модели в список моделей Sequelize
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -36,36 +42,9 @@ app.use(cors());
 // Используем маршрутизатор для постов
 app.use("/posts", postRouter);
 app.use("/advertisement", advertisementRouter);
+app.use("/auth", authRouter);
 
-const defaultOptions = [
-  {
-    value: "jack-1",
-    label: "Jack-1",
-  },
-  {
-    value: "lucy-1",
-    label: "Lucy-1",
-  },
-  {
-    value: "tom-1",
-    label: "Tom-1",
-  },
-];
-
-app.get("/options", (req, res) => {
-  const search = req.query?.search as string;
-
-  if (search) {
-    setTimeout(() => {
-      res.json(defaultOptions.filter((option) => option.value.includes(search)));
-    }, 1000); // Задержка в миллисекундах (1 секунда)
-    return;
-  }
-
-  setTimeout(() => {
-    res.json(defaultOptions);
-  }, 1000); // Задержка в миллисекундах (1 секунда)
-});
+app.get("/options", mockHandleSelectOptions);
 
 app.listen(port, () => {
   console.log(`Сервер запущен на порту ${port}`);
