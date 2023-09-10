@@ -22,8 +22,10 @@ export const Login = () => {
 
   const onSubmit = async (credentials: SignupCredentials) => {
     const signinUser = await AuthService.signinUser({ credentials });
-    if (signinUser.token) {
-      localStorage.setItem("access_token", signinUser.token);
+
+    if (signinUser.accessToken) {
+      localStorage.setItem("access_token", signinUser.accessToken);
+      localStorage.setItem("refresh_token", signinUser.refreshToken);
       navigate("/");
     }
   };

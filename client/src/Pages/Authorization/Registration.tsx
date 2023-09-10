@@ -21,8 +21,9 @@ export const Registration = () => {
 
   const onSubmit = async (credentials: SignupCredentials) => {
     const createdUser = await AuthService.signupUser({ credentials });
-    if (createdUser.token) {
-      localStorage.setItem("access_token", createdUser.token);
+    if (createdUser.accessToken) {
+      localStorage.setItem("access_token", createdUser.accessToken);
+      localStorage.setItem("refresh_token", createdUser.refreshToken);
       navigate("/");
     }
   };
