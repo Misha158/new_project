@@ -23,6 +23,6 @@ export const authMiddleware = (req: CustomRequest, res: Response, next: NextFunc
     next();
   } catch (e) {
     console.log(e);
-    return res.status(403).json({ message: "User is not authorize" });
+    return res.status(403).json({ message: `Some error with token: ${(e as Error).message}` });
   }
 };

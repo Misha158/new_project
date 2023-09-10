@@ -7,7 +7,7 @@ const generateAccessToken = (id: number) => {
     id,
   };
 
-  return jwt.sign(payload, process.env.SECRET_KEY as string, { expiresIn: "24h" });
+  return jwt.sign(payload, process.env.SECRET_KEY as string, { expiresIn: "1h" });
 };
 
 class AuthController {
