@@ -22,7 +22,8 @@ export const Login = () => {
 
   const onSubmit = async (credentials: SignupCredentials) => {
     const signinUser = await AuthService.signinUser({ credentials });
-    if (signinUser.existedUser.id) {
+    if (signinUser.token) {
+      localStorage.setItem("access_token", JSON.stringify(signinUser.token));
       navigate("/");
     }
   };
