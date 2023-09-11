@@ -24,4 +24,15 @@ export class AuthService {
       throw new Error(e.message);
     }
   };
+
+  static refreshTokens = async () => {
+    try {
+      const { data } = await axios.get("auth/refreshTokens", { withCredentials: true });
+
+      return data;
+    } catch (e) {
+      message.error(`Signin failed with ${e.message}`);
+      throw new Error(e.message);
+    }
+  };
 }

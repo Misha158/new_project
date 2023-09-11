@@ -14,7 +14,7 @@ export const authMiddleware = (req: CustomRequest, res: Response, next: NextFunc
     const token = req.headers.authorization?.split(" ")[1];
 
     if (!token) {
-      return res.status(403).json({ message: "User is not authorize" });
+      return res.status(401).json({ message: "User is not authorize" });
     }
 
     const decodedData = jwt.verify(token, process.env.SECRET_KEY as string);
@@ -23,6 +23,6 @@ export const authMiddleware = (req: CustomRequest, res: Response, next: NextFunc
     next();
   } catch (e) {
     console.log(e);
-    return res.status(403).json({ message: `Some error with token: ${(e as Error).message}` });
+    return res.status(401).json({ message: `Some error with token: ${(e as Error).message}` });
   }
 };

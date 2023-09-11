@@ -2,6 +2,7 @@ import express from "express";
 import { Sequelize } from "sequelize-typescript";
 import cors from "cors";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 
 import { sequelizeConfig } from "./config";
 
@@ -17,6 +18,8 @@ import { User } from "./Models/User";
 import { mockHandleSelectOptions } from "./mocks/selectOptions";
 
 const app = express();
+app.use(cookieParser());
+
 const port = 3000;
 dotenv.config();
 export const sequelize = new Sequelize(sequelizeConfig);
@@ -37,7 +40,7 @@ sequelize.addModels([Campaign, LineItem, Ad, Status, User]); // Добавлен
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // Разрешаем запросы с разных доменов
-app.use(cors());
+app.use(cors({ credentials: true, origin: process.env.CLIENT_URL }));
 
 // Используем маршрутизатор для постов
 app.use("/posts", postRouter);

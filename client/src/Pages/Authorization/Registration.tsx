@@ -23,7 +23,6 @@ export const Registration = () => {
     const createdUser = await AuthService.signupUser({ credentials });
     if (createdUser.accessToken) {
       localStorage.setItem("access_token", createdUser.accessToken);
-      localStorage.setItem("refresh_token", createdUser.refreshToken);
       navigate("/");
     }
   };

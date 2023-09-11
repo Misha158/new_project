@@ -25,7 +25,6 @@ export const Login = () => {
 
     if (signinUser.accessToken) {
       localStorage.setItem("access_token", signinUser.accessToken);
-      localStorage.setItem("refresh_token", signinUser.refreshToken);
       navigate("/");
     }
   };

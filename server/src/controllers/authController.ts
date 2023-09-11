@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import AuthService from "../services/authService";
 import jwt from "jsonwebtoken";
 
+const thirtyDays = 30 + 24 * 60 * 60 * 1000;
+
 const generateAccessToken = (id: number, expiresIn: string) => {
   const payload = {
     id,
@@ -18,7 +20,8 @@ class AuthController {
       const accessToken = generateAccessToken(createdUser.id, "30m");
       const refreshToken = generateAccessToken(createdUser.id, "30d");
 
-      res.status(200).json({ accessToken, refreshToken });
+      res.cookie("refreshToken", refreshToken, { maxAge: thirtyDays, httpOnly: true });
+      res.status(200).json({ accessToken });
     } catch (err) {
       console.log("err", err);
       res.status(500).send(`Sighup failed with ${err}`);
@@ -27,12 +30,33 @@ class AuthController {
 
   signinUser = async (req: Request, res: Response) => {
     try {
+      console.log("MISHA HERE");
       const signinUser = await AuthService.signinUser({ credentials: req.body });
 
-      const accessToken = generateAccessToken(signinUser.existedUser.id, "30m");
+      const accessToken = generateAccessToken(signinUser.existedUser.id, process.env.ACCESS_TOKEN_LIVE as string);
       const refreshToken = generateAccessToken(signinUser.existedUser.id, "30d");
 
-      res.status(200).json({ accessToken, refreshToken });
+      res.cookie("refreshToken", refreshToken, { maxAge: thirtyDays, httpOnly: true });
+      res.status(200).json({ accessToken });
+    } catch (err) {
+      console.log("err", err);
+
+      res.status(500).send(`Sighup failed with ${err}`);
+    }
+  };
+
+  refreshTokens = async (req: Request, res: Response) => {
+    try {
+      console.log("misa-req.cookies", req.cookies);
+      const { refreshToken } = req.cookies;
+      console.log("here", refreshToken);
+      const { userData } = await AuthService.refresh({ refreshToken });
+
+      // @ts-ignore
+      const accessToken = generateAccessToken(userData.id, process.env.ACCESS_TOKEN_LIVE as string);
+
+      res.cookie("refreshToken", refreshToken, { maxAge: thirtyDays, httpOnly: true });
+      res.status(200).json({ accessToken });
     } catch (err) {
       console.log("err", err);
       res.status(500).send(`Sighup failed with ${err}`);
