@@ -1,6 +1,6 @@
 import { Table, Column, Model, DataType, HasMany, ForeignKey, BelongsTo } from "sequelize-typescript";
 import LineItem from "./LineItem";
-import Status from "./Status";
+import { Status } from "./Status";
 
 export interface ICampaign {
   id: number;

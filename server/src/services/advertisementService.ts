@@ -2,7 +2,7 @@ import { Op, Sequelize, fn } from "sequelize";
 import Campaign from "../Models/Campaign";
 import LineItem from "../Models/LineItem";
 import Ad, { IAd } from "../Models/Ad";
-import Status from "../Models/Status";
+import { Status } from "../Models/Status";
 
 interface FilterOptions {
   campaignIds?: number[];
