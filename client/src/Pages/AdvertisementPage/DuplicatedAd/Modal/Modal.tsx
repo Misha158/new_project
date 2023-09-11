@@ -38,10 +38,6 @@ export const Modal = ({ isModalOpen, lineItems, closeModal, step, selectedAdRows
     ],
   };
 
-  useEffect(() => {
-    console.log("THIS IS MODAL");
-  }, []);
-
   return (
     <AntModal {...modalProps}>
       {step === 1 && <LineItemsTable lineItems={lineItems} rowLineItemSelection={rowLineItemSelection} onLineItemRow={onLineItemRow} />}

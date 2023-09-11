@@ -30,7 +30,6 @@ class AuthController {
 
   signinUser = async (req: Request, res: Response) => {
     try {
-      console.log("MISHA HERE");
       const signinUser = await AuthService.signinUser({ credentials: req.body });
 
       const accessToken = generateAccessToken(signinUser.existedUser.id, process.env.ACCESS_TOKEN_LIVE as string);
@@ -47,9 +46,7 @@ class AuthController {
 
   refreshTokens = async (req: Request, res: Response) => {
     try {
-      console.log("misa-req.cookies", req.cookies);
       const { refreshToken } = req.cookies;
-      console.log("here", refreshToken);
       const { userData } = await AuthService.refresh({ refreshToken });
 
       // @ts-ignore
