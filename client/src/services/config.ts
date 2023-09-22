@@ -40,6 +40,7 @@ axios.interceptors.response.use(
 
         return axios.request(originalRequest);
       } catch (e) {
+        localStorage.removeItem("access_token");
         console.log("No authorized");
       }
     }

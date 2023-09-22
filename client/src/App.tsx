@@ -1,11 +1,11 @@
-import { TodoPage, AdvertisementPage } from "./Pages";
-import { Routes, Route, useLocation } from "react-router-dom";
-import { Login } from "./Pages/Authorization/Login";
-import { Registration } from "./Pages/Authorization/Registration";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
-import jwt_decode from "jwt-decode";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { Button } from "antd";
+
+import { TodoPage, AdvertisementPage } from "./Pages";
+import { Login } from "./Pages/Authorization/Login";
+import { Registration } from "./Pages/Authorization/Registration";
 
 export const App = () => {
   const navigate = useNavigate();
