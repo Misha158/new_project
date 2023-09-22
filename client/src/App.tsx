@@ -3,9 +3,7 @@ import { useNavigate } from "react-router";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Button } from "antd";
 
-import { TodoPage, AdvertisementPage } from "./Pages";
-import { Login } from "./Pages/Authorization/Login";
-import { Registration } from "./Pages/Authorization/Registration";
+import { TodoPage, AdvertisementPage, UploadPage, Login, Registration } from "./Pages";
 
 const isAuthEnabled = import.meta.env.VITE_IS_AUTH_ENABLED === "true";
 
@@ -42,6 +40,7 @@ export const App = () => {
         <Route path="/Registration" element={<Registration />} />
         <Route path="/todo" element={<TodoPage />} />
         <Route path="/Advertisement" element={<AdvertisementPage />} />
+        <Route path="/upload" element={<UploadPage />} />
         <Route path="*" element={<div>Not found</div>} />
       </Routes>
     </>
