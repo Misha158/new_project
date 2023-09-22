@@ -7,6 +7,8 @@ import { TodoPage, AdvertisementPage } from "./Pages";
 import { Login } from "./Pages/Authorization/Login";
 import { Registration } from "./Pages/Authorization/Registration";
 
+const isAuthEnabled = import.meta.env.VITE_IS_AUTH_ENABLED === "true";
+
 export const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -16,7 +18,7 @@ export const App = () => {
   useEffect(() => {
     const token = localStorage.getItem("access_token");
 
-    if (!token && !publicPages.includes(location.pathname)) {
+    if (isAuthEnabled && !token && !publicPages.includes(location.pathname)) {
       navigate("/login");
     }
   }, [navigate]);
