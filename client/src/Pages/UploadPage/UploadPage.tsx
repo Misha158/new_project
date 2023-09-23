@@ -26,11 +26,24 @@ export const UploadPage = () => {
 
   const onDrop = (e) => {
     e.preventDefault();
+    console.log("e", e.target.files);
     const files = [...e.dataTransfer.files];
     console.log("file", files);
     const formData = new FormData();
 
     formData.append("file", files[0]);
+
+    // Создаем объект FileReader
+    const reader = new FileReader();
+
+    // Устанавливаем обработчик события, который сработает после успешного чтения файла
+    reader.onload = (event) => {
+      // Устанавливаем содержимое файла как источник для элемента <img>
+      setFile(event.target.result);
+    };
+
+    // Читаем файл в формате Data URL
+    reader.readAsDataURL(files[0]);
 
     setIsDragging(false);
   };
@@ -41,7 +54,7 @@ export const UploadPage = () => {
       <form>
         <label className="uploader__label">
           <Button onClick={onUpload}>upload</Button>
-          <input type="file" ref={fileInput} className="uploader__input" />
+          <input type="file" ref={fileInput} className="uploader__input" onChange={onDrop} />
         </label>
 
         <div
@@ -54,6 +67,7 @@ export const UploadPage = () => {
           <div>{isDragging ? "Leave file here" : "Drag files here"}</div>
         </div>
 
+        <img src={file} alt="" />
         <Button>Save photo</Button>
       </form>
     </div>
