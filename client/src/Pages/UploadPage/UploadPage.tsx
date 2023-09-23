@@ -7,13 +7,21 @@ import "./style.scss";
 export const UploadPage = () => {
   const [file, setFile] = useState(null);
 
-  const fileInput = useRef();
+  const fileInput = useRef<HTMLInputElement>(null);
+
+  const onUpload = () => {
+    fileInput.current?.click();
+  };
 
   return (
     <div>
       <h1 className="main">UploadPage</h1>
       <form>
-        <input type="file" ref={fileInput} />
+        <label className="uploader__label">
+          <Button onClick={onUpload}>upload</Button>
+          <input type="file" ref={fileInput} className="uploader__input" />
+        </label>
+
         <Button>Save photo</Button>
       </form>
     </div>

@@ -1,3 +1,9 @@
-.main {
-  font-size: 30px;
+.uploader {
+  &__label{
+
+  }
+
+  &__input {
+    display: none;
+  }
 }
