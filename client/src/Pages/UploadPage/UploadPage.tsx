@@ -1,11 +1,13 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState, DragEvent, ChangeEvent } from "react";
 import { Button } from "antd";
+
+import { prepareFormData, setPhotoPreview } from "./utils";
 
 import "./style.scss";
 
 // use react hook form
 export const UploadPage = () => {
-  const [file, setFile] = useState(null);
+  const [fileURL, setFileURL] = useState<ArrayBuffer | string>("");
   const [isDragging, setIsDragging] = useState(false);
 
   const fileInput = useRef<HTMLInputElement | null>(null);
@@ -14,36 +16,21 @@ export const UploadPage = () => {
     fileInput.current?.click();
   };
 
-  const onDragStart = (e) => {
+  const onDragStart = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(true);
   };
 
-  const onDragLeave = (e) => {
+  const onDragLeave = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(false);
   };
 
-  const onDrop = (e) => {
+  const onDrop = (e: DragEvent<HTMLInputElement> | ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    console.log("e", e.target.files);
-    const files = [...e.dataTransfer.files];
-    console.log("file", files);
-    const formData = new FormData();
+    const { formData, files } = prepareFormData(e);
 
-    formData.append("file", files[0]);
-
-    // Создаем объект FileReader
-    const reader = new FileReader();
-
-    // Устанавливаем обработчик события, который сработает после успешного чтения файла
-    reader.onload = (event) => {
-      // Устанавливаем содержимое файла как источник для элемента <img>
-      setFile(event.target.result);
-    };
-
-    // Читаем файл в формате Data URL
-    reader.readAsDataURL(files[0]);
+    setPhotoPreview({ files, setFileURL });
 
     setIsDragging(false);
   };
@@ -54,7 +41,7 @@ export const UploadPage = () => {
       <form>
         <label className="uploader__label">
           <Button onClick={onUpload}>upload</Button>
-          <input type="file" ref={fileInput} className="uploader__input" onChange={onDrop} />
+          <input type="file" ref={fileInput} className="uploader__input" onChange={(e) => onDrop(e)} />
         </label>
 
         <div
@@ -67,7 +54,7 @@ export const UploadPage = () => {
           <div>{isDragging ? "Leave file here" : "Drag files here"}</div>
         </div>
 
-        <img src={file} alt="" />
+        <img src={fileURL} alt="" />
         <Button>Save photo</Button>
       </form>
     </div>
