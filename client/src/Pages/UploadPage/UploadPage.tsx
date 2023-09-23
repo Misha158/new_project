@@ -24,6 +24,17 @@ export const UploadPage = () => {
     setIsDragging(false);
   };
 
+  const onDrop = (e) => {
+    e.preventDefault();
+    const files = [...e.dataTransfer.files];
+    console.log("file", files);
+    const formData = new FormData();
+
+    formData.append("file", files[0]);
+
+    setIsDragging(false);
+  };
+
   return (
     <div>
       <h1 className="main">UploadPage</h1>
@@ -38,6 +49,7 @@ export const UploadPage = () => {
           onDragStart={onDragStart}
           onDragLeave={onDragLeave}
           onDragOver={onDragStart}
+          onDrop={onDrop}
         >
           <div>{isDragging ? "Leave file here" : "Drag files here"}</div>
         </div>
