@@ -6,4 +6,23 @@
   &__input {
     display: none;
   }
+
+  &__drag_area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+    width: 400px;
+    margin: 20px 0;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid black;
+
+    &.active {
+      border: dashed;
+      border-color: black;
+      background-color: #646cff;
+      color: white;
+    }
+  }
 }
