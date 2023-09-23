@@ -1,4 +1,4 @@
-import { renderHook, act } from "@testing-library/react-hooks";
+import { renderHook, act, waitFor } from "@testing-library/react";
 import { useFetchTableData } from "./useFetchTableData";
 import { mockLineItems } from "../../../mocks/lineItems";
 import { mockCampaigns } from "../../../mocks/campaigns";
@@ -30,13 +30,13 @@ describe("useFetchTableData", () => {
       selectedLineItemIds: [],
     };
 
-    const { result, waitForNextUpdate } = renderHook(() => useFetchTableData(mockProps));
+    const { result } = renderHook(() => useFetchTableData(mockProps));
 
-    await waitForNextUpdate();
-
-    expect(result.current.campaigns).toEqual(mockCampaigns);
-    expect(result.current.lineItems).toEqual(mockLineItems);
-    expect(result.current.ads).toEqual(mockAds);
+    await waitFor(() => {
+      expect(result.current.campaigns).toEqual(mockCampaigns);
+      expect(result.current.lineItems).toEqual(mockLineItems);
+      expect(result.current.ads).toEqual(mockAds);
+    });
   });
 
   it("Should make request with campaignIds", async () => {

@@ -1,4 +1,4 @@
-import { act, renderHook } from "@testing-library/react-hooks";
+import { act, renderHook, waitFor } from "@testing-library/react";
 import { useConfirm } from "./useConfirm";
 import axios from "axios";
 
@@ -6,7 +6,7 @@ jest.mock("axios");
 
 describe("useConfirm", () => {
   it("Should return loading", async () => {
-    const { result, waitForNextUpdate } = renderHook(() => useConfirm({ closeModal: () => {}, adNameLineItems: {} }));
+    const { result } = renderHook(() => useConfirm({ closeModal: () => {}, adNameLineItems: {} }));
 
     expect(result.current.loading).toBe(false);
 
@@ -16,14 +16,15 @@ describe("useConfirm", () => {
 
     expect(result.current.loading).toBe(true);
 
-    await waitForNextUpdate();
-
-    expect(result.current.loading).toBe(false);
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+    });
   });
+
   it("Should return error", async () => {
     (axios.post as jest.Mock).mockRejectedValue("error");
 
-    const { result, waitForNextUpdate } = renderHook(() => useConfirm({ closeModal: () => {}, adNameLineItems: {} }));
+    const { result } = renderHook(() => useConfirm({ closeModal: () => {}, adNameLineItems: {} }));
 
     expect(result.current.error).toBe(false);
 
@@ -31,19 +32,19 @@ describe("useConfirm", () => {
       result.current.onConfirm();
     });
 
-    await waitForNextUpdate();
-
-    expect(result.current.error).toBe(true);
+    await waitFor(() => {
+      expect(result.current.error).toBe(true);
+    });
   });
   it("Should return onCorfirm that call axios", async () => {
-    const { result, waitForNextUpdate } = renderHook(() => useConfirm({ closeModal: () => {}, adNameLineItems: {} }));
+    const { result } = renderHook(() => useConfirm({ closeModal: () => {}, adNameLineItems: {} }));
 
     act(() => {
       result.current.onConfirm();
     });
 
-    await waitForNextUpdate();
-
-    expect(axios.post).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(axios.post).toHaveBeenCalled();
+    });
   });
 });

@@ -1,19 +1,23 @@
-import { renderHook } from "@testing-library/react-hooks";
+import { renderHook, waitFor } from "@testing-library/react";
 import { useModal } from "./useModal";
 
 describe("useModal", () => {
-  it("Should open and close the modal", () => {
+  it("Should open and close the modal", async () => {
     const { result } = renderHook(() => useModal({ setStep: () => {} }));
 
     expect(result.current.isModalOpen).toBeFalsy();
 
     result.current.showModal();
 
-    expect(result.current.isModalOpen).toBeTruthy();
+    await waitFor(() => {
+      expect(result.current.isModalOpen).toBeTruthy();
+    });
 
     result.current.closeModal();
 
-    expect(result.current.isModalOpen).toBeFalsy();
+    await waitFor(() => {
+      expect(result.current.isModalOpen).toBeFalsy();
+    });
   });
 
   it("Should call the stepper next", () => {
