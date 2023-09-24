@@ -2,13 +2,22 @@ import express from "express";
 
 import UploadController from "../controllers/UploadController";
 import { authMiddleware } from "../middlewares/authMiddleware";
+import multer from "multer";
 
-// const upload = multer({ dest: "uploads/" });
+const storageConfig = multer.diskStorage({
+  destination: async (req, file, cb) => {
+    cb(null, "uploads");
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
+
+const upload = multer({ storage: storageConfig });
 
 const uploadRoute = express.Router();
 
 uploadRoute.use(authMiddleware);
-// uploadRoute.post("/", upload.single("file"), UploadController.upload);
-uploadRoute.post("/", UploadController.upload);
+uploadRoute.post("/", upload.single("file"), UploadController.upload);
 
 export default uploadRoute;

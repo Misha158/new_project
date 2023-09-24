@@ -1,8 +1,16 @@
-import { Op, Sequelize, fn } from "sequelize";
+import { User } from "../Models/User";
 
-class AdvertisementService {
-  upload = async ({ status, search }: { status?: string; search?: string }) => {
+class UploadService {
+  upload = async ({ fileName, userId }: { fileName?: string; userId?: number }) => {
     try {
+      await User.update(
+        { avatar_url: fileName },
+        {
+          where: {
+            id: userId,
+          },
+        }
+      );
       return;
     } catch (err) {
       throw err;
@@ -10,4 +18,4 @@ class AdvertisementService {
   };
 }
 
-export default new AdvertisementService();
+export default new UploadService();
