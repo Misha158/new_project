@@ -59,6 +59,17 @@ class AuthController {
       res.status(500).send(`Sighup failed with ${err}`);
     }
   };
+
+  getUserInfo = async (req: Request, res: Response) => {
+    try {
+      // @ts-ignore
+      const userInfo = await AuthService.getUserInfo({ userId: req.user.id });
+      res.status(200).json(userInfo);
+    } catch (err) {
+      console.log("err", err);
+      res.status(500).send(`Fail ${err}`);
+    }
+  };
 }
 
 export default new AuthController();

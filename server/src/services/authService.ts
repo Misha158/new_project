@@ -65,6 +65,20 @@ class AuthService {
       throw err;
     }
   };
+
+  getUserInfo = async ({ userId }: { userId: number }) => {
+    try {
+      const userInfo = await User.findOne({
+        where: {
+          id: userId,
+        },
+      });
+
+      return { avatarUrl: userInfo?.avatar_url };
+    } catch (err) {
+      throw err;
+    }
+  };
 }
 
 export default new AuthService();
