@@ -11,6 +11,8 @@ class UploadService {
           },
         }
       );
+
+      return fileName;
     } catch (err) {
       throw err;
     }

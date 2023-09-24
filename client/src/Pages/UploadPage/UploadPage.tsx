@@ -4,11 +4,15 @@ import { Button } from "antd";
 import { prepareFormData, setPhotoPreview } from "./utils";
 
 import "./style.scss";
+import { UploadService } from "../../services/UploadService";
+import { useAppDispatch } from "../../store/hooks";
+import { upload } from "../../store/slices/uploadsSlice";
 
 // use react hook form
 export const UploadPage = () => {
   const [fileURL, setFileURL] = useState<ArrayBuffer | string>("");
   const [isDragging, setIsDragging] = useState(false);
+  const [formData, setFormData] = useState<FormData | null>(null);
 
   const fileInput = useRef<HTMLInputElement | null>(null);
 
@@ -29,10 +33,17 @@ export const UploadPage = () => {
   const onDrop = (e: DragEvent<HTMLInputElement> | ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const { formData, files } = prepareFormData(e);
-
+    setFormData(formData);
     setPhotoPreview({ files, setFileURL });
 
     setIsDragging(false);
+  };
+
+  const dispatch = useAppDispatch();
+
+  const onSavePhoto = async () => {
+    const avatarUrl = await UploadService.upload({ formData: formData as FormData });
+    dispatch(upload(avatarUrl));
   };
 
   return (
@@ -49,13 +60,13 @@ export const UploadPage = () => {
           onDragStart={onDragStart}
           onDragLeave={onDragLeave}
           onDragOver={onDragStart}
-          onDrop={onDrop}
+          onDrop={(e: DragEvent<HTMLInputElement>) => onDrop(e)}
         >
           <div>{isDragging ? "Leave file here" : "Drag files here"}</div>
         </div>
 
         <img src={fileURL} alt="" />
-        <Button>Save photo</Button>
+        <Button onClick={onSavePhoto}>Save photo</Button>
       </form>
     </div>
   );

@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import logger from "redux-logger";
 import { counterSlice } from "./slices/counterSlice";
 import { postsSlice } from "./slices/postsSlice";
+import { uploadsSlice } from "./slices/uploadsSlice";
 
 const myMiddleware = (store) => (next) => (action) => {
   // console.log("Dispatching action:MISHAAAAAAAAAA", action);
@@ -15,6 +16,7 @@ export const store = configureStore({
   reducer: {
     counter: counterSlice.reducer,
     posts: postsSlice.reducer,
+    uploads: uploadsSlice.reducer,
   },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(myMiddleware),

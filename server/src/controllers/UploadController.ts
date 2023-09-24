@@ -7,8 +7,8 @@ class UploadController {
       const fileName = req.file?.originalname;
       // @ts-ignore
       const userId = req.user.id;
-      await UploadService.upload({ fileName, userId });
-      res.status(200).send("File has uploaded");
+      const avatarUrl = await UploadService.upload({ fileName, userId });
+      res.status(200).json(avatarUrl);
     } catch (err) {
       console.log("err", err);
       res.status(500).send(`Upload failed with ${err}`);
