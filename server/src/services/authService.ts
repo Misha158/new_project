@@ -17,6 +17,7 @@ class AuthService {
         ...credentials,
         password: hashPassword,
         id: 0,
+        avatar_url: "",
       });
       return data;
     } catch (err) {

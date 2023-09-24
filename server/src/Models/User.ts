@@ -5,6 +5,7 @@ export interface IUser {
   name: string;
   email: string;
   password: string;
+  avatar_url: string;
 }
 
 @Table({
@@ -36,4 +37,10 @@ export class User extends Model<IUser> {
     allowNull: false,
   })
   password: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  avatar_url: string;
 }

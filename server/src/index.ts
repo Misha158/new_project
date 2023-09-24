@@ -9,6 +9,7 @@ import { sequelizeConfig } from "./config";
 import postRouter from "./routers/postRouter";
 import advertisementRouter from "./routers/advertisementRouter";
 import authRouter from "./routers/authRouter";
+import uploadRoute from "./routers/upload";
 
 import Campaign from "./Models/Campaign";
 import LineItem from "./Models/LineItem";
@@ -39,6 +40,7 @@ sequelize.addModels([Campaign, LineItem, Ad, Status, User]); // Добавлен
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use("/uploads", express.static("uploads"));
 // Разрешаем запросы с разных доменов
 app.use(cors({ credentials: true, origin: process.env.CLIENT_URL }));
 
@@ -46,6 +48,7 @@ app.use(cors({ credentials: true, origin: process.env.CLIENT_URL }));
 app.use("/posts", postRouter);
 app.use("/advertisement", advertisementRouter);
 app.use("/auth", authRouter);
+app.use("/uploads", uploadRoute);
 
 app.get("/options", mockHandleSelectOptions);
 
