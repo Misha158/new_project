@@ -3,7 +3,7 @@ import { useHeader } from "./useHeader";
 
 export const Header = () => {
   const { avatarUrl, logout } = useHeader();
-  const avatarSrc = avatarUrl ? `http://localhost:3000/uploads/${avatarUrl}` : "";
+  const avatarSrc = avatarUrl ? `${avatarUrl}` : "";
 
   return (
     <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "10px" }}>

@@ -4,16 +4,18 @@ import UploadController from "../controllers/UploadController";
 import { authMiddleware } from "../middlewares/authMiddleware";
 import multer from "multer";
 
-const storageConfig = multer.diskStorage({
-  destination: async (req, file, cb) => {
-    cb(null, "uploads");
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  },
-});
+// const storageConfig = multer.diskStorage({
+//   destination: async (req, file, cb) => {
+//     cb(null, "uploads");
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, file.originalname);
+//   },
+// });
 
-const upload = multer({ storage: storageConfig });
+const storage = multer.memoryStorage();
+
+const upload = multer({ storage: storage });
 
 const uploadRoute = express.Router();
 
