@@ -1,6 +1,7 @@
 import { User } from "../Models/User";
 
 import { BlobServiceClient, StorageSharedKeyCredential } from "@azure/storage-blob";
+import { log } from "util";
 
 const accountName = "mishastorage158";
 const accountKey = "0M6bfBZn95JA3PQt0PdvAQGsxsFFCEEHKwqvZtp1IU316otqZaet7Dzbm3ivg12j9UpOmBJV7ehe+ASt8U7hzw==";
@@ -15,6 +16,7 @@ const baseAzureStorageURL = "https://mishastorage158.blob.core.windows.net/misha
 class UploadService {
   upload = async ({ fileName, userId, req }: { fileName?: string; userId?: number; req: any }) => {
     try {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       const timestamp = Date.now();
       const date = new Date(timestamp);
       const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;

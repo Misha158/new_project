@@ -39,7 +39,7 @@ export class AuthService {
   static getUserInfo = async () => {
     try {
       const { data } = await axios.get(`/auth/userInfo`);
-      console.log(data);
+
       return data.avatarUrl;
     } catch (e) {
       message.error(`Signin failed with ${e.message}`);

@@ -1,5 +1,5 @@
 import { useRef, useState, DragEvent, ChangeEvent } from "react";
-import { Button } from "antd";
+import { Button, Progress } from "antd";
 
 import { prepareFormData, setPhotoPreview } from "./utils";
 
@@ -8,7 +8,6 @@ import { UploadService } from "../../services/UploadService";
 import { useAppDispatch } from "../../store/hooks";
 import { upload } from "../../store/slices/uploadsSlice";
 
-// use react hook form
 export const UploadPage = () => {
   const [fileURL, setFileURL] = useState<ArrayBuffer | string>("");
   const [isDragging, setIsDragging] = useState(false);
@@ -41,8 +40,10 @@ export const UploadPage = () => {
 
   const dispatch = useAppDispatch();
 
+  const [progress, setProgress] = useState(0);
+
   const onSavePhoto = async () => {
-    const avatarUrl = await UploadService.upload({ formData: formData as FormData });
+    const avatarUrl = await UploadService.upload({ formData: formData as FormData, setProgress });
     dispatch(upload(avatarUrl));
   };
 
@@ -67,6 +68,7 @@ export const UploadPage = () => {
 
         <img src={fileURL} alt="" />
         <Button onClick={onSavePhoto}>Save photo</Button>
+        {progress && <Progress type="circle" percent={progress} />}
       </form>
     </div>
   );
