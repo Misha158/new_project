@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 
-import { TodoPage, AdvertisementPage, UploadPage, Login, Registration } from "./Pages";
+import { TodoPage, AdvertisementPage, UploadPage, Login, Registration, InfinityScroll } from "./Pages";
 import { Header } from "./shared/components/Header/Header";
 
 export const App = () => {
@@ -14,6 +14,7 @@ export const App = () => {
         <Route path="/todo" element={<TodoPage />} />
         <Route path="/Advertisement" element={<AdvertisementPage />} />
         <Route path="/upload" element={<UploadPage />} />
+        <Route path="/infinity" element={<InfinityScroll />} />
         <Route path="*" element={<div>Not found</div>} />
       </Routes>
     </>
