@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 const style = {
@@ -8,10 +8,12 @@ const style = {
   padding: 8,
 };
 
-export const InfinityScroll = () => {
+export const Basic = () => {
   const [items, setItems] = useState(Array.from({ length: 20 }));
 
   const fetchMoreData = () => {
+    // a fake async api call like which sends
+    // 20 more records in 1.5 secs
     setTimeout(() => {
       setItems((prevItems) => prevItems.concat(Array.from({ length: 20 })));
     }, 1500);

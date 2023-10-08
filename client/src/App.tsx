@@ -7,16 +7,18 @@ export const App = () => {
   return (
     <>
       <Header />
-      <Routes>
-        <Route path="/" element={<AdvertisementPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/Registration" element={<Registration />} />
-        <Route path="/todo" element={<TodoPage />} />
-        <Route path="/Advertisement" element={<AdvertisementPage />} />
-        <Route path="/upload" element={<UploadPage />} />
-        <Route path="/infinity" element={<InfinityScroll />} />
-        <Route path="*" element={<div>Not found</div>} />
-      </Routes>
+      <div style={{ padding: "8px" }}>
+        <Routes>
+          <Route path="/" element={<AdvertisementPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/Registration" element={<Registration />} />
+          <Route path="/todo" element={<TodoPage />} />
+          <Route path="/Advertisement" element={<AdvertisementPage />} />
+          <Route path="/upload" element={<UploadPage />} />
+          <Route path="/infinity" element={<InfinityScroll />} />
+          <Route path="*" element={<div>Not found</div>} />
+        </Routes>
+      </div>
     </>
   );
 };
