@@ -1,19 +1,40 @@
 // 1. First duplicate letter
-const firstDuplicateLetter = (str) => {
-  const res = {};
+// const firstDuplicateLetter = (str) => {
+//   const res = {};
+//
+//   for (let i = 0; i < str.length; i++) {
+//     const currentLetter = str[i];
+//     if (res[currentLetter] === 1) {
+//       return currentLetter;
+//     }
+//
+//     res[currentLetter] = res[currentLetter] ? res[currentLetter] + 1 : 1;
+//   }
+//
+//   return null;
+// };
+//
+// console.log(firstDuplicateLetter("abca")); // a
+// console.log(firstDuplicateLetter("abcdefe")); // e
+// console.log(firstDuplicateLetter("abcde")); // null
 
-  for (let i = 0; i < str.length; i++) {
-    const currentLetter = str[i];
-    if (res[currentLetter] === 1) {
-      return currentLetter;
-    }
+const closure = () => {
+  let count = 0;
 
-    res[currentLetter] = res[currentLetter] ? res[currentLetter] + 1 : 1;
-  }
+  const getCount = () => count;
 
-  return null;
+  const incrementCount = () => {
+    count++;
+  };
+
+  return {
+    getCount,
+    incrementCount,
+  };
 };
 
-console.log(firstDuplicateLetter("abca")); // a
-console.log(firstDuplicateLetter("abcdefe")); // e
-console.log(firstDuplicateLetter("abcde")); // null
+const counter = closure();
+console.log(counter.incrementCount());
+console.log(counter.incrementCount());
+console.log(counter.incrementCount());
+console.log(counter.getCount());
