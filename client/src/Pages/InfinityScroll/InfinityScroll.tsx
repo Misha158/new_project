@@ -44,9 +44,26 @@ export const InfinityScroll = () => {
     }, 1500);
   };
 
+  const test = (e) => {
+    console.log("outside wrapper", e.target);
+  };
+
   return (
     <div>
       <h1>demo: react-infinite-scroll-component</h1>
+      <div onClick={test}>
+        Container 1
+        <div
+          onClick={(e) => {
+            console.log("Internal wrapper");
+            // e.stopPropagation();
+          }}
+        >
+          Container 2<div onClick={() => console.log("item")}>inside 1</div>
+          <div onClick={() => console.log("item")}>inside 2</div>
+          <div onClick={() => console.log("item")}>inside 3</div>
+        </div>
+      </div>
       <hr />
       <InfiniteScroll dataLength={items.length} next={fetchMoreData} hasMore={currentPage * 20 < total} loader={<h4>Loading...</h4>}>
         {items.map((item, index) => (
