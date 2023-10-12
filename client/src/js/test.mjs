@@ -1,3 +1,5 @@
+import lodash from "lodash";
+
 // 1. First duplicate letter
 // const firstDuplicateLetter = (str) => {
 //   const res = {};
@@ -18,6 +20,7 @@
 // console.log(firstDuplicateLetter("abcdefe")); // e
 // console.log(firstDuplicateLetter("abcde")); // null
 
+// 2. closure
 // const closure = () => {
 //   let count = 0;
 //
@@ -39,37 +42,51 @@
 // console.log(counter.incrementCount());
 // console.log(counter.getCount());
 
-const tree = {
-  value: 1,
-  children: [
-    {
-      value: 2,
-      children: [
-        {
-          value: 3,
-          children: [],
-        },
-        {
-          value: 4,
-          children: [],
-        },
-      ],
-    },
-    {
-      value: 5,
-      children: [],
-    },
-  ],
-};
+// 3. Recursion
+// const tree = {
+//   value: 1,
+//   children: [
+//     {
+//       value: 2,
+//       children: [
+//         {
+//           value: 3,
+//           children: [],
+//         },
+//         {
+//           value: 4,
+//           children: [],
+//         },
+//       ],
+//     },
+//     {
+//       value: 5,
+//       children: [],
+//     },
+//   ],
+// };
+//
+// const traverseTree = (tree) => {
+//   let result = tree.value;
+//   for (const child of tree.children) {
+//     // result = result + traverseTree(child);
+//     result += traverseTree(child);
+//   }
+//
+//   return result;
+// };
+//
+// console.log(traverseTree(tree));
 
-const traverseTree = (tree) => {
-  let result = tree.value;
-  for (const child of tree.children) {
-    // result = result + traverseTree(child);
-    result += traverseTree(child);
-  }
+// 4. deep copy
+// const obj = {
+//   data: (new Map()).set("val", 2),
+//   date: new Date()
+// }
+//
+// const jsonClone = JSON.parse(JSON.stringify(obj))
+//
+// console.log(jsonClone)
+// console.log(lodash.cloneDeep(obj))
 
-  return result;
-};
 
-console.log(traverseTree(tree));
