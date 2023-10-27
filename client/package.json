@@ -22,7 +22,7 @@
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
     "antd": "^5.7.3",
-    "axios": "^1.4.0",
+    "axios": "^1.6.0",
     "cross-env": "^7.0.3",
     "formik": "^2.4.3",
     "identity-obj-proxy": "^3.0.0",
